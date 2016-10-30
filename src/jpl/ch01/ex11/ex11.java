@@ -1,5 +1,11 @@
 package jpl.ch01.ex11;
 
+/***
+ * 他の文字列を表示する
+ * @author murase
+ *
+ */
+
 public class ex11 {
 
 	public static void main(String[] args) {

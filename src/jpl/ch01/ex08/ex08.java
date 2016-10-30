@@ -1,5 +1,10 @@
 package jpl.ch01.ex08;
 
+/**
+ * 引数として渡された値を格納するクラス
+ * @author murase
+ */
+
 public class ex08 {
 
 	public static void main(String[] args) {

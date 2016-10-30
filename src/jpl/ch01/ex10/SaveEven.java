@@ -1,19 +1,26 @@
 package jpl.ch01.ex10;
 
+/***
+ * 値とその値が偶数かどうかをブール値として持つクラス
+ * @author murase
+ *
+ */
+
 public class SaveEven {
-	public boolean even[] = new boolean[20];
-	public int i = 0;
-
-	public void checkEven(int x){
-		if(x%2==0){
-			this.even[this.i] = true;
+	public boolean even;
+	public int fib;
+	
+	SaveEven(int _fib, boolean _even){
+		this.fib = _fib;
+		this.even = _even;
+	}
+	
+	public void dispFib(){
+		if(this.even){
+			System.out.println(this.fib+"*");
 		}else{
-			this.even[this.i] = false;
+			System.out.println(this.fib+" ");
 		}
-		this.i++;
 	}
-	public boolean[] geteven(){
-		return this.even;
-	}
-
+	
 }

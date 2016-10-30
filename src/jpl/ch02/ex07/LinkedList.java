@@ -20,4 +20,14 @@ public class LinkedList {
 			System.out.println("Finish list");
 		}
 	}
+	public void DispOwner(){
+		if(this.next != null){
+			System.out.println(this.obje);
+			this.next.DispLink();
+		}else{
+			System.out.println("Finish list");
+		}
+	}
+	
+	
 }

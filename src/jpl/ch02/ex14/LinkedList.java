@@ -31,12 +31,12 @@ public class LinkedList {
 	public Object getObject(){
 		return this.obje;
 	}
-	public void setObject(Object _obje){
-		this.obje = _obje;
-	}
 	
 	public LinkedList getNextList(){
 		return this.next;
+	}
+	public void setNextList(LinkedList _list){
+		this.next = _list;
 	}
 	
 	

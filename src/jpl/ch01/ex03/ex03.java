@@ -1,5 +1,10 @@
 package jpl.ch01.ex03;
 
+/**
+ * フィボナッチにタイトルを出力するプログラム
+ * @author murase
+ */
+
 public class ex03 {
 	/**値が50未満のフィボナッチ数列を表示する*/
 	public static void main(String[] args) {

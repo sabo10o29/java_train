@@ -1,14 +1,13 @@
 package jpl.ch01.ex07;
 
+/**
+ * iが逆になるように書き直すプログラム
+ * @author murase
+ */
+
 public class ex07 {
 
 	static final int MAX_INDEX = 9;
-
-	/**
-	 * 偶数要素に'＊'をつけて、フィボナッチ数列の
-	 * 最初の方の要素を表示する
-	 * @param args
-	 */
 	public static void main(String args[]){
 		int lo = 1;
 		int hi = 1;

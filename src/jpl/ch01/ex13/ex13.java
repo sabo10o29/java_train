@@ -1,5 +1,11 @@
 package jpl.ch01.ex13;
 
+/**
+ * printfを使用して表示する
+ * @author murase
+ *
+ */
+
 public class ex13 {
 
 	static final int MAX_INDEX = 9;

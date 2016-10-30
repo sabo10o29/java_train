@@ -1,5 +1,10 @@
 package jpl.ch01.ex04;
 
+/**
+ * 二乗を表示するプログラム
+ * @author murase
+ */
+
 public class ex04 {
 
 	public static void main(String[] args) {

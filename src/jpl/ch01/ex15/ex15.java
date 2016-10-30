@@ -1,5 +1,12 @@
 package jpl.ch01.ex15;
 
+/**
+ * nameと関連した値を返すプログラム
+ * テストプログラム
+ * @author murase
+ *
+ */
+
 public class ex15 {
 	static final int MAX_SIZE = 10;
 	public static void main(String[] args) {

@@ -1,5 +1,11 @@
 package jpl.ch01.ex14;
 
+/***
+ * ウォークマンを実現クラスを作成するプログラム
+ * Walkmanクラスにはウォークマンのステータスを返すメソッドが必要
+ * 
+ */
+
 import java.util.ArrayList;
 
 public class ex14 {

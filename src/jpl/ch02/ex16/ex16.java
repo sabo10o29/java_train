@@ -1,17 +1,23 @@
 package jpl.ch02.ex16;
 
+/***
+ * リストの要素数を返すメソッドをLinkedListに追加
+ * @author murase
+ *
+ */
+
 public class ex16 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Vehicle[] cars = {
-				new Vehicle(2,"matsuda"),
-				new Vehicle(3,"toyota"),
-				new Vehicle(20,"honda"),
-				new Vehicle(20,"kawasaki"),
-				new Vehicle(20,"suzuki"),
-				new Vehicle(20,"nissan"),
-				new Vehicle(20,"yamaha")
+				new Vehicle(2,"matsuda",100),
+				new Vehicle(3,"toyota",200),
+				new Vehicle(20,"honda",300),
+				new Vehicle(20,"kawasaki",400),
+				new Vehicle(20,"suzuki",250),
+				new Vehicle(20,"nissan",345),
+				new Vehicle(20,"yamaha",65)
 		};
 		
 		LinkedList last = new LinkedList(cars[0]);

@@ -6,13 +6,9 @@ public class ex07 {
 		// TODO Auto-generated method stub
 		//格納する乗り物リスト
 		Vehicle[] cars = {
-				new Vehicle(2,"matsuda"),
-				new Vehicle(3,"toyota"),
-				new Vehicle(20,"honda"),
-				new Vehicle(20,"kawasaki"),
-				new Vehicle(20,"suzuki"),
-				new Vehicle(20,"nissan"),
-				new Vehicle(20,"yamaha"),
+				new Vehicle(2,"matsuda",120),
+				new Vehicle(3,"toyota",299),
+				new Vehicle(20,"honda",300),
 				new Vehicle()
 		};
 		

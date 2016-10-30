@@ -1,5 +1,10 @@
 package jpl.ch01.ex01;
 
+/**
+ * Hello World を実行するプログラム
+ * @author murase
+ */
+
 public class ex01 {
 
 	public static void main(String[] args) {

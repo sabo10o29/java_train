@@ -1,5 +1,10 @@
 package jpl.ch01.ex06;
 
+/**
+ * タイトルに対して名前付き文字列定数を表示するプログラム
+ * @author murase
+ */
+
 public class ex06 {
 	static final String title = "フィボナッチ数列";
 	static final int MAX = 50;

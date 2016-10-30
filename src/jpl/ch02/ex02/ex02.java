@@ -1,5 +1,11 @@
 package jpl.ch02.ex02;
 
+/***
+ * Object型のフィールドと次の要素への参照をもつクラスを作成する。
+ * @author murase
+ *
+ */
+
 public class ex02 {
 
 	public static void main(String[] args) {

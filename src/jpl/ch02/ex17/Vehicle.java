@@ -1,8 +1,11 @@
-package jpl.ch02.ex16;
+package jpl.ch02.ex17;
 
 public class Vehicle {
 	public static int nextID = 1; 
 	public static String firstOwner;
+	
+	public static final int TURN_LEFT = -90;
+	public static final int TURN_RIGHT = 90;
 	
 	private double angle;
 	private String owner;
@@ -58,4 +61,11 @@ public class Vehicle {
 	public void stop(){
 		this.speed = 0;
 	}
+	public void turn(double _angle){
+		this.angle = _angle;
+	}
+	public void turn(int _value){
+		this.angle += _value;
+	}
+	
 }

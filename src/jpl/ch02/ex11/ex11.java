@@ -3,6 +3,12 @@ package jpl.ch02.ex11;
 import jpl.ch02.ex11.LinkedList;
 import jpl.ch02.ex11.Vehicle;
 
+/***
+ * LinkedListクラスにtoStringメソッドを追加
+ * @author murase
+ *
+ */
+
 public class ex11 {
 
 	public static void main(String[] args) {

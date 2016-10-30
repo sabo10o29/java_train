@@ -1,5 +1,11 @@
 package jpl.ch01.ex12;
 
+/**
+ * Stringオブジェクトを作成して表示するプログラム
+ * @author murase
+ *
+ */
+
 public class ex12 {
 
 	static final int MAX_INDEX = 9;

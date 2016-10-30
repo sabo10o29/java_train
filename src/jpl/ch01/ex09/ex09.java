@@ -1,5 +1,10 @@
 package jpl.ch01.ex09;
 
+/**
+ * フィボナッチ数列を配列に保存し、最後に値を表示するプログラム
+ * @author murase
+ */
+
 public class ex09 {
 
 	public static void main(String args[]){
