@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import StdCap.StdoutCapture;
-public class SimpleLookuoTest {
+public class SimpleLookupTest {
 	
 	@Test
 	public void testAdd() {
