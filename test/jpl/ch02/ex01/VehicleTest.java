@@ -1,4 +1,4 @@
-package jpl.ch02.ex05;
+package jpl.ch02.ex01;
 
 import static org.junit.Assert.*;
 
@@ -8,12 +8,9 @@ public class VehicleTest {
 
 	@Test
 	public void testVehicle() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testShowInfo() {
-		fail("Not yet implemented");
+		Vehicle test = new Vehicle(10,"Yoshikazu",20);
+		
+		
 	}
 
 }

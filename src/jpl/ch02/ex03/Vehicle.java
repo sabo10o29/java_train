@@ -18,6 +18,7 @@ public class Vehicle {
 	public void showInfo(){
 		System.out.println("Owner: "+this.owner);
 		System.out.println("ID: "+this.ID);
+		System.out.println("Angle: " + this.angle + ", Speed: " + this.speed);
 	}
 	
 }

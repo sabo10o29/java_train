@@ -7,73 +7,21 @@ import org.junit.Test;
 public class VehicleTest {
 
 	@Test
-	public void testVehicleDoubleStringInt() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testVehicle() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testShowInfo() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testMaxID() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testToString() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetAngle() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetAngle() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetOwner() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetID() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetSpeed() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testChangeSpeed() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testStop() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	public void testTurnDouble() {
-		fail("Not yet implemented");
+		Vehicle car = new Vehicle(5,"Yoshikazu Murase",250);
+		car.turn(20);
+		Double exp = (double)25;
+		car.showInfo();
+		assertTrue(exp.equals(car.getAngle()));
 	}
 
 	@Test
 	public void testTurnInt() {
-		fail("Not yet implemented");
+		Vehicle car = new Vehicle(5,"Yoshikazu Murase",250);
+		car.turn(Vehicle.TURN_RIGHT);
+		Double exp = (double)95;
+		car.showInfo();
+		assertTrue(exp.equals(car.getAngle()));
 	}
 
 }

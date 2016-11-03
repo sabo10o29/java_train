@@ -14,7 +14,7 @@ public class LinkedList {
 	
 	public void DispLink(){
 		if(this.next != null){
-			System.out.println(this.obje.toString());
+			System.out.println("List is exist");
 			this.next.DispLink();
 		}else{
 			System.out.println("Finish list");

@@ -5,40 +5,28 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class LinkedListTest {
-
-	@Test
-	public void testLinkedListObjectLinkedList() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testLinkedListObject() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testDispLink() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testToString() {
-		fail("Not yet implemented");
-	}
-
+	
 	@Test
 	public void testGetObject() {
-		fail("Not yet implemented");
+		LinkedList test = new LinkedList(new Object(),null);
+		assertNotNull(test.getObject());
+		
+		//fail("Not yet implemented");
 	}
 
 	@Test
 	public void testGetNextList() {
-		fail("Not yet implemented");
+		LinkedList test = new LinkedList(new Object(),null);
+		assertNull(test.getNextList());
+		//fail("Not yet implemented");
 	}
 
 	@Test
 	public void testSetNextList() {
-		fail("Not yet implemented");
+		LinkedList test = new LinkedList(new Object(),null);
+		test.setNextList(new LinkedList(new Object()));
+		assertNotNull(test.getNextList());
+		//fail("Not yet implemented");
 	}
 
 }

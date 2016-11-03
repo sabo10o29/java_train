@@ -2,6 +2,8 @@ package jpl.ch01.ex02;
 
 /**
  * エラーを出力するプログラム
+ * 以下のエラーが発生
+ * Unresolved compilation problem
  * @author murase
  */
 
@@ -12,7 +14,7 @@ public class ex02 {
 		try{
 			System.out.println("Hello World"+hoge);
 		}catch(Exception e){
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

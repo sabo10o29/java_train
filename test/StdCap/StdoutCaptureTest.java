@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2016 Yoshik Shibata. All rights reserved.
  */
-package jp.ne.sonet.ca2.yshibata.test;
+package StdCap;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

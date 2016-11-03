@@ -1,7 +1,6 @@
 package jpl.ch02.ex02;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 public class LinkedListTest {

@@ -5,60 +5,51 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class VehicleTest {
-
+	
 	@Test
-	public void testVehicleDoubleStringInt() {
-		fail("Not yet implemented");
+	public void testGetID() {
+		Vehicle test = new Vehicle(100,"Yoshikazu",200);
+		//System.out.println(this.test.getID());
+		Integer exp = (int)4;
+		assertTrue(exp.equals(test.getID()));
 	}
-
-	@Test
-	public void testVehicle() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testShowInfo() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testMaxID() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testToString() {
-		fail("Not yet implemented");
-	}
-
+	
 	@Test
 	public void testGetAngle() {
-		fail("Not yet implemented");
+		Vehicle test = new Vehicle(100,"Yoshikazu",200);
+		Double exp = (double) 100;
+		assertTrue(exp.equals(test.getAngle()));
+		//System.out.println(this.test.getID());
 	}
 
 	@Test
 	public void testSetAngle() {
-		fail("Not yet implemented");
+		Vehicle test = new Vehicle(100,"Yoshikazu",200);
+		test.setAngle(200);
+		Double exp = (double) 200;
+		assertTrue(exp.equals(test.getAngle()));
+		//System.out.println(this.test.getID());
 	}
 
 	@Test
 	public void testGetOwner() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetID() {
-		fail("Not yet implemented");
+		Vehicle test = new Vehicle(100,"Yoshikazu",200);
+		assertEquals(test.getOwner(),"Yoshikazu");
 	}
 
 	@Test
 	public void testGetSpeed() {
-		fail("Not yet implemented");
+		Vehicle test = new Vehicle(100,"Yoshikazu",200);
+		Double exp = (double) 200;
+		assertTrue(exp.equals(test.getSpeed()));
 	}
 
 	@Test
 	public void testSetSpeed() {
-		fail("Not yet implemented");
+		Vehicle test = new Vehicle(100,"Yoshikazu",200);
+		test.setSpeed(240);
+		Double exp = (double) 240;
+		assertTrue(exp.equals(test.getSpeed()));
 	}
 
 }
