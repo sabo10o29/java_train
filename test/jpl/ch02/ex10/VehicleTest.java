@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import StdCap.StdoutCapture;
-import jpl.ch02.ex06.ex06;
+import jpl.ch02.ex06.MakeSomeLinkedList;
 
 public class VehicleTest {
 
