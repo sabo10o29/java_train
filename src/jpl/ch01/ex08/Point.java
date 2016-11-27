@@ -6,4 +6,10 @@ public class Point {
 		this.x = _x;
 		this.y = _y;
 	}
+	//正答
+	public void setPoint(Point point){
+		this.x = point.x;
+		this.y = point.y;
+	}
+	
 }
