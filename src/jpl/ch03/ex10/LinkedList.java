@@ -6,7 +6,7 @@ public class LinkedList implements Cloneable{
 	
 	//メインメソッド
 	public static void main (String[] args){
-		// リストが参照しているオブジェクトに対する変更は、他方のリストから見える
+		//クローンは浅い参照であるため、参照先を同一にすることで変更を他方のリストからも確認することができる。
         LinkedList link1 = new LinkedList(new Vehicle(100,"Murase",340));
 
         link1.setNextLinkedList(new LinkedList(new Vehicle(50, "Tanaka",30)));
@@ -19,13 +19,13 @@ public class LinkedList implements Cloneable{
 
         System.out.println("");
 
-        // link1からもlink2からも変更が見える
+        // link1からもlink2からも変更を確認する事ができる
         ((Vehicle)link2.getObject()).changeSpeed(160);;
 
         System.out.println(((Vehicle)link1.getObject()).getSpeed());
         System.out.println(((Vehicle)link2.getObject()).getSpeed());
 
-        // １つのリストに対する変更は、他方のリストに影響しない（link2のリストを別の参照にする）
+        //link2のリストを別の参照にすることで、他方のリストに影響しない
         link2 = new LinkedList(new Vehicle(45,"Yamada",600));
 
         link2.setNextLinkedList(new LinkedList(new Vehicle(15,"Hayashi",120)));

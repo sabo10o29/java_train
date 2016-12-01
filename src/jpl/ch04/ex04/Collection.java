@@ -1,8 +1,9 @@
-package jpl.ch06.ex04;
+package jpl.ch04.ex04;
+
 import java.util.Iterator;
 
 public interface Collection<E> extends Iterable<E>{
-	 boolean	add(E e); 
+	boolean	add(E e); 
 	 boolean	addAll(Collection<? extends E> c);
 	 void		clear(); 
 	 boolean	contains(Object o); 

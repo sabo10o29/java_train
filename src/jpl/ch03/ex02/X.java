@@ -6,9 +6,9 @@ public class X {
 	
 	public X(){
 		System.out.println("xMask  yMask  fullMask");
-		System.out.printf("%x  %x  %x \n",this.xMask,0,this.fullMask);
+		System.out.printf(" %x    %x       %x \n",this.xMask,0,this.fullMask);
 		fullMask = xMask;
-		System.out.printf("%x  %x  %x \n",this.xMask,0,this.fullMask);
+		System.out.printf(" %x    %x       %x \n",this.xMask,0,this.fullMask);
 	}
 	public int mask(int orig){
 		return (orig & fullMask);

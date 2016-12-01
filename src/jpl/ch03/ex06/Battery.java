@@ -26,4 +26,9 @@ public class Battery extends EnergySource{
 		this.battery -= consumption;
 	}
 	
+	//テスト用メソッド
+	protected int battery(){
+		return this.battery;
+	}
+	
 }

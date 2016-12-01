@@ -25,5 +25,10 @@ public class GasTank extends EnergySource{
 	public void consumeGas(int consumption){
 		this.gastank -= consumption;
 	}
+	
+	//テスト用メソッド
+	protected int gastank(){
+		return this.gastank;
+	}
 
 }

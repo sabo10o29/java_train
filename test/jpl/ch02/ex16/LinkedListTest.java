@@ -29,8 +29,6 @@ public class LinkedListTest {
 		System.out.println("Number of cars: "+list.getNumList());
 		
 		assertEquals(list.getNumList(),7);
-		
-		//fail("Not yet implemented");
 	}
 
 }

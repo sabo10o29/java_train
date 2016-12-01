@@ -39,7 +39,7 @@ public class PassengerVehicle extends Vehicle implements Cloneable{
 		car2.dropPassenger();
 		car2.consumeBattery(234);
 		car2.consumeGastank(678);
-		System.out.println("Vehicleクラスのテスト");
+		System.out.println("PassengerVehicleクラスのテスト");
 		System.out.println("元のGarageインスタンス");
 		System.out.println(car2.toString());
 		System.out.println("複製されたGarageインスタンス");
@@ -66,10 +66,10 @@ public class PassengerVehicle extends Vehicle implements Cloneable{
 	public int numPassenger(){
 		return this.numPassengers;
 	}
-	private void ridePassenger(){
+	public void ridePassenger(){
 		this.numPassengers++;
 	}
-	private void dropPassenger(){
+	public void dropPassenger(){
 		this.numPassengers--;
 	}
 	public boolean setPassengers(int _passengers){

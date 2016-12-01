@@ -11,24 +11,22 @@ public class Garage implements Cloneable{
 		//複製元の初期化
 		garage.loading(new Vehicle("Murase"));
 		garage.loading(new Vehicle("Tanaka"));
-		garage.loading(new Vehicle("Tsuchiya"));
-		garage.arrayVehicle[1].chargeBattery(100);
-		garage.arrayVehicle[1].fillGastank(500);
-		garage.arrayVehicle[1].changeSpeed(340);
+		garage.arrayVehicle[0].chargeBattery(100);
+		garage.arrayVehicle[0].fillGastank(500);
+		garage.arrayVehicle[0].changeSpeed(340);
 		//現時点の状態を複製
 		clone_garage = garage.clone();
 		//複製元の情報を変更
 		garage.unloading();
-		garage.arrayVehicle[1].consumeBattery(20);
-		garage.arrayVehicle[1].consumeGastank(100);
-		garage.arrayVehicle[1].changeSpeed(111);
+		garage.arrayVehicle[0].consumeBattery(20);
+		garage.arrayVehicle[0].consumeGastank(100);
+		garage.arrayVehicle[0].changeSpeed(111);
 		//複製元と複製の情報を比較（元の変更が複製に反映されていなければ成功）
 		System.out.println("元のGarageインスタンス");
 		System.out.println(garage.toString());
 		System.out.println("複製されたGarageインスタンス");
 		System.out.println(clone_garage.toString());
 		
-		//Garageのフィール
 	}
 	
 	//コンストラクタ
@@ -67,8 +65,7 @@ public class Garage implements Cloneable{
 		Vehicle vehicle;
 		if(this.numVehicle!=0){
 			 vehicle = this.arrayVehicle[this.numVehicle];
-			 this.arrayVehicle[this.numVehicle] = null;
-			 this.numVehicle--;
+			 this.arrayVehicle[--this.numVehicle] = null;
 			return vehicle;
 		}else{
 			return null;
@@ -79,7 +76,7 @@ public class Garage implements Cloneable{
 	public String toString(){
 		String str = "Strage vehicle list \n";
 		for(int i = 0; i<this.numVehicle; i++){
-			str += (this.arrayVehicle[i].toString() + "\n\n");
+			str += (this.arrayVehicle[i].toString() + "\n");
 		}
 		return str;
 	}

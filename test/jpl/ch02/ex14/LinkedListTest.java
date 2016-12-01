@@ -8,25 +8,24 @@ public class LinkedListTest {
 	
 	@Test
 	public void testGetObject() {
-		LinkedList test = new LinkedList(new Object(),null);
-		assertNotNull(test.getObject());
-		
-		//fail("Not yet implemented");
+		Object obj = new Object();
+		LinkedList test = new LinkedList(obj,null);
+		assertEquals(test.getObject(),obj);
 	}
 
 	@Test
 	public void testGetNextList() {
-		LinkedList test = new LinkedList(new Object(),null);
-		assertNull(test.getNextList());
-		//fail("Not yet implemented");
+		LinkedList test2 = new LinkedList(new Object(),null);
+		LinkedList test1 = new LinkedList(new Object(),test2);
+		assertEquals(test1.getNextList(),test2);
 	}
 
 	@Test
 	public void testSetNextList() {
-		LinkedList test = new LinkedList(new Object(),null);
-		test.setNextList(new LinkedList(new Object()));
-		assertNotNull(test.getNextList());
-		//fail("Not yet implemented");
+		LinkedList test1 = new LinkedList(new Object(),null);
+		LinkedList test2 = new LinkedList(new Object(),null);
+		test1.setNextList(test2);
+		assertEquals(test1.getNextList(),test2);
 	}
 
 }

@@ -135,4 +135,12 @@ public class Vehicle implements Cloneable{
 	public void consumeGastank(int _consumption){
 		this.gastank.consumeGas(_consumption);
 	}
+		//テスト用ゲッターセッター
+		protected GasTank gasTank(){
+			return this.gastank;
+		}
+		protected Battery battery(){
+			return this.battery;
+		}
+	
 }

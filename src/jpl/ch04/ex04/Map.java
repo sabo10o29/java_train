@@ -1,4 +1,4 @@
-package jpl.ch06.ex04;
+package jpl.ch04.ex04;
 
 import java.util.Set;
 
@@ -6,7 +6,6 @@ public interface Map<K,V>{
 	void	clear() ;
 boolean	containsKey(Object key) ;
 boolean	containsValue(Object value); 
-Set<Map.Entry<K,V>>	entrySet(); 
 boolean	equals(Object o); 
 V	get(Object key); 
 int	hashCode() ;

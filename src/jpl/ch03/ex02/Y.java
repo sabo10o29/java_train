@@ -9,9 +9,9 @@ public class Y extends X{
 		
 	}
 	public Y(){
-		System.out.printf("%x  %x  %x \n",this.xMask,this.yMask,this.fullMask);
+		System.out.printf(" %x    %x    %x \n",this.xMask,this.yMask,this.fullMask);
 		fullMask |= yMask;
-		System.out.printf("%x  %x  %x \n",this.xMask,this.yMask,this.fullMask);
+		System.out.printf(" %x    %x    %x \n",this.xMask,this.yMask,this.fullMask);
 	}
 	
 

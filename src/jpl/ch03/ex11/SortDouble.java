@@ -20,8 +20,10 @@ public abstract class SortDouble
     }
     
     ///////ch03.ex11//////
+    //入力データを直接変更しないようにしたためゲッターを作成
     public double[] resultValue(){
     	return this.values.clone();
+    	//return this.values;
     }
     //////////////////////
     

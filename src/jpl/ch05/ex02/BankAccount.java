@@ -49,12 +49,27 @@ public class BankAccount {
 			return tmp;
 		}
 		
+		//テスト用履歴数を返すメソッド
+		public int numHistory(){
+			int num = 0;
+			for(int i=0; i<action.length; i++){
+				if(action[i]!=null){
+					num++;
+				}else{
+					return num;
+				}
+			}
+			return 0;
+		}
 		
 	}
 	
 	//Historyクラスのインスタンスを返すメソッド
 	public History history(){
 		return this.hist;
+	}
+	public Action action(){
+		return this.lastAct;
 	}
 	
 	
@@ -76,6 +91,11 @@ public class BankAccount {
 		deposit(amount);										//自口座へ入金
 		lastAct = this.new Action ("transfer",amount);			//最後の処理を保存（処理、金額など）
 		other.lastAct = other.new Action("transfer", amount);	//他口座にも処理を保存
+	}
+	
+	//テスト用メソッド
+	public String toString(){
+		return String.valueOf(this.number) + ": " + String.valueOf(this.balance) + "(balance)";
 	}
 	
 	public static void main(String args[]){

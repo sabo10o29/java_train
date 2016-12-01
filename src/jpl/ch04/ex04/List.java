@@ -1,4 +1,4 @@
-package jpl.ch06.ex04;
+package jpl.ch04.ex04;
 
 import java.util.Iterator;
 

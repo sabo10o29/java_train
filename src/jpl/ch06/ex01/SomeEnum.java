@@ -17,9 +17,5 @@ public class SomeEnum {
 		YELLOW,
 		BLUE
 	}
-	
-	public static void main(String[] args) {
-		
-	}
 
 }
