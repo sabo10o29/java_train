@@ -1,6 +1,7 @@
 package jpl.ch02.ex01;
 
 public class Vehicle {
+	//フィールド名は小文字
 	private double angle;
 	private String owner;
 	private int speed;

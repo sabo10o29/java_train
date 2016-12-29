@@ -1,7 +1,10 @@
-package gui.ex11;
+package gui.ex13;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
@@ -11,7 +14,7 @@ import java.io.FileInputStream;
 //ペイントメソッドが呼びたされたときに一瞬すべてクリアされる→チラツキが発生
 //全画面クリアしないようにする&事前に次の画面を用意しておき、切り替える。
 
-public class Clock extends Frame{
+public class Clock extends Window implements MouseListener, MouseMotionListener{
 	//フォント・背景設定用カラー一覧
 	static final String[] color = {"BLACK","WHITE","RED","GREEN","BLUE","YELLOW","PINK","CYAN"};
 	private Font font;								//時計用フォントクラス
@@ -23,11 +26,12 @@ public class Clock extends Frame{
 	private String 	font_name 	= "Arial";			//初期フォント
 	private double 	font_multi 	= 1;				//初期フォントサイズ（倍率）
 	private Color 	font_color 	= Color.black;		//初期フォントカラー
+	private PopupMenu popup = initPopupMenu();		//ポップアップウィンドウ
+	private double fpoint_x;							//クリック時の座標
+	private double fpoint_y;							//
 	
 	private String old_str = getStringClock();////
 	private int fade = 0;
-	
-	
 
 	//メインクラス
 	public static void main(String[] args) {
@@ -37,10 +41,12 @@ public class Clock extends Frame{
 	
 	//コンストラクターウィンドウを作成し、クロックを動作
 	Clock(int _frameWidth, int _frameHeight){
+		super(new Frame());
 		this.setSize(_frameWidth, _frameHeight);
 		this.addWindowListener(new ClockWindowAdapter());
-		//メニューバーの作成
-		this.initMenuBar();
+		//Windowにマウスリスナーを追加
+		addMouseListener(this);
+		addMouseMotionListener(this);
 		//初期画面のサイズをバッファに設定
 		this.buf = createImage(getSize().width,getSize().height);
 		//フレームの可視化（可視化を行わないとgetGraphicsできないため前で実行）
@@ -116,7 +122,6 @@ public class Clock extends Frame{
 		int _width = (int)(this.getSize().getWidth()-rectText.width)/2;
 		//描画
 		buf_graphics.setColor(this.font_color);						//描画処理//
-		//buf_graphics.setColor(getFadeColor(_str));						//描画処理//
 		buf_graphics.drawString(_str, _width, _height);				//描画処理//
 		_g.drawImage(this.buf, 0, 0, this);							//バッファをグラフィックスに書き込む
 		this.old_str = _str;
@@ -154,23 +159,17 @@ public class Clock extends Frame{
 	}	
 
 	//メニューバーの初期化メソッド
-	public final void initMenuBar(){
+	public final PopupMenu initPopupMenu(){
 		//使用できるフォントネームの取得
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		String fonts[] = ge.getAvailableFontFamilyNames();
 		
-		//メニューバーに表示するカラムの作成
-		MenuBar menuBar = new MenuBar();
-		// [Property]
-        Menu menuView = new Menu("Property");
-        menuBar.add(menuView);
-        Menu afterimage = new Menu("Afterimage");
-        menuBar.add(afterimage);
-        
+		PopupMenu _popup = new PopupMenu();
+		
         ///////////背景色/////////////
         // [Property]-[Background color]
         Menu backcolor = new Menu("Background color");
-        menuView.add(backcolor);
+        _popup.add(backcolor);
         // [Property]-[Background color]-[color]
         for(int i=0; i<color.length; i++){
         	MenuItem allcolor = new MenuItem(color[i]);
@@ -182,7 +181,7 @@ public class Clock extends Frame{
         ///////////フォントカラー/////////////
         // [Property]-[Font color]
         Menu fontcolor = new Menu("Font color");
-        menuView.add(fontcolor);
+        _popup.add(fontcolor);
         // [Property]-[Font color]-[color]
         for(int i=0; i<color.length; i++){
         	 MenuItem allcolor = new MenuItem(color[i]);
@@ -194,7 +193,7 @@ public class Clock extends Frame{
         ///////////フォント/////////////
         // [Property]-[Font]
         Menu font = new Menu("Font");
-        menuView.add(font);
+        _popup.add(font);
         // [Property]-[Font]-[Font]
         for(int i=0; i<fonts.length; i++){
         	 MenuItem allfont = new MenuItem(fonts[i]);
@@ -206,7 +205,7 @@ public class Clock extends Frame{
         ////////////フォントサイズ/////////////
         // [Property]-[Font size]
         Menu fontsize = new Menu("Font size");
-        menuView.add(fontsize);
+        _popup.add(fontsize);
         // [Property]-[Font size]-[Size]
         for(int i=1; i<MAXFONTSIZE; i++){
         	 MenuItem size = new MenuItem(String.valueOf(i/10.0));
@@ -214,7 +213,8 @@ public class Clock extends Frame{
              fontsize.add(size);
         }
         ///////////////////////////////////
-        setMenuBar(menuBar);    
+        add(_popup);
+        return _popup;
 	}
 	
 	//文字からColorオブジェクトへの変換
@@ -240,6 +240,62 @@ public class Clock extends Frame{
 			this.fade=0;
 		}
 		return fade_color;
+	}	
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int btn = e.getButton();		//クリックの状態取得
+		Point point = e.getPoint();		//クリックした際の座標取得
+		
+		if (btn == MouseEvent.BUTTON1){
+		    //System.out.println("左ボタンクリック");
+		  }else if (btn == MouseEvent.BUTTON2){
+		    //System.out.println("中ボタンクリック");
+		  }else if (btn == MouseEvent.BUTTON3){
+		    //ポップアップを表示
+		    this.popup.show(e.getComponent(), point.x, point.y);
+		  }
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		//マウスが押されたときの場所を保存
+		this.fpoint_x = e.getX();
+		this.fpoint_y = e.getY();
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		//クリック時の座標と現在の座標から、ウィンドウの表示位置を決定
+		//現在の位置　-　クリック時の座標
+		double x = MouseInfo.getPointerInfo().getLocation().getX() - this.fpoint_x;
+		double y = MouseInfo.getPointerInfo().getLocation().getY() - this.fpoint_y;
+		//ウィンドウにマウスの座標をロケーションとして設定
+		this.setLocation((int)x, (int)y);
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

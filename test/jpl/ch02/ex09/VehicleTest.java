@@ -12,8 +12,7 @@ public class VehicleTest {
 		for(int i=0; i<MAXSIZE; i++){
 			new Vehicle(10,"Yoshikazu",20);
 		}
-		assertEquals(Vehicle.maxID(),100);
-		//fail("Not yet implemented");
+		assertEquals(Vehicle.maxID(),MAXSIZE);
 	}
 
 }
