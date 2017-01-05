@@ -4,18 +4,21 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import jpl.ch10.ex01.ChangeStr;
+import StdCap.StdoutCapture;
 
 public class TestChangeStr {
 
 	@Test
-	public void testReplaceStr() {
-		String[] a = {"Hello World!"};
-		String[] b = ChangeStr.replaceStr(a);
-		
-		String[] c = {"Hello World?"};
-		
-		assertTrue(c[0].equals(b[0]));
+	public void testChangeStr() {
+		 	String[] expected = new String[] {"\\tes\\t \\n \\765"};
+	        
+	        StdoutCapture sc = new StdoutCapture();
+	        sc.start();
+	        
+	        ChangeStr test = new ChangeStr("test n 765");
+	        
+	        sc.stop();
+	        sc.assertEquals(expected);
 	}
 
 }

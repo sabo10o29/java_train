@@ -38,6 +38,7 @@ public class Clock extends Frame{
 	//コンストラクターウィンドウを作成し、クロックを動作
 	Clock(int _frameWidth, int _frameHeight){
 		this.setSize(_frameWidth, _frameHeight);
+		//this.setBounds(x, y, width, height);
 		this.addWindowListener(new ClockWindowAdapter());
 		//メニューバーの作成
 		this.initMenuBar();
@@ -136,8 +137,12 @@ public class Clock extends Frame{
         public void actionPerformed(ActionEvent e) {
         	//既定サイズからの倍率を変更
             font_multi = Double.parseDouble(e.getActionCommand());
+            setMultiWindowSize();
         }
     }
+	public void setMultiWindowSize(){
+		this.setBounds(0, 0, (int)(frameWidth*font_multi), (int)(frameHeight*font_multi));
+	}
 	//フォント
 	class FontActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -164,8 +169,8 @@ public class Clock extends Frame{
 		// [Property]
         Menu menuView = new Menu("Property");
         menuBar.add(menuView);
-        Menu afterimage = new Menu("Afterimage");
-        menuBar.add(afterimage);
+        //Menu afterimage = new Menu("Afterimage");
+        //menuBar.add(afterimage);
         
         ///////////背景色/////////////
         // [Property]-[Background color]

@@ -34,15 +34,12 @@ public class ParameterWindow extends Window{
 	private final String fonts[] = ge.getAvailableFontFamilyNames();
 
 
-	public ParameterWindow(){
+	public ParameterWindow(Parameter _parameter){
 		super(new Frame());
-		setParameterWindow();
-
-	}
-	
-	public void visibleSetting(Parameter _parameter){
-		this.setVisible(true);
 		this.now_parameter = _parameter;
+		setParameterWindow();
+		this.setVisible(true);
+
 	}
 
 	public void setParameterWindow(){

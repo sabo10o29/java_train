@@ -1,29 +1,93 @@
 package jpl.ch10.ex02;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ChangeStr {
 
+	String result;
+	
 	public static void main(String[] args) {
 		
-		String[] a = replaceStr(args);
-		
+		ChangeStr test = new ChangeStr("test n 765");
 	}
 	
-	public static String[] replaceStr(String[] str){
+	ChangeStr(String str){
 		
-		switch(str.length){
-			case 0:
-				System.out.println("input error");
-			default:
-				for(int i=0; i<str.length; i++){
-					str[i] = str[i].replaceAll("!", "?");
-				}
+		StringBuilder sb = new StringBuilder();
+	    sb.append(str);
+	    
+	    char[] c = str.toCharArray();
+		int num = c.length;
+		
+		for(int i=0; i<num; i++){
+			
+			switch(c[i]){
+			case 'n':
+				sb.insert(i, "\\");
+				num++;
+				i++;
+				c = new String(sb).toCharArray();
 				break;
+			case 't':
+				sb.insert(i, "\\");
+				num++;
+				i++;
+				c = new String(sb).toCharArray();
+				break;
+			case 'b':
+				sb.insert(i, "\\");
+				num++;
+				i++;
+				c = new String(sb).toCharArray();
+				break;
+			case 'r':
+				sb.insert(i, "\\");
+				num++;
+				i++;
+				c = new String(sb).toCharArray();
+				break;
+			case 'f':
+				sb.insert(i, "\\");
+				num++;
+				i++;
+				c = new String(sb).toCharArray();
+				break;
+			case '\\':
+				sb.insert(i, "\\");
+				num++;
+				i++;
+				c = new String(sb).toCharArray();
+				break;
+			case '\'':
+				sb.insert(i, "\\");
+				num++;
+				i++;
+				c = new String(sb).toCharArray();
+				break;
+			case '"':
+				sb.insert(i, "\\");
+				num++;
+				i++;
+				c = new String(sb).toCharArray();
+				break;
+			default:
+				str = new String(sb);
+				String regex = "[0-7][0-7][0-7]";
+				Pattern p = Pattern.compile(regex);
+				Matcher m = p.matcher(str);
+				result = m.replaceFirst("\\\\$0");
+				break;
+			}
+			
 		}
+		System.out.println(result);
 		
-		for(int i=0; i<str.length; i++){
-			System.out.println(str[i]);
-		}
-		return str;
+		
+		
+		
+		
+	
 		
 	}
 	

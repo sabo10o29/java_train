@@ -2,6 +2,8 @@ package gui.ex14;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
@@ -16,11 +18,9 @@ import java.io.FileInputStream;
 //各設定はドロップダウンリストから選択できるようにする
 
 //サブウィンドウの大きさとレイアウト
-//保存機能
-//現在の設定をチョイスに反映
-//親ウィンドウの位置に合わせて表示位置を変更する
+//ウィンドウの位置を正確に保存する
 
-public class Clock extends Frame{
+public class Clock extends Frame implements MouseListener{
 	
 	private Font font;										//時計用フォントクラス
 	private Image buf;										//描画用バッファ
@@ -28,7 +28,11 @@ public class Clock extends Frame{
 	static final int frameWidth 	= 1000;					//初期ウィンドウサイズ
 	static final int frameHeight 	= 500;					//
 	
-	static final Parameter parameter = new Parameter();			//時計のパラメータ保存
+	static Parameter parameter = new Parameter();			//時計のパラメータ保存
+	static final PrefsParameter savedata = new PrefsParameter();
+	
+	private double wx;
+	private double wy;
 
 	//メインクラス
 	public static void main(String[] args) {
@@ -38,8 +42,17 @@ public class Clock extends Frame{
 	
 	//コンストラクターウィンドウを作成し、クロックを動作
 	Clock(int _frameWidth, int _frameHeight){
-		this.setSize(_frameWidth, _frameHeight);
+		Runtime.getRuntime().addShutdownHook( new Shutdown()); 		//シャットダウンフックを登録する
+		try {
+			parameter = savedata.load();
+			System.out.println("Loading successfull");
+		} catch (ClassNotFoundException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		this.setBounds((int)parameter.window_x, (int)parameter.window_y,(int)parameter.width, (int)parameter.height);
 		this.addWindowListener(new ClockWindowAdapter());
+		this.addMouseListener(this);
 		//メニューバーの作成
 		this.initMenuBar();
 		//初期画面のサイズをバッファに設定
@@ -129,8 +142,8 @@ public class Clock extends Frame{
 	//設定ウィンドウを表示するためのリスナー
 	class SettingActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-        	ParameterWindow pwindow = new ParameterWindow();	//設定サブウィンドウのインスタンス
-            pwindow.visibleSetting(parameter);
+        	ParameterWindow pwindow = new ParameterWindow(parameter);	//設定サブウィンドウのインスタンス
+            //pwindow.visibleSetting(parameter);
             System.out.println(e.getActionCommand());
         }
     }
@@ -149,6 +162,53 @@ public class Clock extends Frame{
         settings.addActionListener(new SettingActionListener());
         menuView.add(settings);
         setMenuBar(menuBar);    
+	}
+	
+	class Shutdown extends Thread{
+	    public void run(){
+	    	//ここに、アプリケーション終了時に実施する処理を追加します
+	    	try {
+	    		parameter.window_x 	= wx;
+	    		parameter.window_y 	= wy;
+	    		parameter.width 	= getSize().getWidth();
+	    		parameter.height 	= getSize().getHeight();
+	    		savedata.save(parameter);
+	    	} catch (IOException e) {
+	    		e.printStackTrace();
+	    	}
+	    	System.out.println("Closing window");
+	    }
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		System.out.println(e.getSource());
+		Point point = e.getPoint();		//クリックした際の座標取得
+		wx = point.getX();
+		wy = point.getY();
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		//System.out.println(e.getSource());
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		//System.out.println(e.getSource());
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		//System.out.println(e.getSource());
+		
 	}
 	
 }

@@ -1,28 +1,41 @@
 package jpl.ch10.ex01;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ChangeStr {
 
+	
 	public static void main(String[] args) {
 		
-		String[] a = replaceStr(args);
+		ChangeStr test = new ChangeStr("test n 765");
 		
 	}
 	
-	public static String[] replaceStr(String[] str){
+	ChangeStr(String str){
 		
-		if(str.length!=0){
-			for(int i=0; i<str.length; i++){
-				str[i] = str[i].replaceAll("!", "?");
+		StringBuilder sb = new StringBuilder();
+	    sb.append(str);
+	    
+	    char[] c = str.toCharArray();
+		int num = c.length;
+		for(int i=0; i<num; i++){
+			if(c[i]=='n'||c[i]=='t'||c[i]=='b'||c[i]=='r'||c[i]=='f'||c[i]=='\\'||c[i]=='\''||c[i]=='"'||c[i]=='t'){
+				sb.insert(i, "\\");
+				num++;
+				i++;
+				c = new String(sb).toCharArray();
 			}
-		}else{
-			System.out.println("input error");
+			
 		}
 		
-		for(int i=0; i<str.length; i++){
-			System.out.println(str[i]);
-		}
-		return str;
-		
+		str = new String(sb);
+		String regex = "[0-7][0-7][0-7]";
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(str);
+		String result = m.replaceFirst("\\\\$0");
+	    
+	    System.out.println(result);
 	}
 	
 	
