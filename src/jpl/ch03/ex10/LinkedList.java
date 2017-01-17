@@ -4,6 +4,8 @@ public class LinkedList implements Cloneable{
 	private Object obje;
 	private LinkedList next = null;
 	
+	//リスト構造は深いコピーを行うが、データの参照先は浅いコピーを行う
+	
 	//メインメソッド
 	public static void main (String[] args){
 		//クローンは浅い参照であるため、参照先を同一にすることで変更を他方のリストからも確認することができる。

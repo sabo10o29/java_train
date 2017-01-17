@@ -5,6 +5,9 @@ package jpl.ch03.ex11;
 //→sort()メソッドの引数を直接valueに格納するのではなく値をコピーしたうえでソートを行う
 //また、結果もそのまま返しては改竄されてしまうためクローンを作成したものを返すresultValueメソッドを作成する
 
+//回答-継承してオーバーライドすることでdoSortなどのメソッドが改竄されることを防ぐ→finalをつける
+
+
 public class TestSort {
 	static double[] testData = { 0.3, 1.3e-2, 7.9, 3.17 };	
 	

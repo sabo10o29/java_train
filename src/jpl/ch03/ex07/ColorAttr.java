@@ -1,5 +1,12 @@
 package jpl.ch03.ex07;
 
+//equalsで等しい条件
+//オブジェクトが同じ値の場合にはハッシュコードは同じ値←マスト
+//オブジェクトが等しくない場合には、ハッシュコードが異なることが望まれる
+//return this.myColor.hashCode();では名前が異なる場合でも同じハッシュ値を返すため、実装として正しくない
+//名前とObjectが等しい→同じハッシュ値
+//どちらかが異なる→ことなるハッシュ値にすることが望ましい
+
 public class ColorAttr extends Attr{
 	private ScreenColor myColor;
 	
