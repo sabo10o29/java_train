@@ -1,4 +1,4 @@
-package jpl.ch16.gui;
+package interpret;
 
 import java.io.File;
 import java.io.IOException;

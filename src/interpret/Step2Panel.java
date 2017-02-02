@@ -1,4 +1,4 @@
-package jpl.ch16.gui;
+package interpret;
 
 import java.awt.BorderLayout;
 import java.awt.Font;

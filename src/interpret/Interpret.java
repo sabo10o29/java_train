@@ -1,4 +1,4 @@
-package jpl.ch16.gui;
+package interpret;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
