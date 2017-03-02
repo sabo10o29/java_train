@@ -43,7 +43,7 @@ public class QA {
 		//0.0/0.0はNaNとなり、NaNの比較は無条件でfalseとなるため
 		
 		//(9) Integer.MAX_VALUE + Integer.MIN_VALUE
-		//255 - 256 = 1
+		//-1
 		System.out.println((Integer.MAX_VALUE + Integer.MIN_VALUE));
 		
 		//(10) Long.MAX_VALUE + 5 
@@ -53,7 +53,13 @@ public class QA {
 		
 		//(11) (Short) 5 * (byte) 10
 		//50
+		//計算する際にはint型に格上げされる
 		System.out.println(((short) 5 * (byte) 10));
+		
+		int i=3;
+		int x = i++ + i++ + --i;
+		System.out.println(x);
+		
 		
 	}
 	

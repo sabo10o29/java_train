@@ -22,6 +22,10 @@ import java.io.FileInputStream;
 
 public class Clock extends Frame implements MouseListener{
 	
+//	private final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//	private final String fonts[] = ge.getAvailableFontFamilyNames();
+//	private int i = 0;
+	
 	private Font font;										//時計用フォントクラス
 	private Image buf;										//描画用バッファ
 	
@@ -65,7 +69,7 @@ public class Clock extends Frame implements MouseListener{
 				//repaintをおこなうことで、背景色で初期化した後、paintを実行する
 				this.repaint();
 				//1秒間スリープ
-				Thread.sleep(50);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}finally{
@@ -114,6 +118,7 @@ public class Clock extends Frame implements MouseListener{
 	
 	//常に画面の中央に時計をセットするメソッド
 	private final void drawStringCenter(Graphics2D _g, String _str){
+//		if(i==fonts.length)i=0;
 		//画面のサイズをバッファに設定
 		this.buf = createImage(getSize().width,getSize().height);
 		//バッファのグラフィックスを取り出し、そこに描画を書き込む
@@ -123,6 +128,7 @@ public class Clock extends Frame implements MouseListener{
 		//フォントの大きさを設定（ウィンドウ幅の1/5を基準に設定）
 		int fontsize = (int)(parameter.font_multi*this.getSize().width/5);
 		this.font = new Font(parameter.font_name, Font.BOLD, fontsize);
+//		this.font = new Font(fonts[i++],Font.BOLD, fontsize);
 		buf_graphics.setFont(this.font);							//描画設定//
 		//ベースライン情報の取得
 		FontMetrics fm = buf_graphics.getFontMetrics();

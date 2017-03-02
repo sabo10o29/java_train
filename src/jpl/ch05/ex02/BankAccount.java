@@ -6,6 +6,9 @@ public class BankAccount {
 	private Action lastAct;			//最後に行われた処理
 	private History hist = new History();			//過去の処理を10個記憶するクラス
 	
+	//ヒストリーを取り出す際にはスナップショットをとる
+	//ヒストリーは複数回呼び出される可能性があるので、返すHistoryはクローンを行う
+	
 	//コンストラクタ
 	BankAccount(long _number,long _balance){
 		this.number = _number;
