@@ -9,22 +9,34 @@ public class Step1Panel extends StepBasePanel{
 	
 	Step1Panel(){
 		
+		titlePanel.setText(TITLE_SPACE+"Interpret へようこそ");
+		descriPanel.setText(
+				SPACE+"このプログラムでは任意のクラスの\n"
+				+ SPACE+"インスタンスを生成します。");
+		notifyPanel.setText(
+				SPACE+"生成を中止して、実行中のプログラムを終了する\n"
+				+ SPACE+"場合には”Cancel”ボタンをクリックしてください。\n"
+				+ SPACE+"続行する場合には ”Next” ボタンをクリックして\n"
+				+ SPACE+"ください。");
 	}
 
 	@Override
-	public void paintPanel(Graphics2D g2) {
-		Font font = new Font("Arial", Font.BOLD, 20);
-		g2.setFont(font);
-		g2.drawString("Interpret へようこそ", 30, 60);
-		font = new Font("Arial", Font.PLAIN, 15);
-		g2.setFont(font);
-		g2.drawString("このプログラムでは任意のクラスの", 40, 100);
-		g2.drawString("インスタンスを生成します。", 40, 120);
+	public void init() {
+		// TODO 自動生成されたメソッド・スタブ
 		
-		g2.drawString("生成を中止して、実行中のプログラムを終了する", 40, 220);
-		g2.drawString("場合には ”Cancel” ボタンをクリックして下さい。", 40, 240);
-		g2.drawString("続行する場合には ”Next” ボタンをクリックして", 40, 260);
-		g2.drawString("下さい。", 40, 280);
 	}
+
+	@Override
+	public void nextHandler() {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
+
+	@Override
+	public void clear() {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
+
 	
 }

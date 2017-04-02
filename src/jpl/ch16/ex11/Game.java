@@ -5,15 +5,28 @@ import java.util.Random;
 
 public class Game {
 	
+	private int count;
+	private Boolean beforeResult;
+	Random rand = new Random();
+	int cp;
+	
 	public Boolean battle(int hand){
-		Random rand = new Random();
-		int cp = rand.nextInt(3);
+		
+		if(count!=0 && beforeResult == null){	//あいこのとき
+			
+		}else{
+			cp = rand.nextInt(3);
+		}
+		count ++;
+		
 		System.out.println("CP " + handName(cp) + " vs Player " + handName(hand));
-		if(hand == cp) return null;
-		else if(hand == 0 && cp == 1) return true;
-		else if(hand == 1 && cp == 2) return true;
-		else if(hand == 2 && cp == 0) return true;
-		else return false;
+		if(hand == cp) beforeResult = null;
+		else if(hand == 0 && cp == 1) beforeResult = true;
+		else if(hand == 1 && cp == 2) beforeResult = true;
+		else if(hand == 2 && cp == 0) beforeResult = true;
+		else beforeResult = false;
+		
+		return beforeResult;
 	}
 	
 	public String handName(int i){
@@ -30,7 +43,8 @@ public class Game {
 	
 	
 	public static void main(String[] args) {
-		String name = "jpl.ch16.ex11.StubbornPlayer";
+//		String name = "jpl.ch16.ex11.StubbornPlayer";
+		String name = "jpl.ch16.ex11.DrawChangePlayer";
 		Game game = new Game();
 		
 		try{

@@ -7,9 +7,9 @@ public class FindCharSequence {
 		int count = 0;
 		int i = 0;
 		if(target.length()>find.length()){
-			while(i<(target.length()-find.length())){
+			while(i<(target.length())){
 				if(target.regionMatches(i, find, 0, find.length()))count++;
-				i++;
+				i=i+find.length();
 			}
 			return count;
 		}else{
@@ -20,7 +20,7 @@ public class FindCharSequence {
 	}
 	
 	public static void main(String[] args){
-		System.out.println(FindCharSequence.find("aiueoeoeoe", "eo"));
+		System.out.println(FindCharSequence.find("aa", "aa"));
 	}
 	
 }

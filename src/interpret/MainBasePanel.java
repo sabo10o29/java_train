@@ -37,6 +37,10 @@ public class MainBasePanel extends JPanel{
 		
 	}
 	
+	public StepBasePanel getPanel(int ind){
+		return (StepBasePanel) steppanel[ind];
+	}
+	
 	public void nextStep(){
 		if(step!=4){
 			step++;

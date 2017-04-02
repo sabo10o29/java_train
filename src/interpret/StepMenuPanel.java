@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 public class StepMenuPanel extends JPanel{
 
 	private static int step = 0;
-	public static final String[] STEP = {"  1.はじめに  ","  2.クラスの選択  ","  3.コンストラクタの選択  ","  4.引数の設定  ","  5.インスタンスの生成  "};
+	public static final String[] STEP = {"  1.はじめに  ","  2.クラスの選択  ","  3.コンストラクタの選択  ","  4.インスタンスの生成  ","  5.インスタンスの操作  "};
 	private final ImageIcon icon = new ImageIcon("./java.png");
 	
 	public JLabel[] steplabel = new JLabel[STEP.length];
@@ -94,6 +94,7 @@ public class StepMenuPanel extends JPanel{
 		}
 	}
 	
+	//
 	private final void changeStepTitle(){
 		CardLayout cl;
 		if(this.steplabel!=null){

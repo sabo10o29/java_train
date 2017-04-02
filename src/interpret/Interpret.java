@@ -22,12 +22,16 @@ import java.awt.event.WindowEvent;
 //動的なインスタンス生成はリフレクションを用いる
 public class Interpret extends JFrame{
 
-	private static final int WWidth = 600;
-	private static final int HHeight = 400;
+	private static final int WWidth = 800;
+	private static final int HHeight = 600;
 	private final StepMenuPanel sp = new StepMenuPanel();
 	private final MainBasePanel mbp = new MainBasePanel();
 	private final FlowButtonPanel fp = new FlowButtonPanel(sp,mbp);
 	private final MainBasePanel mp = new MainBasePanel();
+	
+	private Class<?> targetClass = null;		//ターゲットのクラスを保管するフィールド
+	
+	
 	
 	public static void main(String[] args) {
 		Interpret window = new Interpret();
@@ -45,7 +49,7 @@ public class Interpret extends JFrame{
 		//ウィンドウのサイズを設定
 		this.setSize(WWidth, HHeight);
 		//パネルをウィンドウに貼り付け
-		this.add(sp, BorderLayout.WEST);		//ステップパネル
+		this.add(sp, BorderLayout.WEST);			//ステップパネル
 		this.add(fp,BorderLayout.PAGE_END);		//フローボタンパネル
 		this.add(mbp);
 		

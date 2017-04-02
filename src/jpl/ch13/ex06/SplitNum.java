@@ -4,6 +4,9 @@ public class SplitNum {
 	
 	
 	public static String splitnum(String _str, char split, int interval){
+		
+		if(_str == "")return "";
+		
 		int num = _str.length()/interval;
 		if(_str.length()%interval==0)num--;
 		
@@ -18,7 +21,7 @@ public class SplitNum {
 		return new String(str.reverse());
 	}
 	public static void main(String[] args){
-		System.out.println(SplitNum.splitnum("1543729423424", '@', 5));
+		System.out.println(SplitNum.splitnum("", '@', 5));
 	}
 	
 }

@@ -40,15 +40,40 @@ public class FlowButtonPanel extends JPanel{
 		setButtonEnable();
 	}
 	
+	//現在のパネルの情報を次のパネルに引き渡すメソッド
+	//前のステップの情報を渡された後に初期化処理を行う
+	public void delivParam(int nextStep){
+		if(nextStep!=0){
+			StepBasePanel now = mbp.getPanel(nextStep-1);
+			StepBasePanel next = mbp.getPanel(nextStep);
+			now.nextHandler();						//
+			next.setBfParameter(now.getMap());
+			invokeInit(next);
+		}
+	}
+	
+	public void clearPanel(int bfStep){
+		StepBasePanel now = mbp.getPanel(bfStep+1);
+		StepBasePanel back = mbp.getPanel(bfStep);
+		now.clear();
+	}
+	
+	public void invokeInit(StepBasePanel panel){
+		panel.init();
+	}
+	
 	class ButtonActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
         	System.out.println(e.getActionCommand());
         	if(e.getActionCommand()=="Next"){
         		step++;
+        		delivParam(step);
         		smp.nextStep();
         		mbp.nextStep();
+        		
         	}else if(e.getActionCommand()=="Back"){
         		step--;
+        		clearPanel(step);
         		smp.backStep();
         		mbp.backStep();
         	}else if(e.getActionCommand()=="Cancel"){

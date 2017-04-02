@@ -9,7 +9,7 @@ public class ChangeStr {
 	
 	public static void main(String[] args) {
 		
-		ChangeStr test = new ChangeStr("test n 765");
+		ChangeStr test = new ChangeStr("test \n 765");
 	}
 	
 	ChangeStr(String str){
@@ -23,50 +23,50 @@ public class ChangeStr {
 		for(int i=0; i<num; i++){
 			
 			switch(c[i]){
-			case 'n':
+			case '\n':
 				sb.insert(i, "\\");
 				num++;
 				i++;
 				c = new String(sb).toCharArray();
 				break;
-			case 't':
+			case '\t':
 				sb.insert(i, "\\");
 				num++;
 				i++;
 				c = new String(sb).toCharArray();
 				break;
-			case 'b':
+			case '\b':
 				sb.insert(i, "\\");
 				num++;
 				i++;
 				c = new String(sb).toCharArray();
 				break;
-			case 'r':
+			case '\r':
 				sb.insert(i, "\\");
 				num++;
 				i++;
 				c = new String(sb).toCharArray();
 				break;
-			case 'f':
+			case '\f':
 				sb.insert(i, "\\");
 				num++;
 				i++;
 				c = new String(sb).toCharArray();
 				break;
 			case '\\':
-				sb.insert(i, "\\");
+				sb.insert(i, "\\\\");
 				num++;
 				i++;
 				c = new String(sb).toCharArray();
 				break;
 			case '\'':
-				sb.insert(i, "\\");
+				sb.insert(i, "\\'");
 				num++;
 				i++;
 				c = new String(sb).toCharArray();
 				break;
 			case '"':
-				sb.insert(i, "\\");
+				sb.insert(i, "\\\"");
 				num++;
 				i++;
 				c = new String(sb).toCharArray();
