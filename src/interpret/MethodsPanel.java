@@ -126,6 +126,7 @@ public class MethodsPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			nowind = methodlist.getSelectedIndex();
 			Method nowmethod = methods[nowind];
+			nowmethod.setAccessible(true);
 			Type[] types = nowmethod.getGenericParameterTypes();
 			//メソッドの実行
 			Object result = null;
@@ -137,12 +138,21 @@ public class MethodsPanel extends JPanel {
 				}
 				System.out.println("メソッドを実行しました！");
 				//結果の表示
-				if(result!=null)resultPanel.setText(result.toString());
-			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+//				Class<?> returnclass = nowmethod.getReturnType();
+				if(result!=null){
+					resultPanel.setText(result.toString());
+				}else{
+					resultPanel.setText("void");
+				}
+			} catch (IllegalAccessException | IllegalArgumentException e1) {
 				System.out.println("メソッドを実行できませんでした。");
 				notifyPanel.setText("メソッドを実行することができませんでした。\n"
-						+ e1.getMessage());
+						+ e1.getClass().getName());
 				e1.printStackTrace();
+			} catch (InvocationTargetException e2){
+				notifyPanel.setText("メソッドを実行することができませんでした。\n"
+						+ e2.getTargetException().getClass().getName());
+				e2.printStackTrace();
 			}
 
 		}

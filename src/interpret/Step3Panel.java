@@ -31,7 +31,8 @@ public class Step3Panel extends StepBasePanel{
 		setParameter(ParameterConst.CLASS_NAME, clazz);
 		titlePanel.setText(TITLE_SPACE+"コンストラクタを選択してください");
 		descriPanel.setText(SPACE + clazz.getSimpleName() + "のコンストラクタを選択します。\n"
-							+ SPACE + "以下のドロップダウンリストからコンストラクタを選択してください。");
+							+ SPACE + "以下のドロップダウンリストからコンストラクタを選択してください。\n"
+							+ SPACE	+ "*引数に抽象クラス・インタフェースが含まれる場合も生成できません。");
 		descriPanel.setPreferredSize(new Dimension(10, 20));
 		notifyPanel.setPreferredSize(new Dimension(10, 50));
 		

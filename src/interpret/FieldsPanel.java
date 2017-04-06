@@ -77,27 +77,64 @@ public class FieldsPanel extends JPanel{
 	class EditObjectButtonListener implements MouseListener{
 
 		@Override
-		public void mouseClicked(MouseEvent e) {
-			Field nowfield = fields[nowind];
-			nowfield.setAccessible(true);
-			Type[] types = new Type[1];
-			types[0] = nowfield.getType();
-			SubArgListDialog dialog = new SubArgListDialog(types);
-			Point point = e.getLocationOnScreen();
-			dialog.setBounds(point.x, point.y, 500, 250);
-			dialog.setVisible(true);
-			try {
-				//プリミティブ型配列の場合→オブジェクトをキャストして設定
-				//参照型の場合→インスタンスを生成して設定→めんどくさい
-				nowfield.set(instance, dialog.getPram()[0]);
-				System.out.println("フィールド値の設定を行いました。");
-				notifyPanel.setText("");
-				
-			} catch (IllegalArgumentException | IllegalAccessException e1) {
-				notifyPanel.setText("フィールドの設定を変更することができませんでした。\n"
-						+ e1.toString());
-				e1.printStackTrace();
-			}
+		public void mouseClicked(MouseEvent e) {	//参照型の場合の処理
+			notifyPanel.setText("未実装です");
+			
+			
+//			Field nowfield = fields[nowind];
+//			nowfield.setAccessible(true);
+//			int length = 0;
+//			
+//			if(nowfield.getType().isArray()){
+//				Object val = null;
+//				try {
+//					val = fields[nowind].get(instance);
+//					System.out.println("フィールド値の取得に成功しました。");
+//					length = ((Object[])val).length;
+//					Type[] types = new Type[length];
+//					for(int i = 0; i<length; i++ ){
+//						types[i] = nowfield.getType().getComponentType();
+//					}
+//					SubArgListDialog dialog = new SubArgListDialog(types);
+//					Point point = e.getLocationOnScreen();
+//					dialog.setBounds(point.x, point.y, 500, 250);
+//					dialog.setVisible(true);
+//					nowfield.set(instance, dialog.getPram());
+//				} catch (IllegalArgumentException | IllegalAccessException e1) {
+//					e1.printStackTrace();
+//				}
+//			}			
+			
+//			Object[] argobj = null;
+//			
+//			Type[] types = new Type[1];
+//			types[0] = nowfield.getType();
+//			System.out.println("編集するクラス："+nowfield.getType().getName());
+//			
+//			SubArgListDialog dialog = new SubArgListDialog(types);
+//			Point point = e.getLocationOnScreen();
+//			dialog.setBounds(point.x, point.y, 500, 250);
+//			dialog.setVisible(true);
+//			try {
+//				//プリミティブ型配列の場合→オブジェクトをキャストして設定
+//				//参照型の場合→インスタンスを生成して設定→めんどくさい->修正
+////				Integer[] test = new Integer[4];
+////				test[0] = 999;
+////				test[1] = 000;
+////				test[2] = 0;
+////				test[3] = 8;
+//				nowfield.set(instance, (Object)(dialog.getPram()[0]));
+////				nowfield.set(instance, dialog.getPram());
+////				nowfield.set(instance, (Object[])test);
+////				nowfield.set(instance, n);
+//				System.out.println("フィールド値の設定を行いました。");
+//				notifyPanel.setText("");
+//				
+//			} catch (IllegalArgumentException | IllegalAccessException e1) {
+//				notifyPanel.setText("フィールドの設定を変更することができませんでした。\n"
+//						+ e1.getClass().getName());
+//				e1.printStackTrace();
+//			}
 			
 		}
 		@Override
@@ -141,8 +178,7 @@ public class FieldsPanel extends JPanel{
 				notifyPanel.setText("");
 			} catch (IllegalArgumentException | IllegalAccessException e1) {
 				notifyPanel.setText("フィールドの設定を変更することができませんでした。\n"
-						+ e1.toString());
-				e1.printStackTrace();
+						+ e1.getClass().getName());
 			}
 			
 			
@@ -159,13 +195,14 @@ public class FieldsPanel extends JPanel{
 			nowind = fieldlist.getSelectedIndex();	//フィールドのインデックスの取得
 			Object val = null;
 			try {
+				fields[nowind].setAccessible(true);
 				val = fields[nowind].get(instance);
 				System.out.println("フィールド値の取得に成功しました。");
 				notifyPanel.setText("");
 				
 			} catch (IllegalArgumentException | IllegalAccessException e1) {
 				notifyPanel.setText("フィールド値を取得することができませんでした。\n"
-						+ e1.toString());
+						+ e1.getClass().getName());
 				e1.printStackTrace();
 			}
 			//フィールド値の表示

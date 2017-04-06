@@ -32,10 +32,13 @@ public class Step4Panel extends StepBasePanel{
 		setParameter(ParameterConst.CONST_NAME, c);
 		setParameter(ParameterConst.CONST_PARAMETERS, typee);
 		titlePanel.setText(TITLE_SPACE + "引数の設定");
-		descriPanel.setText(SPACE + "コンストラクタの引数を設定してください\n"
-							+ SPACE + c.toGenericString() +"\n\n"
-							+ SPACE + "基本型の場合は値、参照型の場合は”Edit”ボタン、\n"
-							+ SPACE	+ "配列の場合は要素数を入力した後”Edit”ボタンを押してください。");
+		descriPanel.setText(SPACE + c.toGenericString() +"\n"
+							+ SPACE + "のコンストラクタの引数を設定してください\n\n"
+							+ SPACE + "基本型の場合は値を入力した後 ”Set” を押して下さい。\n"
+							+ SPACE	+ "配列の場合は要素数を入力した後 ”Edit” を押して下さい。\n"
+							+ SPACE + "参照型の場合は ”Edit” を押して引数の設定を行います。\n"
+							+ SPACE	+ "＊標準コンストラクタしか存在しない場合には ”Set” を押して下さい。\n"
+							);
 		
 		//メインパネルの設定
 		//標準コンストラクタの場合→メインパネルに通知

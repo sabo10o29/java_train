@@ -356,7 +356,8 @@ public class ArgListPanel extends JPanel{
 						System.out.println("標準コンストラクタのインスタンスを生成しました。");
 						
 					} catch (Exception ee) {
-						System.out.println("標準コンストラクタのインスタンスを生成できませんでした。");
+						System.out.println("標準コンストラクタのインスタンスを生成できませんでした。\n"
+								+ ee.getClass().getName());
 						ee.printStackTrace();
 					}
 				}
@@ -367,7 +368,8 @@ public class ArgListPanel extends JPanel{
 					try{
 						arraynum = Integer.valueOf((String)comb.getSelectedItem());
 					}catch(NumberFormatException ee){
-						System.out.println("入力が値ではありませんでした。");
+						System.out.println("入力が値ではありませんでした。\n"
+								+ ee.getClass().getName());
 					}finally{
 						Type[] types = new Type[arraynum];
 						//配列が仕様通りの引数かチェック
@@ -437,7 +439,7 @@ public class ArgListPanel extends JPanel{
 							} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 									| InvocationTargetException e1) {
 								System.out.println("インスタンスの生成に必要な引数のインスタンス生成に失敗しました。\n"
-										+ e1.getMessage());
+										+ e1.getClass().getName());
 								e1.printStackTrace();
 							}
 						}

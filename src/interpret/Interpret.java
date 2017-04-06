@@ -19,6 +19,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+//フィールドの参照型の設定
+//配列
+
 //動的なインスタンス生成はリフレクションを用いる
 public class Interpret extends JFrame{
 
@@ -30,7 +33,6 @@ public class Interpret extends JFrame{
 	private final MainBasePanel mp = new MainBasePanel();
 	
 	private Class<?> targetClass = null;		//ターゲットのクラスを保管するフィールド
-	
 	
 	
 	public static void main(String[] args) {

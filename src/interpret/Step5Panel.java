@@ -54,16 +54,20 @@ public class Step5Panel extends StepBasePanel{
 								+ SPACE + "以下のリストかからフィールドの操作やメソッドの実行ができます。");
 			System.out.println("インスタンスの生成に成功しました！！！！！");
 		} catch (InstantiationException e) {
-			// TODO 自動生成された catch ブロック
+			descriPanel.setText(SPACE + "インスタンスの生成に失敗しました。\n"
+					+ SPACE + e.getClass().getName());
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO 自動生成された catch ブロック
+			descriPanel.setText(SPACE + "インスタンスの生成に失敗しました。\n"
+					+ SPACE + e.getClass().getName());
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			// TODO 自動生成された catch ブロック
+			descriPanel.setText(SPACE + "インスタンスの生成に失敗しました。\n"
+					+ SPACE + e.getClass().getName());
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			// TODO 自動生成された catch ブロック
+			descriPanel.setText(SPACE + "インスタンスの生成に失敗しました。\n"
+					+ SPACE + e.getClass().getName());
 			e.printStackTrace();
 		}
 		
