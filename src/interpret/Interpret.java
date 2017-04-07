@@ -40,7 +40,7 @@ public class Interpret extends JFrame{
 		
 	}
 	
-	Interpret(){
+	public Interpret(){
 		iniWindow();
 	}
 	
