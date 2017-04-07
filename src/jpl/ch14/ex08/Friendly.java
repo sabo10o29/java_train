@@ -1,7 +1,7 @@
 package jpl.ch14.ex08;
 
 /***
- * 8%
+ * 
  * @author YoshikazuMurase
  *
  */

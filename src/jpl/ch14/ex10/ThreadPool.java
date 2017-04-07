@@ -34,7 +34,7 @@ public class ThreadPool {
 	private Thread[] threads = null;		
 	private int queueSize;
 	private LinkedList<Runnable> list = new LinkedList<Runnable>();
-	private volatile boolean start_flug = false;
+	private volatile Boolean start_flug = false;
 
 	public ThreadPool(int queueSize, int numberOfThreads) throws IllegalArgumentException {
 		if (queueSize == 0 || numberOfThreads == 0)
@@ -49,16 +49,19 @@ public class ThreadPool {
 	 * @throws IllegalStateException
 	 *             if threads has been already started.
 	 */
-	public void start() {
-		if (start_flug) {
-			throw new IllegalStateException();
-		} else {
-			start_flug = true;
+	public void start() {	//同時に実行されても必ずどちらかがOKでどちらかがOUTになるようにする。
+		synchronized (start_flug) {
+			if (start_flug) {
+				throw new IllegalStateException();
+			} else {
+				start_flug = true;
+			}
+			for (int i = 0; i < threads.length; i++) {
+				threads[i] = new Runner(); // スレッドインスタンスの生成
+				threads[i].start(); // スレッドスタート
+			}
 		}
-		for (int i = 0; i < threads.length; i++) {
-			threads[i] = new Runner();		//スレッドインスタンスの生成
-			threads[i].start();				//スレッドスタート
-		}
+		
 	}
 
 	/**
