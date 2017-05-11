@@ -10,7 +10,7 @@ public class LineFilterReader extends FilterReader{
 
 	BufferedReader br = null;
 	
-	protected LineFilterReader(Reader in) {
+	public LineFilterReader(Reader in) {
 		super(in);
 		br = new BufferedReader(in);
 	}
@@ -23,6 +23,7 @@ public class LineFilterReader extends FilterReader{
 		StringReader str = new StringReader("testtest \n hogehoge");
 		LineFilterReader lrf = new LineFilterReader(str);
 		try {
+			System.out.println(lrf.readLine());
 			System.out.println(lrf.readLine());
 			System.out.println(lrf.readLine());
 		} catch (IOException e) {

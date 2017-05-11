@@ -34,7 +34,7 @@ public class ThreadPool {
 	private Thread[] threads = null;		
 	private int queueSize;
 	private LinkedList<Runnable> list = new LinkedList<Runnable>();
-	private volatile Boolean start_flug = false;
+	private volatile Boolean start_flug = false;		//スレプがスタートしているかを示すフラグ
 
 	public ThreadPool(int queueSize, int numberOfThreads) throws IllegalArgumentException {
 		if (queueSize == 0 || numberOfThreads == 0)
@@ -78,7 +78,7 @@ public class ThreadPool {
 		//空になるまで実行　＊注意！：ストップ処理が開始していてもディスパッチを受け入れる状態になっている
 		while(!list.isEmpty()){
 			synchronized (list) {
-				System.out.println("すべての処理の完了を待機中");
+//				System.out.println("すべての処理の完了を待機中");
 				list.notifyAll();
 			}
 		}
@@ -90,9 +90,9 @@ public class ThreadPool {
 					list.notifyAll();
 				}
 			}
-			System.out.println(t.getName() + "を終了します。");
+//			System.out.println(t.getName() + "を終了します。");
 		}
-		System.out.println("スレッドプールを完了します。");
+//		System.out.println("スレッドプールを完了します。");
 
 	}
 
@@ -120,11 +120,17 @@ public class ThreadPool {
 		while (true) {
 			synchronized (list) {
 				if (list.size() <= queueSize) {
-					System.out.println("add task " + list.size());
+//					System.out.println("add task " + list.size());
 					list.add(runnable);
 					list.notifyAll();
 					break;
-				} 
+				}else{
+					try {
+						list.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	}
@@ -143,11 +149,17 @@ public class ThreadPool {
 					if (!list.isEmpty()) {		//同期をとってから確認処理
 						task = list.poll();
 						list.notifyAll();
-					} 
+					}else{
+						try {
+							list.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 				//タスク実行処理
 				if(task != null){
-					System.out.println("Run task ( Thread: " + this.getName() + ")");
+//					System.out.println("Run task ( Thread: " + this.getName() + ")");
 					task.run();
 					task = null;
 				}
@@ -164,7 +176,7 @@ public class ThreadPool {
 		t.waitForRunCount(1);
 		tp.stop();
 
-		System.out.println("スレッド数" + Thread.activeCount());
+//		System.out.println("スレッド数" + Thread.activeCount());
 
 	}
 

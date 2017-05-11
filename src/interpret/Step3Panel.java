@@ -100,4 +100,14 @@ public class Step3Panel extends StepBasePanel{
 		notifyPanel.removeAll();
 	}
 
+	@Override
+	public boolean check() {
+		//コンストラクタが正しく設定されていればtrue
+		if(getParameter(ParameterConst.CONST_NAME)!=null){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 }

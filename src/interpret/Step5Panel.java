@@ -23,8 +23,8 @@ public class Step5Panel extends StepBasePanel{
 	Field[] fields 			= null;
 	Method[] methods 		= null;
 	Object[] values 		= null;
-	JTextField subtitle1 = new JTextField("　　・フィールドの操作");
-	JTextField subtitle2 = new JTextField("　　・メソッドの実行");
+	JTextField subtitle1 	= new JTextField("　　・フィールドの操作");
+	JTextField subtitle2 	= new JTextField("　　・メソッドの実行");
 	
 	
 	Step5Panel(){
@@ -67,10 +67,20 @@ public class Step5Panel extends StepBasePanel{
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			descriPanel.setText(SPACE + "インスタンスの生成に失敗しました。\n"
-					+ SPACE + e.getClass().getName());
+					+ SPACE + e.getTargetException().getClass().getName());
 			e.printStackTrace();
 		}
 		
+		if(instance == null)return;
+		
+		//インスタンスを生成できた場合処理
+		//インスタンスを共有ファイルに格納する
+		synchronized (shareList) {
+			ShareArgument share = new ShareArgument(instance.getClass().getName(), instance);
+			shareList.add(share);
+		}
+		
+		//インスタンスの表示//
 		//インスタンスの現在のフィールド値を取得
 		values = getInstValue();
 		
@@ -138,6 +148,12 @@ public class Step5Panel extends StepBasePanel{
 		mainPanel.removeAll();
 		notifyPanel.removeAll();
 		
+	}
+
+	@Override
+	public boolean check() {
+		//最後のパネルなので必要ない
+		return false;
 	}
 
 }

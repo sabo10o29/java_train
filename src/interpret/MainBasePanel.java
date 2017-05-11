@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.border.BevelBorder;
 
 public class MainBasePanel extends JPanel{
@@ -39,6 +40,10 @@ public class MainBasePanel extends JPanel{
 	
 	public StepBasePanel getPanel(int ind){
 		return (StepBasePanel) steppanel[ind];
+	}
+	
+	public StepBasePanel getNowPanel(){
+		return (StepBasePanel) steppanel[step];
 	}
 	
 	public void nextStep(){

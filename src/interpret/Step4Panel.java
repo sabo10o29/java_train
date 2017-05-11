@@ -1,15 +1,7 @@
 package interpret;
 
-import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-
-import com.sun.glass.ui.CommonDialogs.Type;
+import java.lang.reflect.Type;
 
 public class Step4Panel extends StepBasePanel{
 	
@@ -27,7 +19,7 @@ public class Step4Panel extends StepBasePanel{
 		//保持情報：クラス名、コンストラクタ、引数、引数の値
 		Class<?> clazz = (Class<?>) getBfParameter().get(ParameterConst.CLASS_NAME);
 		Constructor<?> c = (Constructor<?>) getBfParameter().get(ParameterConst.CONST_NAME);
-		java.lang.reflect.Type[] typee = c.getGenericParameterTypes();
+		Type[] typee = c.getGenericParameterTypes();
 		setParameter(ParameterConst.CLASS_NAME, clazz);
 		setParameter(ParameterConst.CONST_NAME, c);
 		setParameter(ParameterConst.CONST_PARAMETERS, typee);
@@ -68,6 +60,24 @@ public class Step4Panel extends StepBasePanel{
 		mainPanel.removeAll();
 		notifyPanel.removeAll();
 		notifyPanel.setText("");
+	}
+
+	@Override
+	public boolean check() {
+		//標準コンストラクタの場合：lengthが0でargobjがnullになっているか
+		//引数ありコンストラクタの場合：lengthが0ではなくargpbjがnullではないか、その中もnullではないかチェック
+//		Type[] types = (Type[]) getParameter(ParameterConst.CONST_PARAMETERS);
+//		if(types.length==0&&this.argobj==null){
+//			return true;
+//		}else if(types.length!=0&&this.argobj!=null){
+//			for(Object o : argobj){
+//				if(o==null)return false;
+//			}
+//			return true;
+//		}else{
+//			return false;
+//		}
+		return true;
 	}
 	
 	

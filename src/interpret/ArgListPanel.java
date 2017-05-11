@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 
 import javax.swing.BoxLayout;
@@ -18,10 +17,11 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-
+//エラーはポップアップで表示
 //課題：コンボボックスで何も選択していない場合に最初のコンストラクタを選択するようにする
 //課題：エラーが発生した場合に何のエラーなのかを表示する
 //課題：配列の数が多い場合にスクロールばーで表示する
@@ -29,6 +29,12 @@ import javax.swing.border.EmptyBorder;
 //課題：配列型でも表示・値の修正ができるようにする
 //課題：適切な設定ではない場合には次へいけないようにする
 //タイプ型の配列を引数として受け取り、オブジェクト型配列に入力結果を書き込む
+//課題：コンポーネントのサブクラスを選択できるようにする。
+//課題：入力が存在しない場合（Step2→3遷移）にステップ数がエラーでも変化するためインデックスをオーバーしてしまい、前後に移動できなくなる。
+////課題：ふくすうのクラスを生成できるようにする→おk
+//課題：サブクラスの生成時にもExceptionを表示するようにする
+//課題：Valueをドロップダウンリストにしてinstanceofで当てはまるインスタンスを表示する＆セットでそのインスタンスを用いることができるようにする。
+
 public class ArgListPanel extends JPanel{
 
 	//プリミティブ型：値入力を促す
@@ -36,9 +42,10 @@ public class ArgListPanel extends JPanel{
 	Type[] typee;
 	Object[] arg;	//インスタンス生成に必要なインスタンスを格納する→タイプ型の要素数と同じはず
 	JPanel 		mainPanel	= new JPanel();				//引数設定用パネル
-	JTextField 	notifyPanel = new JTextField();			//通知用パネル
+	JTextArea 	notifyPanel = new JTextArea();			//通知用パネル
 	JPanel 		btnPanel	= new JPanel();				//ボタン配置パネル
-	JButton		finish		= new JButton("Finish");
+	JButton		finish		= new JButton("Check parameter");
+	public static final String SPACE = "          ";
 	
 	public ArgListPanel(Type[] typee) {
 		
@@ -53,7 +60,7 @@ public class ArgListPanel extends JPanel{
 			finishAction();
 		}else{
 			System.out.println("引数ありのコンストラクタを選択しました。");
-			for(Type t : typee){		//コンストラクタの引数が仕様通りの引数かどうかチェック
+//			for(Type t : typee){		//コンストラクタの引数が仕様通りの引数かどうかチェック
 				//配列は生成されているがnullが入っている
 //				Class<?> c = t.getClass();
 //				int mod = c.getModifiers();
@@ -61,7 +68,7 @@ public class ArgListPanel extends JPanel{
 //					notifyPanel.setText("\nインスタンス化できないパラメータを含んでいます。\n"
 //							+ "コンストラクタを選択し直して下さい。");
 //				}
-			}
+//			}
 			arg = new Object[this.typee.length];	//引数をもとにインスタンスを生成するためのオブジェクト型配列の生成
 			makeListPanel();
 		}
@@ -127,7 +134,7 @@ public class ArgListPanel extends JPanel{
 		tvalue.setBackground(mainPanel.getBackground());
 		tvalue.setBorder(new EmptyBorder(1, 1, 1, 1));
 
-		JTextField tnum = new JTextField("Array size");
+		JTextField tnum = new JTextField("Size or CONS");
 		gbc.gridx = 2;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.CENTER;
@@ -171,12 +178,15 @@ public class ArgListPanel extends JPanel{
 			name.setBackground(mainPanel.getBackground());
 			name.setBorder(new EmptyBorder(1, 1, 1, 1));
 			layout.setConstraints(name, gbc);
-			// 値フィールド
+			// 値フィールド //JComboboxで作成したインスタンスも指定できるようにする
 			gbc.gridx = 1;
 			gbc.gridy = i;
 			gbc.anchor = GridBagConstraints.EAST;
-			JTextField value = new JTextField();
-			value.setPreferredSize(new Dimension(60, 20));
+//			JTextField value = new JTextField();
+//			value.setPreferredSize(new Dimension(60, 20));
+			DefaultComboBoxModel<String> valuemodel = new DefaultComboBoxModel<String>();
+			JComboBox<String> value = new JComboBox<String>(valuemodel);
+			value.setPreferredSize(new Dimension(120, 20));
 			layout.setConstraints(value, gbc);
 			//　入力フィールド //すべてJComboboxで値の選択&取得を行う
 			gbc.gridx = 2;
@@ -285,7 +295,7 @@ public class ArgListPanel extends JPanel{
 		return true;
 	}
 	//クラスからラッパークラスのインスタンスを生成するメソッド
-	public Object parsePrimitive(Class<?> clazz, String str){
+	public Object parsePrimitive(Class<?> clazz, String str) throws NumberFormatException{
 		
 		System.out.println(str + "を" + clazz.getSimpleName() + "に変換します。");
 		
@@ -312,12 +322,12 @@ public class ArgListPanel extends JPanel{
 	}
 
 	public void finishAction(){
-		notifyPanel.setText("設定が完了しました。”Next” ボタンを押して下さい。");
-		finish.setEnabled(false);
+		notifyPanel.setText( SPACE + "設定が完了しました。”Next” ボタンを押して下さい。");
+//		finish.setEnabled(false);
 		
 	}
 	public void rewriteAction(){
-		notifyPanel.setText("設定が未完了です。引数の設定をして下さい。");
+		notifyPanel.setText( SPACE + "設定が未完了です。引数の設定をして下さい。");
 	}
 	
 	//Editボタンが押されたときの操作
@@ -343,7 +353,11 @@ public class ArgListPanel extends JPanel{
 		public void mouseClicked(java.awt.event.MouseEvent e) {
 			if(btn.getText() == "Set"){		//Setの場合
 				if(clazz.isPrimitive()){			//プリミティブ型の場合
-					arg[ind] = parsePrimitive(this.clazz, this.val.getText());
+					try{
+						arg[ind] = parsePrimitive(this.clazz, this.val.getText());
+					}catch(NumberFormatException ee){
+						notifyPanel.setText(SPACE + "Error: " + ee.getClass().getName());
+					}
 					System.out.println("プリミティブ型の値を設定しました。");
 					
 				}else if(clazz == String.class){	//文字列型の場合
@@ -359,6 +373,7 @@ public class ArgListPanel extends JPanel{
 						System.out.println("標準コンストラクタのインスタンスを生成できませんでした。\n"
 								+ ee.getClass().getName());
 						ee.printStackTrace();
+						notifyPanel.setText(SPACE + "Error: " + ee.getClass().getName());
 					}
 				}
 			}else{							//Editの場合
@@ -370,19 +385,23 @@ public class ArgListPanel extends JPanel{
 					}catch(NumberFormatException ee){
 						System.out.println("入力が値ではありませんでした。\n"
 								+ ee.getClass().getName());
+						notifyPanel.setText(SPACE + "Error: " + ee.getClass().getName());
 					}finally{
 						Type[] types = new Type[arraynum];
 						//配列が仕様通りの引数かチェック
 						int mod = clazz.getComponentType().getModifiers();
-						//要修正：プリミティブ型は生成できるようにする（インスタンス化できないものをフィルタリングする。）
-						System.out.println(clazz.getComponentType().getSimpleName());
-						if((Modifier.isAbstract(mod)&&!clazz.getComponentType().isPrimitive())||Modifier.isInterface(mod)||clazz.isAnonymousClass()){
-							notifyPanel.setText("\nインスタンス化できないパラメータを含んでいます。\n"
-									+ "コンストラクタを選択し直して下さい。");
-						}else{
-							for(int i = 0; i<arraynum; i++ ){
-								types[i] = clazz.getComponentType();
-							}
+///////////////要修正：プリミティブ型は生成できるようにする（インスタンス化できないものをフィルタリングする。）
+//						System.out.println(clazz.getComponentType().getSimpleName());
+//						if((Modifier.isAbstract(mod)&&!clazz.getComponentType().isPrimitive())||Modifier.isInterface(mod)||clazz.isAnonymousClass()){
+//							notifyPanel.setText( "\n" + SPACE + "インスタンス化できないパラメータを含んでいます。\n"
+//									 + SPACE + "コンストラクタを選択し直して下さい。");
+//						}else{
+//							for(int i = 0; i<arraynum; i++ ){
+//								types[i] = clazz.getComponentType();
+//							}
+//						}
+						for(int i = 0; i<arraynum; i++ ){
+							types[i] = clazz.getComponentType();
 						}
 						SubArgListDialog dialog = new SubArgListDialog(types);
 						Point point = e.getLocationOnScreen();
@@ -406,16 +425,19 @@ public class ArgListPanel extends JPanel{
 						}
 					}
 					if(types != null){
-						//コンストラクタの引数が仕様通りの値かチェック
-						for(Type t : typee){
-							Class<?> c = (Class<?>)t;
-							int mod = c.getModifiers();
-							if((Modifier.isAbstract(mod)&&!c.isPrimitive())||Modifier.isInterface(mod)||c.isAnonymousClass()){
-								notifyPanel.setText("\nインスタンス化できないパラメータを含んでいます。\n"
-										+ "コンストラクタを選択し直して下さい。");
-								return;
-							}
-						}
+///////////////////////////////コンストラクタの引数が仕様通りの値かチェック
+//参照型→インタフェースか抽象クラスの場合→サブクラスが存在すれば編集で生成できるようにする
+//サブクラスを検索→サブクラスも一覧に表示する→キャストする必要ある？
+//インタフェースでも生成を受け付ける→生成したオブジェクトだけは参照できるように変更する
+//						for(Type t : typee){
+//							Class<?> c = (Class<?>)t;
+//							int mod = c.getModifiers();
+//							if((Modifier.isAbstract(mod)&&!c.isPrimitive())||Modifier.isInterface(mod)||c.isAnonymousClass()){
+//								notifyPanel.setText("\n"+ SPACE + "インスタンス化できないパラメータを含んでいます。\n"
+//										+  SPACE + "コンストラクタを選択し直して下さい。");
+//								return;
+//							}
+//						}
 						SubArgListDialog dialog = new SubArgListDialog(types);
 						Point point = e.getLocationOnScreen();
 						dialog.setBounds(point.x, point.y, 500, 250);
@@ -429,6 +451,7 @@ public class ArgListPanel extends JPanel{
 								System.out.println("標準コンストラクタのインスタンスを生成できませんでした。\n"
 										+ ee.getMessage());
 								ee.printStackTrace();
+								notifyPanel.setText(SPACE + "Error: " + ee.getClass().getName());
 							}
 						}else{						//それ以外のコンストラクタを選択した場合
 							//パラメータをもとにインスタンスの生成を行う
@@ -441,6 +464,7 @@ public class ArgListPanel extends JPanel{
 								System.out.println("インスタンスの生成に必要な引数のインスタンス生成に失敗しました。\n"
 										+ e1.getClass().getName());
 								e1.printStackTrace();
+								notifyPanel.setText(SPACE + "Error: " + e1.getClass().getName());
 							}
 						}
 						System.out.println("対象のコンストラクタからインスタンスを生成し、パラメータに値を設定しました。");	

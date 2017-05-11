@@ -62,21 +62,32 @@ public class FlowButtonPanel extends JPanel{
 		panel.init();
 	}
 	
+	//遷移ボタンのリスナー
 	class ButtonActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
         	System.out.println(e.getActionCommand());
-        	if(e.getActionCommand()=="Next"){
-        		step++;
-        		delivParam(step);
-        		smp.nextStep();
-        		mbp.nextStep();
+        	
+        	if(e.getActionCommand()=="Next"){	//次へが押された場合のアクション
         		
-        	}else if(e.getActionCommand()=="Back"){
+        		if(mbp.getNowPanel().check()){	//正しい入力がされているかチェック
+        			step++;
+        			delivParam(step);
+        			smp.nextStep();
+        			mbp.nextStep();
+        		}else{	//不正な入力の場合
+        			mbp.getNowPanel().setNotifyText("\n\n  　　　　　　入力が間違っています。");
+        		}
+        		
+        		
+        	}else if(e.getActionCommand()=="Back"){	//前へが押された場合のアクション
+        		
         		step--;
         		clearPanel(step);
         		smp.backStep();
         		mbp.backStep();
+        		
         	}else if(e.getActionCommand()=="Cancel"){
+        		
         		System.exit(0);
         	}else{
         		

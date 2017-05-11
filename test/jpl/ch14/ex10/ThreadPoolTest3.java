@@ -499,7 +499,7 @@ public class ThreadPoolTest3 {
         }
 
         tp.stop();
-        System.out.println(runnable);
+        System.out.println("スレッド数："+runnable);
         assertEquals(0, runnable);
         assertEquals(1, activeThreadCount());
     }
