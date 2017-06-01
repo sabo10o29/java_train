@@ -1,5 +1,6 @@
 package interpret;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
@@ -7,7 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 
 import javax.swing.BoxLayout;
@@ -15,7 +18,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -23,7 +28,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class FieldsPanel extends JPanel{
+//参照型も書き換えができるようにする
+public class FieldsPanel extends JPanel implements ErrorDialog{
 	
 	Object instance = null;		//対象のインスタンス
 	Field[] fields = null;		//対象のフィールド一覧
@@ -47,6 +53,8 @@ public class FieldsPanel extends JPanel{
 
 	
 	public FieldsPanel(Object instance){
+		
+		this.setMaximumSize(new Dimension(550, 300));
 		
 		//初期化処理
 		this.instance = instance;	//インスタンス
@@ -78,65 +86,65 @@ public class FieldsPanel extends JPanel{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {	//参照型の場合の処理
-			notifyPanel.setText("未実装です");
 			
-			
-//			Field nowfield = fields[nowind];
-//			nowfield.setAccessible(true);
-//			int length = 0;
-//			
-//			if(nowfield.getType().isArray()){
-//				Object val = null;
-//				try {
-//					val = fields[nowind].get(instance);
-//					System.out.println("フィールド値の取得に成功しました。");
-//					length = ((Object[])val).length;
-//					Type[] types = new Type[length];
-//					for(int i = 0; i<length; i++ ){
-//						types[i] = nowfield.getType().getComponentType();
-//					}
-//					SubArgListDialog dialog = new SubArgListDialog(types);
-//					Point point = e.getLocationOnScreen();
-//					dialog.setBounds(point.x, point.y, 500, 250);
-//					dialog.setVisible(true);
-//					nowfield.set(instance, dialog.getPram());
-//				} catch (IllegalArgumentException | IllegalAccessException e1) {
-//					e1.printStackTrace();
-//				}
-//			}			
-			
-//			Object[] argobj = null;
-//			
-//			Type[] types = new Type[1];
-//			types[0] = nowfield.getType();
-//			System.out.println("編集するクラス："+nowfield.getType().getName());
-//			
-//			SubArgListDialog dialog = new SubArgListDialog(types);
-//			Point point = e.getLocationOnScreen();
-//			dialog.setBounds(point.x, point.y, 500, 250);
-//			dialog.setVisible(true);
-//			try {
-//				//プリミティブ型配列の場合→オブジェクトをキャストして設定
-//				//参照型の場合→インスタンスを生成して設定→めんどくさい->修正
-////				Integer[] test = new Integer[4];
-////				test[0] = 999;
-////				test[1] = 000;
-////				test[2] = 0;
-////				test[3] = 8;
-//				nowfield.set(instance, (Object)(dialog.getPram()[0]));
-////				nowfield.set(instance, dialog.getPram());
-////				nowfield.set(instance, (Object[])test);
-////				nowfield.set(instance, n);
-//				System.out.println("フィールド値の設定を行いました。");
-//				notifyPanel.setText("");
-//				
-//			} catch (IllegalArgumentException | IllegalAccessException e1) {
-//				notifyPanel.setText("フィールドの設定を変更することができませんでした。\n"
-//						+ e1.getClass().getName());
-//				e1.printStackTrace();
-//			}
+			fields[nowind].setAccessible(true);
+			if(fields[nowind].getType().isArray()){	//配列の場合はSubArrayDialogを生成し、ゲット	
+				try {
+					Object[] val = (Object[])fields[nowind].get(instance);
+					System.out.println("フィールドの配列の長さ"+val.length+"の配列の編集をおこないます。");
+					
+					Type[] arraytype = new Type[val.length];
+					for(int i=0; i<val.length; i++){
+						arraytype[i] = val.getClass().getComponentType();
+					}
+					SubArgListDialog dialog = new SubArgListDialog(arraytype);
+					Point point = e.getLocationOnScreen();
+					dialog.setBounds(point.x, point.y, 700, 250);
+					dialog.setVisible(true);
+					Object[] param = dialog.getParam();
+					Object newArray = getArray(val.getClass().getComponentType(), param);
+					try {
+						fields[nowind].set(instance, newArray);
+						System.out.println("フィールドの値を更新しました。");
+					} catch (IllegalArgumentException | IllegalAccessException e1) {
+						showErrorDialog(e1.getClass().getName());
+						e1.printStackTrace();
+					}
+				} catch (IllegalArgumentException | IllegalAccessException | NullPointerException e1) {
+					showErrorDialog(e1.getClass().getName());
+					e1.printStackTrace();
+				}
+			}else{
+				System.out.println("フィールドの参照型の書き換えを行います。");
+				Class<?> clazz;
+				try {
+					clazz = fields[nowind].getType();
+					Type[] arraytype = new Type[1];
+					arraytype[0] = clazz;
+					SubArgListDialog dialog = new SubArgListDialog(arraytype);
+					Point point = e.getLocationOnScreen();
+					dialog.setBounds(point.x, point.y, 700, 250);
+					dialog.setVisible(true);
+					Object[] param = dialog.getParam();
+					Object newInstance = param[0];
+					try {
+						fields[nowind].set(instance, newInstance);
+						System.out.println("フィールドの値を更新しました。");
+					} catch (IllegalArgumentException | IllegalAccessException e1) {
+						showErrorDialog(e1.getClass().getName());
+						e1.printStackTrace();
+					}
+					
+				} catch (IllegalArgumentException | NullPointerException e1) {
+					showErrorDialog(e1.getClass().getName());
+					e1.printStackTrace();
+				}
+				
+				
+			}
 			
 		}
+		
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO 自動生成されたメソッド・スタブ
@@ -177,8 +185,8 @@ public class FieldsPanel extends JPanel{
 				System.out.println("フィールドの値を更新しました。");
 				notifyPanel.setText("");
 			} catch (IllegalArgumentException | IllegalAccessException e1) {
-				notifyPanel.setText("フィールドの設定を変更することができませんでした。\n"
-						+ e1.getClass().getName());
+				showErrorDialog(e1.getClass().getName());
+				e1.printStackTrace();
 			}
 			
 			
@@ -201,9 +209,8 @@ public class FieldsPanel extends JPanel{
 				notifyPanel.setText("");
 				
 			} catch (IllegalArgumentException | IllegalAccessException e1) {
-				notifyPanel.setText("フィールド値を取得することができませんでした。\n"
-						+ e1.getClass().getName());
 				e1.printStackTrace();
+				showErrorDialog(e1.getClass().getName());
 			}
 			//フィールド値の表示
 			if (val != null) {
@@ -222,6 +229,8 @@ public class FieldsPanel extends JPanel{
 					set.setEnabled(false);
 					edit.setEnabled(true);
 				} else { // フィールドが参照型の場合
+					valuemodel.removeAllElements();
+					valuemodel.addElement(val.toString());
 					set.setEnabled(false);
 					edit.setEnabled(true);
 				}
@@ -310,6 +319,8 @@ public class FieldsPanel extends JPanel{
 				result[i] = String.valueOf(v[i]);
 			}
 			
+		} else if(clazz == String.class){
+			return (String[])val;
 		} else {
 			System.out.println("配列を文字列型配列に変換することができませんでした。");
 			return null;
@@ -322,25 +333,29 @@ public class FieldsPanel extends JPanel{
 	public Object parsePrimitive(Class<?> clazz, String str) {
 
 		System.out.println(str + "を" + clazz.getSimpleName() + "に変換します。");
-
-		if (clazz == byte.class) {
-			return new Byte(str);
-		} else if (clazz == short.class) {
-			return new Short(str);
-		} else if (clazz == int.class) {
-			return new Integer(str);
-		} else if (clazz == long.class) {
-			return new Long(str);
-		} else if (clazz == char.class) {
-			return new Character(str.charAt(0));
-		} else if (clazz == float.class) {
-			return new Float(str);
-		} else if (clazz == double.class) {
-			return new Double(str);
-		} else if (clazz == boolean.class) {
-			return new Boolean(str);
-		} else {
-			System.out.println("Error!!: " + str + "を" + clazz.getSimpleName() + "に変換できませんでした。");
+		try {
+			if (clazz == byte.class) {
+				return new Byte(str);
+			} else if (clazz == short.class) {
+				return new Short(str);
+			} else if (clazz == int.class) {
+				return new Integer(str);
+			} else if (clazz == long.class) {
+				return new Long(str);
+			} else if (clazz == char.class) {
+				return new Character(str.charAt(0));
+			} else if (clazz == float.class) {
+				return new Float(str);
+			} else if (clazz == double.class) {
+				return new Double(str);
+			} else if (clazz == boolean.class) {
+				return new Boolean(str);
+			} else {
+				System.out.println("Error!!: " + str + "を" + clazz.getSimpleName() + "に変換できませんでした。");
+				return null;
+			}
+		} catch (Exception e) {
+			showErrorDialog(e.getClass().getName());
 			return null;
 		}
 	}
@@ -352,6 +367,51 @@ public class FieldsPanel extends JPanel{
 		notifyPanel.setEditable(false);
 		notifyPanel.setBackground(this.getBackground());
 		notifyPanel.setBorder(new EmptyBorder(2, 2, 2, 2));
+	}
+	
+	@Override
+	public void showErrorDialog(String message) {
+		JLabel label = new JLabel("Error!: " + message);
+	    label.setForeground(Color.RED);
+	    JOptionPane.showMessageDialog(this, label);
+	}
+	
+	/**
+	 * 与えられた配列とクラスから配列型のインスタンスを生成するメソッド
+	 * @param clazz
+	 * @param vals
+	 * @return
+	 */
+	public Object getArray(Class<?> clazz, Object[] vals){
+		
+		Object argument = Array.newInstance(clazz, vals.length);
+		
+		int i = 0;
+		for (Object v : vals) {
+			if (clazz == byte.class) {
+				Array.setByte(argument, i, (Byte)v);
+			} else if (clazz == short.class) {
+				Array.setShort(argument, i, (Short)v);
+			} else if (clazz == int.class) {
+				Array.setInt(argument, i, (Integer)v);
+			} else if (clazz == long.class) {
+				Array.setLong(argument, i, (Long)v);
+			} else if (clazz == char.class) {
+				Array.setChar(argument, i, (Character)v);
+			} else if (clazz == float.class) {
+				Array.setFloat(argument, i, (Float)v);
+			} else if (clazz == double.class) {
+				Array.setDouble(argument, i, (Double)v);
+			} else if (clazz == boolean.class) {
+				Array.setBoolean(argument, i, (Boolean)v);
+			} else {
+			}
+			i++;
+		}
+		
+		if(!clazz.isPrimitive())System.arraycopy(vals,0	, argument, 0, vals.length);
+		
+		return argument;
 	}
 	
 	

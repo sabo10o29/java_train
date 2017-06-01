@@ -244,18 +244,18 @@ public class Clock extends Window implements MouseListener, MouseMotionListener{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int btn = e.getButton();		//クリックの状態取得
-		Point point = e.getPoint();		//クリックした際の座標取得
-		
-		if (btn == MouseEvent.BUTTON1){
-		    //System.out.println("左ボタンクリック");
-		  }else if (btn == MouseEvent.BUTTON2){
-		    //System.out.println("中ボタンクリック");
-		  }else if (btn == MouseEvent.BUTTON3){
-		    //ポップアップを表示
-		    this.popup.show(e.getComponent(), point.x, point.y);
-		  }
-		
+		int btn = e.getButton(); // クリックの状態取得
+		Point point = e.getPoint(); // クリックした際の座標取得
+
+		if (btn == MouseEvent.BUTTON1) {
+			// System.out.println("左ボタンクリック");
+		} else if (btn == MouseEvent.BUTTON2) {
+			// System.out.println("中ボタンクリック");
+		} else if (btn == MouseEvent.BUTTON3) {
+			// ポップアップを表示
+			this.popup.show(e.getComponent(), point.x, point.y);
+		}
+
 	}
 
 	@Override

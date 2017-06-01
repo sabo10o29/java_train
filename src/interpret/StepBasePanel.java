@@ -1,5 +1,6 @@
 package interpret;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -9,40 +10,42 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public abstract class StepBasePanel extends JPanel{
+public abstract class StepBasePanel extends JPanel implements ErrorDialog{
 	
-	public static ArrayList<ShareArgument> shareList = new ArrayList<>();
-	private boolean flag = false;
-	private final Map<String, Object> parameter = new HashMap<String, Object>();
-	private Map<String, Object> bfParameter = new HashMap<String, Object>();
-//	private final Map<String, Object> afParameter = new HashMap<String, Object>(); 
+	private static final int WWidth = 650;
+	private static final int HHeight = 550;
+	private final Map<String, Object> parameter;
 	
 	protected JTextField titlePanel 	= new JTextField();		//タイトル
 	protected JTextArea descriPanel		= new JTextArea();		//説明
 	protected JPanel mainPanel 			= new JPanel();			//メイン
 	protected JTextArea notifyPanel 	= new JTextArea();		//通知
-//	protected JPanel stepPanel			= new JPanel();			//遷移ボタン
 	
 	public static final String TITLE_SPACE = "    ";
 	public static final String SPACE = "          ";
 	
-	public StepBasePanel() {
+	public StepBasePanel(HashMap<String, Object> parameter) {
+		
+		this.parameter = parameter;
+		this.setMaximumSize(new Dimension(WWidth, HHeight));
+		
 		setTitle();
 		setMainPanel();
 		setNotifyPanel();
 		setDescri();
-//		setStepPanel();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(titlePanel);
 		add(descriPanel);
 		add(mainPanel);
 		add(notifyPanel);
-//		add(stepPanel);
+		
 	}
 	
 	private final void setTitle(){
@@ -75,32 +78,6 @@ public abstract class StepBasePanel extends JPanel{
 		notifyPanel.setBorder(new EmptyBorder(2, 2, 2, 2));
 	}
 	
-//	private final void setStepPanel(){
-//		stepPanel.setBackground(this.getBackground());
-//		stepPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-//		FlowLayout layout = new FlowLayout();
-//		layout.setAlignment(FlowLayout.RIGHT);
-//		stepPanel.setLayout(layout);
-//		JButton next = new JButton("Next");
-//		next.addActionListener(getNextActionListener());
-//		JButton back = new JButton("Back");
-//		back.addActionListener(getBackActionListener());
-//		stepPanel.add(next);
-//		stepPanel.add(back);
-//	}
-	
-	public void setBfParameter(Map<String, Object> parameter){
-		this.bfParameter = parameter;
-//		this.repaint();s
-	}
-	public Map<String, Object> getBfParameter(){
-		return bfParameter;
-	}
-	
-	public Map<String, Object> getMap(){
-		return parameter;
-	}
-	
 	//ゲッターセッター
 	public final void setParameter(String key, Object value){
 		parameter.put(key, value);
@@ -109,22 +86,26 @@ public abstract class StepBasePanel extends JPanel{
 		return parameter.get(key);
 	}
 	
-	public final void setFlag(boolean flag){
-		this.flag = flag;
-	}
-	public final boolean getFlag(){
-		return this.flag;
-	}
+//	public final void setFlag(boolean flag){
+//		this.flag = flag;
+//	}
+//	public final boolean getFlag(){
+//		return this.flag;
+//	}
 	
 	public void setNotifyText(String str){
 		notifyPanel.setText(str);
 	}
 	
+	@Override
+	public void showErrorDialog(String message) {
+		JLabel label = new JLabel("Error!: " + message);
+	    label.setForeground(Color.RED);
+	    JOptionPane.showMessageDialog(this, label);
+	}
+	
 	public abstract void init();			//前のパネルの設定をもとにした初期化処理
-	public abstract void nextHandler();		//次のステップへいく際の処理
+	public abstract boolean nextHandler();	//次のステップへいく際の処理: 処理が完了した場合にtrueを返す
 	public abstract void clear();			//戻る際のクリア処理
-	public abstract boolean check();		//次のパネルへ遷移しても良いかを判断するメソッド
-//	public abstract ActionListener getNextActionListener();		//次のパネルへ遷移するためのリスナー
-//	public abstract ActionListener getBackActionListener();		//前のパネルへ遷移するためのリスナー
 
 }

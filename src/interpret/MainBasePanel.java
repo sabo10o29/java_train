@@ -1,11 +1,9 @@
 package interpret;
 
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.util.HashMap;
 
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.border.BevelBorder;
 
 public class MainBasePanel extends JPanel{
@@ -21,16 +19,19 @@ public class MainBasePanel extends JPanel{
 	
 	
 	MainBasePanel(){
+		
 		this.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		
 		CardLayout cl = new CardLayout();
 		this.setLayout(cl);
 		
-		steppanel[0] = new Step1Panel();
-		steppanel[1] = new Step2Panel();
-		steppanel[2] = new Step3Panel();
-		steppanel[3] = new Step4Panel();
-		steppanel[4] = new Step5Panel();
+		HashMap<String, Object> parameter = new HashMap<>();
+		
+		steppanel[0] = new Step1Panel(parameter);
+		steppanel[1] = new Step2Panel(parameter);
+		steppanel[2] = new Step3Panel(parameter);
+		steppanel[3] = new Step4Panel(parameter);
+		steppanel[4] = new Step5Panel(parameter);
 		
 		for(int i=0; i<STEP;i++){
 			this.add(steppanel[i],Integer.toString(i));

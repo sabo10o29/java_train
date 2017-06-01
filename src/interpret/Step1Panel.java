@@ -1,15 +1,17 @@
 package interpret;
 
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.HashMap;
 
+/**
+ * はじめの説明用パネル
+ * @author YoshikazuMurase
+ *
+ */
 public class Step1Panel extends StepBasePanel{
 	
-	Step1Panel(){
+	Step1Panel(HashMap<String, Object> parameter){
+		
+		super(parameter);
 		
 		titlePanel.setText(TITLE_SPACE+"Interpret へようこそ");
 		descriPanel.setText(
@@ -24,25 +26,17 @@ public class Step1Panel extends StepBasePanel{
 
 	@Override
 	public void init() {
-		// TODO 自動生成されたメソッド・スタブ
 		
 	}
 
 	@Override
-	public void nextHandler() {
-		// TODO 自動生成されたメソッド・スタブ
-		
+	public boolean nextHandler() {
+		return true;
 	}
 
 	@Override
 	public void clear() {
-		// TODO 自動生成されたメソッド・スタブ
 		
-	}
-
-	@Override
-	public boolean check() {
-		return true;
 	}
 	
 }

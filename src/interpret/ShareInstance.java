@@ -5,11 +5,12 @@ package interpret;
  * @author YoshikazuMurase
  *
  */
-public class ShareArgument {
+public class ShareInstance {
 	
-	private Class clazz;		//
+	private Class  clazz;		//
 	private Object instance;	//
 	private String name;		//インスタンス名
+	public  String ID;
 	
 	public String getName() {
 		return name;
@@ -35,9 +36,13 @@ public class ShareArgument {
 		this.instance = instance;
 	}
 	
-	public ShareArgument(String name, Object instance){
+	public String toString(){
+		return this.name;
+	}
+	
+	public ShareInstance(String name, Object instance){
 		this.name = name;
-		this.clazz = instance.getClass();
+		if(instance!=null)this.clazz = instance.getClass();
 		this.instance = instance;
 		
 	}

@@ -1,11 +1,6 @@
 package interpret;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JTextField;
 
 //コンストラクタの引数設定用ウィンドウ
 
@@ -20,7 +15,7 @@ public class SubArgListDialog extends JDialog{
 		this.setModal(true);
 	}
 	
-	public Object[] getPram(){
+	public Object[] getParam(){
 		return subpanel.getParam();
 	}
 	
@@ -34,11 +29,12 @@ public class SubArgListDialog extends JDialog{
 		}
 		
 		public void finishAction(){
-//			setDefaultCloseOperation(HIDE_ON_CLOSE);
 			dispose();
 		}
 		
 		
 	}
+	
+	
 	
 }

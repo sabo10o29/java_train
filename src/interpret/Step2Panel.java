@@ -1,41 +1,50 @@
 package interpret;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashMap;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-//Step3にクラス名を渡す
+/**
+ * クラスの選択パネル
+ * 正準名を入力してクラスを選択する
+ * @author YoshikazuMurase
+ *
+ */
 public class Step2Panel extends StepBasePanel{
 	
 	private JPanel searchJPanel = new JPanel();		//検索パネル
-//	private JPanel numClassJPanel = new JPanel();	//クラスの個数入力パネル
+	private JPanel numelementPanel = new JPanel();
 	private Class<?> targetClass = null;			//仮保存用
-//	private int numClass = 0;						//クラスの個数保存用変数
+	private JRadioButton check = new JRadioButton("配列");
+	private JTextField efield = new JTextField("1", 2);		//配列の要素数用コンポーネント
 	
-	Step2Panel(){
-		titlePanel.setText(TITLE_SPACE+"クラス名と個数を入力してください");
-		descriPanel.setText(SPACE + "クラス名は正準名で入力してください\n"
-				+ SPACE + "　　＊抽象クラス、インターフェースは対象外です。");
-		descriPanel.setPreferredSize(new Dimension(10, 20));
-		notifyPanel.setPreferredSize(new Dimension(10, 50));
-		makeSearchJPanel();
+	Step2Panel(HashMap<String, Object> parameter){
+
+		super(parameter);
 	}
 	
 	private void makeSearchJPanel(){
 		
-		//検索窓の設定
 		searchJPanel.setSize(200, 200);
-		JTextField sname = new JTextField("クラス名",10);
+		numelementPanel.setSize(200,200);
+		JTextField sname = new JTextField("クラス名",5);
+		check = new JRadioButton("配列");
 		sname.setEditable(false);
 		sname.setBackground(getBackground());
 		sname.setBorder(new EmptyBorder(1, 1, 1, 1));
 		JTextField sfield = new JTextField("", 10);
+		efield = new JTextField("1", 2);
 		JButton sbutton = new JButton("Search");
 		sbutton.addActionListener( new ActionListener() {
 			
@@ -47,73 +56,87 @@ public class Step2Panel extends StepBasePanel{
 					//対象がインターフェースまたは抽象クラスの場合には他のクラスにするように促す
 					if(Modifier.isAbstract(targetClass.getModifiers())){			//対象が抽象クラスの場合
 						notifyPanel.setText("\n\n" + SPACE + "対象は抽象クラスです。クラスを入力して下さい。");
-						setFlag(false);	
 						
 					}else if(targetClass.isInterface()){	//対象がインターフェースの場合
 						notifyPanel.setText("\n\n" + SPACE + "対象はインターフェースです。クラスを入力して下さい。");
-						setFlag(false);
 						
 					}else{									//それ以外のクラスの場合
 						setParameter(ParameterConst.CLASS_NAME, targetClass); // クラス名を取得できた場合、パラメータに格納
 						notifyPanel.setText("\n\n" + SPACE + "”" + targetClass.getSimpleName() + "” をロードしました。\n" + SPACE
 								+ "このクラスで良ければ、”Next” ボタンを\n" + SPACE + "クリックしてください。");
-						setFlag(true);
 						
 					}
 				} catch (ClassNotFoundException e1) {
-					notifyPanel.setText("\n\n" + SPACE + "クラスをロードできませんでした。\n"
-							+ SPACE + "クラス名を再度入力してください。");
-					setFlag(false);
+					showErrorDialog(e1.getClass().getName());
+					e1.printStackTrace();
 				}
 				
 			}
 		});
 		
-		//クラスの個数を指定する
-//		numClassJPanel.setSize(200, 200);
-//		JTextField numfield = new JTextField("1", 10);
-//		JTextField numname = new JTextField("個数",10);
-//		numname.setEditable(false);
-//		numname.setBackground(getBackground());
-//		numname.setBorder(new EmptyBorder(1, 1, 1, 1));
-//		JButton numbutton = new JButton("Set");
-//		numbutton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				try{
-//					numClass = Integer.parseInt(numfield.getText());
-//				}catch(NumberFormatException ee){
-//					System.out.println("整数ではない値が入力されました。");
-//					notifyPanel.setText("\n\n" + SPACE + "整数を入力して下さい\n");
-//				}
-//				
-//				
-//			}
-//		});
+		check.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(check.isSelected()){		//配列の場合の処理
+					setParameter(ParameterConst.IS_ARRAY, new Boolean("true"));
+					System.out.println("クラスの生成として配列が選択されました。");
+				}else{						//配列ではない場合の処理
+					setParameter(ParameterConst.IS_ARRAY, new Boolean("false"));
+					System.out.println("単体のオブジェクトを生成します。");
+				}
+			}
+		});
 		
+		setParameter(ParameterConst.IS_ARRAY, new Boolean("false"));
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
 		//コンポーネントの追加
 		searchJPanel.add(sname);
 		searchJPanel.add(sfield);
 		searchJPanel.add(sbutton);
-//		numClassJPanel.add(numname);
-//		numClassJPanel.add(numfield);
-//		numClassJPanel.add(numbutton);
-//		mainPanel.add(numClassJPanel);
 		mainPanel.add(searchJPanel);
+		numelementPanel.add(check);
+		numelementPanel.add(efield);
+		mainPanel.add(numelementPanel);
 		
 	}
-
+	
 	@Override
 	public void init() {
-		//前のステップが存在しない　→　前のパラメータが存在しないため、初期化処理は行わない
-		setFlag(false);
-		notifyPanel.setText("");
+		titlePanel.setText(TITLE_SPACE+"クラス名と個数を入力してください");
+		descriPanel.setText(SPACE + "クラス名は正準名で入力してください\n"
+				+ SPACE + "　　＊抽象クラス、インターフェースは対象外です。");
+		descriPanel.setPreferredSize(new Dimension(10, 20));
+		notifyPanel.setPreferredSize(new Dimension(10, 50));
+		makeSearchJPanel();
 	}
 
 	@Override
-	public void nextHandler() {
-		// 検索ボタンの処理でパラメータの設定を行っているため必要ない
+	public boolean nextHandler() {
 		
+		setParameter(ParameterConst.NUM_ARRAY_ELEMENT, new Integer(1));
+		try {
+			int arraySize = 1;
+			if ((Boolean)getParameter(ParameterConst.IS_ARRAY)) {
+				String str = efield.getText();
+				arraySize = Integer.parseInt(str);
+				setParameter(ParameterConst.NUM_ARRAY_ELEMENT, new Integer(arraySize));
+				if(arraySize == 0){
+					showErrorDialog("配列を使用する場合には、０より大きい値を設定して下さい");
+					return false;
+				}
+			}
+		} catch (NumberFormatException ee) {
+			showErrorDialog(ee.getClass().getName());
+			System.out.println("配列の数を取得することができませんでした。");
+			return false;
+		}
+		if (getParameter(ParameterConst.CLASS_NAME) != null) {
+			return true;
+		} else {
+			System.out.println("クラス名がまだ入力されていません。");
+			return false;
+		}
 	}
 
 	@Override
@@ -121,16 +144,7 @@ public class Step2Panel extends StepBasePanel{
 		titlePanel.removeAll();
 		notifyPanel.removeAll();
 		notifyPanel.setText("");
-	}
-
-	@Override
-	public boolean check() {
-		//クラスとクラスの個数が正しく設定されていればtrueを返す
-		if(getFlag()){
-			return true;
-		}else{
-			return false;
-		}
+		setParameter(ParameterConst.CLASS_NAME, null);
 	}
 
 }

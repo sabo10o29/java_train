@@ -1,5 +1,6 @@
 package interpret;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
@@ -11,10 +12,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -26,7 +30,8 @@ import interpret.FieldsPanel.EditObjectButtonListener;
 import interpret.FieldsPanel.ModifyFieldListener;
 import interpret.FieldsPanel.MyButtonListener;
 
-public class MethodsPanel extends JPanel {
+//既存のインスタンスを入力した際にエラーが発生する
+public class MethodsPanel extends JPanel implements ErrorDialog{
 
 	Object instance 			= null;
 	Field[] fields 			= null;
@@ -38,10 +43,14 @@ public class MethodsPanel extends JPanel {
 	
 
 	JList<Object> methodlist = null;
+	
+	ArrayList<ShareInstance> shareList;
 
 	int nowind = 0;
 
 	public MethodsPanel(Object instance){
+		
+		this.setMaximumSize(new Dimension(550, 300));
 		
 		//初期化処理
 		this.instance = instance;	//インスタンス
@@ -53,6 +62,7 @@ public class MethodsPanel extends JPanel {
 		JPanel modify = new JPanel();	//値修正パネル
 		JScrollPane sp = new JScrollPane();	//スクロールパネル
 		setNotifyPanel();
+		setResultPanel();
 		
 	    sp.getViewport().setView(methodlist);
 	    sp.setPreferredSize(new Dimension(500, 100));
@@ -91,7 +101,7 @@ public class MethodsPanel extends JPanel {
 			Point point = e.getLocationOnScreen();
 			dialog.setBounds(point.x, point.y, 500, 250);
 			dialog.setVisible(true);
-			methodsarg[nowind] = dialog.getPram();
+			methodsarg[nowind] = dialog.getParam();
 			System.out.println("メソッドの実行に必要なパラメータの設定が完了しました。");
 			
 		}
@@ -138,7 +148,6 @@ public class MethodsPanel extends JPanel {
 				}
 				System.out.println("メソッドを実行しました！");
 				//結果の表示
-//				Class<?> returnclass = nowmethod.getReturnType();
 				if(result!=null){
 					resultPanel.setText(result.toString());
 				}else{
@@ -146,13 +155,11 @@ public class MethodsPanel extends JPanel {
 				}
 			} catch (IllegalAccessException | IllegalArgumentException e1) {
 				System.out.println("メソッドを実行できませんでした。");
-				notifyPanel.setText("メソッドを実行することができませんでした。\n"
-						+ e1.getClass().getName());
 				e1.printStackTrace();
+				showErrorDialog(e1.getClass().getName());
 			} catch (InvocationTargetException e2){
-				notifyPanel.setText("メソッドを実行することができませんでした。\n"
-						+ e2.getTargetException().getClass().getName());
 				e2.printStackTrace();
+				showErrorDialog(e2.getTargetException().getClass().getName());
 			}
 
 		}
@@ -192,6 +199,18 @@ public class MethodsPanel extends JPanel {
 		notifyPanel.setEditable(false);
 		notifyPanel.setBackground(this.getBackground());
 		notifyPanel.setBorder(new EmptyBorder(2, 2, 2, 2));
+	}
+	
+	private final void setResultPanel(){
+		resultPanel.setEditable(false);
+		resultPanel.setMaximumSize(new Dimension(350, 30));
+	}
+	
+	@Override
+	public void showErrorDialog(String message) {
+		JLabel label = new JLabel("Error!: " + message);
+	    label.setForeground(Color.RED);
+	    JOptionPane.showMessageDialog(this, label);
 	}
 	
 }

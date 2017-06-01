@@ -1,34 +1,36 @@
 package interpret;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 
 import javax.swing.JComboBox;
 
 import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
+/**
+ * コンストラクタ設定パネル
+ * @author YoshikazuMurase
+ *
+ */
 public class Step3Panel extends StepBasePanel{
 	
-	//前のステップでクラスを選択していない場合にはこのステップにいけないようにする
-	//コンストラクタが実行される時にクラスは指定されていないためエラーが発生する
-	Step3Panel(){
+	Step3Panel(HashMap<String, Object> parameter){
+		
+		super(parameter);
+		
 		titlePanel.setText(TITLE_SPACE+"表示されないタイトル");
 		descriPanel.setText(SPACE + "この画面が表示される場合にはプログラムのバグです。");
 		descriPanel.setPreferredSize(new Dimension(10, 20));
 		notifyPanel.setPreferredSize(new Dimension(10, 50));
-		
 	}
 
 	@Override
 	public void init() {
-		//現在までの設定情報を現在のパラメータに保存
 		//保持情報：クラス名、コンストラクタ
-		Class<?> clazz = (Class<?>)getBfParameter().get(ParameterConst.CLASS_NAME);
-		setParameter(ParameterConst.CLASS_NAME, clazz);
+		Class<?> clazz = (Class<?>)getParameter(ParameterConst.CLASS_NAME);
 		titlePanel.setText(TITLE_SPACE+"コンストラクタを選択してください");
 		descriPanel.setText(SPACE + clazz.getSimpleName() + "のコンストラクタを選択します。\n"
 							+ SPACE + "以下のドロップダウンリストからコンストラクタを選択してください。\n"
@@ -39,9 +41,9 @@ public class Step3Panel extends StepBasePanel{
 		setConstList(clazz);
 	}
 	
-	//コンストラクタの取得
 	//リストをドロップダウンリストで表示
 	public void setConstList(Class<?> clazz){
+
 		Constructor<?>[] consts = clazz.getConstructors();
 		String[] str = new String[consts.length];
 		if(consts != null){
@@ -87,9 +89,13 @@ public class Step3Panel extends StepBasePanel{
 	}
 
 	@Override
-	public void nextHandler() {
-		// TODO 自動生成されたメソッド・スタブ
-		
+	public boolean nextHandler() {
+		// コンストラクタが正しく設定されていればtrue
+		if (getParameter(ParameterConst.CONST_NAME) != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
@@ -98,16 +104,7 @@ public class Step3Panel extends StepBasePanel{
 		descriPanel.removeAll();
 		mainPanel.removeAll();
 		notifyPanel.removeAll();
-	}
-
-	@Override
-	public boolean check() {
-		//コンストラクタが正しく設定されていればtrue
-		if(getParameter(ParameterConst.CONST_NAME)!=null){
-			return true;
-		}else{
-			return false;
-		}
+		setParameter(ParameterConst.CONST_NAME, null);
 	}
 
 }

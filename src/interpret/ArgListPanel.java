@@ -1,13 +1,15 @@
 package interpret;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseListener;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
@@ -16,59 +18,47 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 //エラーはポップアップで表示
-//課題：コンボボックスで何も選択していない場合に最初のコンストラクタを選択するようにする
-//課題：エラーが発生した場合に何のエラーなのかを表示する
+//!!!!!引数に配列を含むインスタンスの生成ができない
 //課題：配列の数が多い場合にスクロールばーで表示する
-//課題：サブダイアログパネルにタイトル・説明・通知パネルを設定する
-//課題：配列型でも表示・値の修正ができるようにする
-//課題：適切な設定ではない場合には次へいけないようにする
-//タイプ型の配列を引数として受け取り、オブジェクト型配列に入力結果を書き込む
-//課題：コンポーネントのサブクラスを選択できるようにする。
-//課題：入力が存在しない場合（Step2→3遷移）にステップ数がエラーでも変化するためインデックスをオーバーしてしまい、前後に移動できなくなる。
-////課題：ふくすうのクラスを生成できるようにする→おk
-//課題：サブクラスの生成時にもExceptionを表示するようにする
-//課題：Valueをドロップダウンリストにしてinstanceofで当てはまるインスタンスを表示する＆セットでそのインスタンスを用いることができるようにする。
-
-public class ArgListPanel extends JPanel{
+/**
+ * 設定パネル：渡されたターゲットの引数をもとに引数の設定を行うパネル
+ * 仕様：例外が発生した場合にはその例外名をポップアップウィンドウに表示する
+ * 
+ * @author YoshikazuMurase
+ *
+ */
+public class ArgListPanel extends JPanel implements ErrorDialog{
 
 	//プリミティブ型：値入力を促す
 	//参照型：新しくウィンドウを生成して入力を促す→参照型の引数が存在しないものを入力したらそのまま生成
-	Type[] typee;
-	Object[] arg;	//インスタンス生成に必要なインスタンスを格納する→タイプ型の要素数と同じはず
+	Type[] 		typee		= null;
+	Object[] 	arg 		= null;	//インスタンス生成に必要なインスタンスを格納する→タイプ型の要素数と同じはず
 	JPanel 		mainPanel	= new JPanel();				//引数設定用パネル
-	JTextArea 	notifyPanel = new JTextArea();			//通知用パネル
 	JPanel 		btnPanel	= new JPanel();				//ボタン配置パネル
 	JButton		finish		= new JButton("Check parameter");
 	public static final String SPACE = "          ";
 	
+	/**
+	 * //コンストラクタ
+	 * 標準コンストラクタ：：nullのまま
+	 * それ以外：：引数変数に”インスタンス”が入る
+	 * @param typee
+	 */
 	public ArgListPanel(Type[] typee) {
 		
 		this.typee = typee;		//引数情報の格納
 		
-		//パネルの初期化
-		makeNotifyPanel();		//通知パネルの初期化
-		makeBtnPanel();			//ボタンパネルの初期化
-		
-		if(typee.length == 0){		//標準コンストラクタを選択した場合に入る
+		if(typee.length == 0){						//標準コンストラクタを選択した場合に入る
 			System.out.println("標準コンストラクタを選択しました。");
-			finishAction();
 		}else{
 			System.out.println("引数ありのコンストラクタを選択しました。");
-//			for(Type t : typee){		//コンストラクタの引数が仕様通りの引数かどうかチェック
-				//配列は生成されているがnullが入っている
-//				Class<?> c = t.getClass();
-//				int mod = c.getModifiers();
-//				if((Modifier.isAbstract(mod)&&!c.isPrimitive())||Modifier.isInterface(mod)||c.isAnonymousClass()){
-//					notifyPanel.setText("\nインスタンス化できないパラメータを含んでいます。\n"
-//							+ "コンストラクタを選択し直して下さい。");
-//				}
-//			}
 			arg = new Object[this.typee.length];	//引数をもとにインスタンスを生成するためのオブジェクト型配列の生成
 			makeListPanel();
 		}
@@ -77,36 +67,18 @@ public class ArgListPanel extends JPanel{
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.add(mainPanel);
 		this.add(btnPanel);
-		this.add(notifyPanel);
 		
 	}
 	
-	//通知パネルを作成するメソッド
-	public void makeNotifyPanel(){
-		notifyPanel.setEditable(false);
-		notifyPanel.setBackground(this.getBackground());
-		notifyPanel.setBorder(new EmptyBorder(2, 2, 2, 2));
-//		notifyPanel.setPreferredSize(new Dimension(10, 20));
-	}
-	
-	//　ボタンパネルを作成するメソッド
-	public void makeBtnPanel(){
-		// 完了ボタンの追加
-		finish.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (checkParam()) {
-					finishAction();
-				} else {
-					rewriteAction();
-				}
-			}
-		});
-		btnPanel.add(finish);
-		
-	}
-	
-	// リストを作成するメソッド
+	/**
+	 * リストを作成するメソッド
+	 * 名前　値　要素数orコンストラクタ　編集　を順に配置する
+	 * プリミティブ型　		◯名前　○値　×要素数　			◯既存インスタンス	×編集
+	 * コンストラクタ　		◯名前　×値　○コンストラクタ選択	◯既存インスタンス　○編集
+	 * 標準しかない場合		◯名前　×値　×コンストラクタ選択	◯既存インスタンス　	×編集
+	 * 配列型　	　　		◯名前　×値　◯要素数			◯既存インスタンス　	◯編集
+	 * 
+	 */
 	public void makeListPanel() {
 		
 		// グリッドレイアウトを用いた設定
@@ -142,9 +114,18 @@ public class ArgListPanel extends JPanel{
 		tnum.setEnabled(false);
 		tnum.setBackground(mainPanel.getBackground());
 		tnum.setBorder(new EmptyBorder(1, 1, 1, 1));
+		
+		JTextField texist = new JTextField("Use exist inst");
+		gbc.gridx = 3;
+		gbc.gridy = 0;
+		gbc.anchor = GridBagConstraints.CENTER;
+		layout.setConstraints(texist, gbc);
+		texist.setEnabled(false);
+		texist.setBackground(mainPanel.getBackground());
+		texist.setBorder(new EmptyBorder(1, 1, 1, 1));
 
 		JTextField tedit = new JTextField("Edit");
-		gbc.gridx = 3;
+		gbc.gridx = 4;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.CENTER;
 		layout.setConstraints(tedit, gbc);
@@ -155,20 +136,15 @@ public class ArgListPanel extends JPanel{
 		mainPanel.add(tname);
 		mainPanel.add(tvalue);
 		mainPanel.add(tnum);
+		mainPanel.add(texist);
 		mainPanel.add(tedit);
-
-		///////////////引数一覧の表示/////////////
-		//プリミティブ型　		◯名前　○値　×要素数　×編集
-		//コンストラクタ　		◯名前　×値　○コンストラクタ選択　○編集
-		//標準しかない場合		◯名前　×値　×コンストラクタ選択　×編集　→　生成してパラメータへ代入
-		//配列型　	　　		◯名前　×値　◯要素数　◯編集
-		//名前　値　要素数orコンストラクタ　編集　を順に配置する
+		
+		///////////////コンポーネントの初期化（共通箇所）//////////////
 		int i = 1;
 		for (Type t : this.typee) {
 			Class<?> clazz = (Class<?>) t;
 			Constructor<?>[] consts = clazz.getConstructors();
 			
-			///////////////コンポーネントの初期化（共通箇所）//////////////
 			// 名前フィールド設定
 			gbc.gridx = 0;
 			gbc.gridy = i;
@@ -178,14 +154,12 @@ public class ArgListPanel extends JPanel{
 			name.setBackground(mainPanel.getBackground());
 			name.setBorder(new EmptyBorder(1, 1, 1, 1));
 			layout.setConstraints(name, gbc);
-			// 値フィールド //JComboboxで作成したインスタンスも指定できるようにする
+			// 値フィールド
 			gbc.gridx = 1;
 			gbc.gridy = i;
 			gbc.anchor = GridBagConstraints.EAST;
-//			JTextField value = new JTextField();
-//			value.setPreferredSize(new Dimension(60, 20));
-			DefaultComboBoxModel<String> valuemodel = new DefaultComboBoxModel<String>();
-			JComboBox<String> value = new JComboBox<String>(valuemodel);
+			JTextField value = new JTextField();
+			value.setPreferredSize(new Dimension(60, 20));
 			value.setPreferredSize(new Dimension(120, 20));
 			layout.setConstraints(value, gbc);
 			//　入力フィールド //すべてJComboboxで値の選択&取得を行う
@@ -196,8 +170,16 @@ public class ArgListPanel extends JPanel{
 			JComboBox<String> fill = new JComboBox<String>(model);
 			fill.setPreferredSize(new Dimension(120, 20));
 			layout.setConstraints(fill, gbc);
-			// 編集フィールド
+			//既存インスタンス使用フィールド
 			gbc.gridx = 3;
+			gbc.gridy = i;
+			gbc.anchor = GridBagConstraints.EAST;
+			DefaultComboBoxModel<ShareInstance> existmodel = new DefaultComboBoxModel<>();
+			JComboBox<ShareInstance> existfill = new JComboBox<>(existmodel);
+			existfill.setPreferredSize(new Dimension(120, 20));
+			layout.setConstraints(existfill, gbc);
+			// 編集フィールド
+			gbc.gridx = 4;
 			gbc.gridy = i;
 			gbc.anchor = GridBagConstraints.EAST;
 			JButton edit = new JButton();
@@ -212,6 +194,8 @@ public class ArgListPanel extends JPanel{
 				value.setEnabled(true);
 				fill.setEditable(false);
 				fill.setEnabled(false);
+				existfill.setEditable(false);
+				existfill.setEnabled(true);
 				edit.setText("Set");
 				edit.setEnabled(true);
 				
@@ -221,6 +205,8 @@ public class ArgListPanel extends JPanel{
 				value.setEnabled(false);
 				fill.setEditable(true);	
 				fill.setSelectedItem(new String("1"));
+				existfill.setEditable(false);
+				existfill.setEnabled(true);
 				edit.setText("Edit");
 				edit.setEnabled(true);
 				
@@ -230,6 +216,8 @@ public class ArgListPanel extends JPanel{
 				value.setEnabled(true);
 				fill.setEditable(false);
 				fill.setEnabled(false);
+				existfill.setEditable(false);
+				existfill.setEnabled(true);
 				edit.setText("Set");
 				edit.setEnabled(true);
 				
@@ -239,6 +227,8 @@ public class ArgListPanel extends JPanel{
 				value.setEnabled(false);
 				fill.setEditable(false);
 				fill.setEnabled(false);
+				existfill.setEditable(false);
+				existfill.setEnabled(true);
 				edit.setText("Set");
 				edit.setEnabled(true);
 				
@@ -249,6 +239,8 @@ public class ArgListPanel extends JPanel{
 					value.setEnabled(false);
 					fill.setEditable(false);
 					fill.setEnabled(false);
+					existfill.setEditable(false);
+					existfill.setEnabled(true);
 					edit.setText("Set");
 					edit.setEnabled(true);
 					
@@ -256,45 +248,252 @@ public class ArgListPanel extends JPanel{
 					//◯名前　×値　○コンストラクタ選択　○編集
 					System.out.println("複数のコンストラクタが存在する場合の初期化処理です。");
 					value.setEnabled(false);
-					for(Constructor<?> c : consts){
-						model.addElement(c.toGenericString());
+					for(Constructor<?> c : consts){		//コンストラクタリストの追加
+						model.addElement(c.toGenericString());		//最初の値を選択したときの処理を記述
 					}
+					existfill.setEditable(false);
+					existfill.setEnabled(true);
 					edit.setText("Edit");
 					edit.setEnabled(true);
 					
 				}
 			}
 			
-			//メモ：すべてのリストにおいてボタンをおす動作が必要→クリックハンドラによる場合わけ
-			//プリミティブ型and標準コンストラクタ、文字列の場合（Set）にはパラメーたをオブジェクト型配列に格納する必要がある
-			//それ以外の場合には新たにパネルを生成
-			
-//			edit.addActionListener(new EditActionListener(clazz, fill, edit, value, i-1));
+			//イベントリスナーの追加
+			//既存インスタンスに関する実装
+			existmodel.addElement(new ShareInstance("Don't use", null));
+			System.out.println("共有インスタンスの数："+GrobalDataStore.getSize());
+			for (int k = 0; k < GrobalDataStore.getSize(); k++) {
+				existmodel.addElement(GrobalDataStore.getData(String.valueOf(k)));
+			}
+			existfill.addItemListener(new ShareInstItemListener(fill, edit, value, existmodel, i-1));
+			//エディットorセットボタンに関する実装
 			edit.addMouseListener(new EditMouseListener(clazz, fill, edit, value, i-1));
+			
+			//コンポーネントの追加
 			mainPanel.add(name);
 			mainPanel.add(value);
 			mainPanel.add(fill);
+			mainPanel.add(existfill);
 			mainPanel.add(edit);
 
 			i++;
 		}
 	}
 	
-	//パラメータ取得メソッド
+	/**
+	 * アイテムリスナー
+	 * 共有インスタンスから選択された場合の処理
+	 * @author YoshikazuMurase
+	 *
+	 */
+	public class ShareInstItemListener implements ItemListener{
+		
+		private DefaultComboBoxModel<ShareInstance> existmodel;
+		private int ind;
+		private JComboBox<String> comb;
+		private JButton btn;
+		private JTextField val;
+		
+		public ShareInstItemListener(JComboBox<String> comb, JButton btn, JTextField val, DefaultComboBoxModel<ShareInstance> existmodel, int ind){
+			this.existmodel = existmodel;
+			this.ind = ind;
+			this.comb = comb;
+			this.btn = btn;
+			this.val = val;
+		}
+		
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			if (e.getStateChange() == ItemEvent.SELECTED){
+			      System.out.println("既存のインスタンスが選択されました。");
+			      ShareInstance inst = (ShareInstance)existmodel.getSelectedItem();
+			      
+			      if(inst.getName()=="Don't use"){
+			    	  this.comb.setEditable(true);
+			    	  this.btn.setEnabled(true);
+			    	  this.val.setEditable(true);
+			      }else{
+			    	  arg[this.ind] = inst.getInstance();		//既存のインスタンスをパラメータに入力					//＠＠check：引数の入力
+			    	  this.comb.setEditable(false);
+			    	  this.btn.setEnabled(false);
+			    	  this.val.setEditable(false);
+			      }
+			}
+		}
+		
+	}
+		
+	/**
+	 * マウスリスナー
+	 * EditまたはSetボタンが押されたときの操作
+	 * 引数が存在しない→Setボタン→インスタンスを引数にする
+	 * 引数が存在する→Editボタン→新しい設定ウィンドウを表示→インスタンスを引数に設定する
+	 * @author YoshikazuMurase
+	 *
+	 */
+	public class EditMouseListener implements MouseListener{
+		
+		private Class<?> clazz;				//対象とするクラスの格納
+		private JComboBox<String> comb;		//対象の記入コンポーネント
+		private JButton btn;				//対象の編集コンポーネント
+		private JTextField val;				//対象の値コンポーネント
+		private int ind;					//対象のインデックス
+		private Constructor<?> targetcons;
+		
+		EditMouseListener(Class<?> clazz, JComboBox<String> comb, JButton btn, JTextField val, int ind){
+			super();
+			this.clazz = clazz;
+			this.comb = comb;
+			this.btn = btn;
+			this.val = val;
+			this.ind = ind;
+		}	
+		
+		@Override
+		public void mouseClicked(java.awt.event.MouseEvent e) {
+			if(btn.getText() == "Set"){		//Setの場合
+				if(clazz.isPrimitive()){			//プリミティブ型の場合
+					try{
+						arg[ind] = parsePrimitive(this.clazz, this.val.getText());			//＠＠check：引数の入力
+					}catch(NumberFormatException ee){
+						System.out.println("プリミティブ型のインスタンス生成に失敗しました。");
+						showErrorDialog(ee.getClass().getName());
+					}
+					System.out.println("プリミティブ型の値を設定しました。");
+					
+				}else if(clazz == String.class){	//文字列型の場合
+					arg[ind] = this.val.getText();											//＠＠check：引数の入力
+					System.out.println("文字列を設定しました。");
+					
+				}else{								//参照型（標準コンストラクタしかない）場合
+					try {
+						arg[ind] = clazz.newInstance();										//＠＠check：引数の入力
+						System.out.println("標準コンストラクタのインスタンスを生成しました。");
+						
+					} catch (Exception ee) {
+						System.out.println("標準コンストラクタのインスタンスを生成できませんでした。\n"
+								+ ee.getClass().getName());
+						ee.printStackTrace();
+						showErrorDialog(ee.getClass().getName());
+					}
+				}
+			}else{							//Editの場合
+				if(clazz.isArray()){		//配列の場合
+					System.out.println("配列の設定です。");
+					int arraynum = 1;
+					try{
+						arraynum = Integer.valueOf((String)comb.getSelectedItem());
+					}catch(NumberFormatException ee){
+						System.out.println("入力が値ではありませんでした。\n"
+								+ ee.getClass().getName());
+						showErrorDialog(ee.getClass().getName());
+					}finally{
+						Type[] types = new Type[arraynum];
+						for(int i = 0; i<arraynum; i++ ){
+							types[i] = clazz.getComponentType();
+						}
+						SubArgListDialog dialog = new SubArgListDialog(types);
+						Point point = e.getLocationOnScreen();
+						dialog.setBounds(point.x, point.y, 700, 250);
+						dialog.setVisible(true);
+						//参照型配列のインスタンスをパラメータに格納
+						try{
+							Object[] vals = dialog.getParam();
+							//プリミティブ型配列の場合にはラッパークラスへの変換が必要
+							System.out.println("＠配列の要素数："+vals.length);
+							Object argument = getArray(clazz.getComponentType(), vals);
+							arg[this.ind] = argument;		////＠＠check：引数の入力 配列オブジェクトを代入する
+							System.out.println("配列の設定を行いました。");
+						}catch(Exception ee){
+							System.out.println("インスタンス生成に必要な配列の生成時に例外が発生しました。");
+							showErrorDialog(ee.getClass().getName());
+							ee.printStackTrace();
+						}
+						
+					}
+					
+				}else{						//参照型の場合
+					System.out.println("参照型の設定です。");
+					Constructor<?>[] consts = this.clazz.getConstructors();
+					targetcons = null;
+					Type[] types = null;
+					for(Constructor<?> cons : consts){
+						if(comb.getSelectedItem().equals(cons.toGenericString())){
+							System.out.println("対象のコンストラクタを見つけました。");
+							types = cons.getGenericParameterTypes();
+							targetcons = cons;
+						}
+					}
+					if(types != null){
+						SubArgListDialog dialog = new SubArgListDialog(types);
+						Point point = e.getLocationOnScreen();
+						dialog.setBounds(point.x, point.y, 700, 250);
+						dialog.setVisible(true);
+						if(types.length == 0){		//もしも標準コンストラクタの場合（生成してウィンドウはすぐに終了させる）
+							try {
+								arg[this.ind] = clazz.newInstance();
+								System.out.println("標準コンストラクタのインスタンスを生成しました。");
+								
+							} catch (Exception ee) {
+								System.out.println("標準コンストラクタのインスタンスを生成できませんでした。\n"
+										+ ee.getMessage());
+								ee.printStackTrace();
+								showErrorDialog(ee.getClass().getName());
+							}
+						}else{						//それ以外のコンストラクタを選択した場合
+							//パラメータをもとにインスタンスの生成を行う
+							Object[] subarg = dialog.getParam();
+							try {
+								arg[this.ind] = targetcons.newInstance(subarg);
+								System.out.println("インスタンス生成に必要な引数のインスタンス生成に成功しました。");
+							} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+									| InvocationTargetException e1) {
+								System.out.println("インスタンスの生成に必要な引数のインスタンス生成に失敗しました。\n"
+										+ e1.getClass().getName());
+								e1.printStackTrace();
+								showErrorDialog(e1.getClass().getName());
+							}
+						}
+						System.out.println("対象のコンストラクタからインスタンスを生成し、パラメータに値を設定しました。");	
+					}else{
+						System.out.println("対象のコンストラクタを見つけることができませんでした。");
+					}
+					
+				}
+			}
+			
+		}
+		@Override
+		public void mousePressed(java.awt.event.MouseEvent e) {
+		}
+		@Override
+		public void mouseReleased(java.awt.event.MouseEvent e) {
+		}
+		@Override
+		public void mouseEntered(java.awt.event.MouseEvent e) {
+		}
+		@Override
+		public void mouseExited(java.awt.event.MouseEvent e) {
+		}
+	}
+
+	/////////////その他のメソッド////////////
+
+	/**
+	 * ターゲットのインスタンス生成に必要なパラメータの取得
+	 * @return　パラメータ
+	 */
 	public Object[] getParam(){
 		return this.arg;
 	}
-	//パラメータがすべて入力されているかチェックするメソッド
-	public boolean checkParam(){
-		System.out.println(arg.length + "(長さ)");
-		for(Object obj : arg){
-			if(obj == null){
-				return false;
-			}
-		}
-		return true;
-	}
-	//クラスからラッパークラスのインスタンスを生成するメソッド
+	/**
+	 * プリミティブ型のクラスからラッパークラスのインスタンスを生成するメソッド
+	 * @param clazz
+	 * @param str
+	 * @return
+	 * @throws NumberFormatException
+	 */
 	public Object parsePrimitive(Class<?> clazz, String str) throws NumberFormatException{
 		
 		System.out.println(str + "を" + clazz.getSimpleName() + "に変換します。");
@@ -320,188 +519,95 @@ public class ArgListPanel extends JPanel{
 			return null;
 		}
 	}
+	/**
+	 * プリミティブ型に対するラッパー型を取得するメソッド
+	 * @param clazz
+	 * @return
+	 * @throws NumberFormatException
+	 */
+	public Class<?> getRapper(Class<?> clazz) throws NumberFormatException {
 
-	public void finishAction(){
-		notifyPanel.setText( SPACE + "設定が完了しました。”Next” ボタンを押して下さい。");
-//		finish.setEnabled(false);
-		
-	}
-	public void rewriteAction(){
-		notifyPanel.setText( SPACE + "設定が未完了です。引数の設定をして下さい。");
+		if (clazz == byte.class) {
+			return Byte.class;
+		} else if (clazz == short.class) {
+			return Short.class;
+		} else if (clazz == int.class) {
+			return Integer.class;
+		} else if (clazz == long.class) {
+			return Long.class;
+		} else if (clazz == char.class) {
+			return Character.class;
+		} else if (clazz == float.class) {
+			return Float.class;
+		} else if (clazz == double.class) {
+			return Double.class;
+		} else if (clazz == boolean.class) {
+			return Boolean.class;
+		} else {
+			System.out.println("該当するラッパークラスがありませんでした。");
+			return clazz;
+		}
 	}
 	
-	//Editボタンが押されたときの操作
-	public class EditMouseListener implements MouseListener{
+	/**
+	 * 与えられた配列とクラスから配列型のインスタンスを生成するメソッド
+	 * @param clazz
+	 * @param vals
+	 * @return
+	 */
+	public Object getArray(Class<?> clazz, Object[] vals){
 		
-		private Class<?> clazz;				//対象とするクラスの格納
-		private JComboBox<String> comb;		//対象の記入コンポーネント
-		private JButton btn;				//対象の編集コンポーネント
-		private JTextField val;				//対象の値コンポーネント
-		private int ind;					//対象のインデックス
-		private Constructor<?> targetcons;
+		Object argument = Array.newInstance(clazz, vals.length);
 		
-		EditMouseListener(Class<?> clazz, JComboBox<String> comb, JButton btn, JTextField val, int ind){
-			super();
-			this.clazz = clazz;
-			this.comb = comb;
-			this.btn = btn;
-			this.val = val;
-			this.ind = ind;
-		}	
-		
-		@Override
-		public void mouseClicked(java.awt.event.MouseEvent e) {
-			if(btn.getText() == "Set"){		//Setの場合
-				if(clazz.isPrimitive()){			//プリミティブ型の場合
-					try{
-						arg[ind] = parsePrimitive(this.clazz, this.val.getText());
-					}catch(NumberFormatException ee){
-						notifyPanel.setText(SPACE + "Error: " + ee.getClass().getName());
-					}
-					System.out.println("プリミティブ型の値を設定しました。");
-					
-				}else if(clazz == String.class){	//文字列型の場合
-					arg[ind] = this.val.getText();
-					System.out.println("文字列を設定しました。");
-					
-				}else{								//参照型（標準コンストラクタしかない）場合
-					try {
-						arg[ind] = clazz.newInstance();
-						System.out.println("標準コンストラクタのインスタンスを生成しました。");
-						
-					} catch (Exception ee) {
-						System.out.println("標準コンストラクタのインスタンスを生成できませんでした。\n"
-								+ ee.getClass().getName());
-						ee.printStackTrace();
-						notifyPanel.setText(SPACE + "Error: " + ee.getClass().getName());
-					}
-				}
-			}else{							//Editの場合
-				if(clazz.isArray()){		//配列の場合
-					System.out.println("配列の設定です。");
-					int arraynum = 1;
-					try{
-						arraynum = Integer.valueOf((String)comb.getSelectedItem());
-					}catch(NumberFormatException ee){
-						System.out.println("入力が値ではありませんでした。\n"
-								+ ee.getClass().getName());
-						notifyPanel.setText(SPACE + "Error: " + ee.getClass().getName());
-					}finally{
-						Type[] types = new Type[arraynum];
-						//配列が仕様通りの引数かチェック
-						int mod = clazz.getComponentType().getModifiers();
-///////////////要修正：プリミティブ型は生成できるようにする（インスタンス化できないものをフィルタリングする。）
-//						System.out.println(clazz.getComponentType().getSimpleName());
-//						if((Modifier.isAbstract(mod)&&!clazz.getComponentType().isPrimitive())||Modifier.isInterface(mod)||clazz.isAnonymousClass()){
-//							notifyPanel.setText( "\n" + SPACE + "インスタンス化できないパラメータを含んでいます。\n"
-//									 + SPACE + "コンストラクタを選択し直して下さい。");
-//						}else{
-//							for(int i = 0; i<arraynum; i++ ){
-//								types[i] = clazz.getComponentType();
-//							}
-//						}
-						for(int i = 0; i<arraynum; i++ ){
-							types[i] = clazz.getComponentType();
-						}
-						SubArgListDialog dialog = new SubArgListDialog(types);
-						Point point = e.getLocationOnScreen();
-						dialog.setBounds(point.x, point.y, 500, 250);
-						dialog.setVisible(true);
-						arg[this.ind] = dialog.getPram();
-						System.out.println("配列の設定を行いました。");
-						
-					}
-					
-				}else{						//参照型の場合
-					System.out.println("参照型の設定です。");
-					Constructor<?>[] consts = this.clazz.getConstructors();
-					targetcons = null;
-					Type[] types = null;
-					for(Constructor<?> cons : consts){
-						if(comb.getSelectedItem().equals(cons.toGenericString())){
-							System.out.println("対象のコンストラクタを見つけました。");
-							types = cons.getGenericParameterTypes();
-							targetcons = cons;
-						}
-					}
-					if(types != null){
-///////////////////////////////コンストラクタの引数が仕様通りの値かチェック
-//参照型→インタフェースか抽象クラスの場合→サブクラスが存在すれば編集で生成できるようにする
-//サブクラスを検索→サブクラスも一覧に表示する→キャストする必要ある？
-//インタフェースでも生成を受け付ける→生成したオブジェクトだけは参照できるように変更する
-//						for(Type t : typee){
-//							Class<?> c = (Class<?>)t;
-//							int mod = c.getModifiers();
-//							if((Modifier.isAbstract(mod)&&!c.isPrimitive())||Modifier.isInterface(mod)||c.isAnonymousClass()){
-//								notifyPanel.setText("\n"+ SPACE + "インスタンス化できないパラメータを含んでいます。\n"
-//										+  SPACE + "コンストラクタを選択し直して下さい。");
-//								return;
-//							}
-//						}
-						SubArgListDialog dialog = new SubArgListDialog(types);
-						Point point = e.getLocationOnScreen();
-						dialog.setBounds(point.x, point.y, 500, 250);
-						dialog.setVisible(true);
-						if(types.length == 0){		//もしも標準コンストラクタの場合（生成してウィンドウはすぐに終了させる）
-							try {
-								arg[this.ind] = clazz.newInstance();
-								System.out.println("標準コンストラクタのインスタンスを生成しました。");
-								
-							} catch (Exception ee) {
-								System.out.println("標準コンストラクタのインスタンスを生成できませんでした。\n"
-										+ ee.getMessage());
-								ee.printStackTrace();
-								notifyPanel.setText(SPACE + "Error: " + ee.getClass().getName());
-							}
-						}else{						//それ以外のコンストラクタを選択した場合
-							//パラメータをもとにインスタンスの生成を行う
-							Object[] subarg = dialog.getPram();
-							try {
-								arg[this.ind] = targetcons.newInstance(subarg);
-								System.out.println("インスタンス生成に必要な引数のインスタンス生成に成功しました。");
-							} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-									| InvocationTargetException e1) {
-								System.out.println("インスタンスの生成に必要な引数のインスタンス生成に失敗しました。\n"
-										+ e1.getClass().getName());
-								e1.printStackTrace();
-								notifyPanel.setText(SPACE + "Error: " + e1.getClass().getName());
-							}
-						}
-						System.out.println("対象のコンストラクタからインスタンスを生成し、パラメータに値を設定しました。");	
-					}else{
-						System.out.println("対象のコンストラクタを見つけることができませんでした。");
-					}
-					
-				}
+		int i = 0;
+		for (Object v : vals) {
+			if (clazz == byte.class) {
+				Array.setByte(argument, i, (Byte)v);
+			} else if (clazz == short.class) {
+				Array.setShort(argument, i, (Short)v);
+			} else if (clazz == int.class) {
+				Array.setInt(argument, i, (Integer)v);
+			} else if (clazz == long.class) {
+				Array.setLong(argument, i, (Long)v);
+			} else if (clazz == char.class) {
+				Array.setChar(argument, i, (Character)v);
+			} else if (clazz == float.class) {
+				Array.setFloat(argument, i, (Float)v);
+			} else if (clazz == double.class) {
+				Array.setDouble(argument, i, (Double)v);
+			} else if (clazz == boolean.class) {
+				Array.setBoolean(argument, i, (Boolean)v);
+			} else {
 			}
-			
-		}
-
-		@Override
-		public void mousePressed(java.awt.event.MouseEvent e) {
-			// TODO 自動生成されたメソッド・スタブ
-			
-		}
-
-		@Override
-		public void mouseReleased(java.awt.event.MouseEvent e) {
-			// TODO 自動生成されたメソッド・スタブ
-			
-		}
-
-		@Override
-		public void mouseEntered(java.awt.event.MouseEvent e) {
-			// TODO 自動生成されたメソッド・スタブ
-			
-		}
-
-		@Override
-		public void mouseExited(java.awt.event.MouseEvent e) {
-			// TODO 自動生成されたメソッド・スタブ
-			
+			i++;
 		}
 		
+		if(!clazz.isPrimitive())System.arraycopy(vals,0	, argument, 0, vals.length);
+		
+		return argument;
 	}
 	
+	public int[] getPriArray(Integer[] val){
+		int[] result = new int[val.length];
+		for(int i = 0; i<val.length; i++){
+			result[i] = val[i];
+		}
+		return result;
+	}
+	
+	public byte[] getPriArray(Byte[] val){
+		byte[] result = new byte[val.length];
+		for(int i = 0; i<val.length; i++){
+			result[i] = val[i];
+		}
+		return result;
+	}
+	
+	@Override
+	public void showErrorDialog(String message) {
+		JLabel label = new JLabel("Error!: " + message);
+		label.setForeground(Color.RED);
+		JOptionPane.showMessageDialog(this, label);
+	}	
 	
 }

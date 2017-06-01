@@ -24,21 +24,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
-//フィールドの参照型の設定
-//複数クラスを選択できるよにする
-//例外を表示していない
-//型は合っているが範囲が異なる場合の例外処理ができていない。
+/**
+ * 指定したクラスのインスタンスを生成するプログラム
+ * 仕様：自分自身を生成することも可能
+ * 仕様：プロパティから新しく生成するインスタンスタブを生成することができる
+ * @author YoshikazuMurase
+ *
+ */
 public class Interpret extends JFrame{
 
-	private static final int WWidth = 800;
-	private static final int HHeight = 600;
+	private static final int WWidth = 850;
+	private static final int HHeight = 650;
 	private final JTabbedPane tab = new JTabbedPane(JTabbedPane.RIGHT);
 	private int classCount = 1;
-//	private final StepMenuPanel sp = new StepMenuPanel();
-//	private final MainBasePanel mbp = new MainBasePanel();
-//	private final FlowButtonPanel fp = new FlowButtonPanel(sp,mbp);
-//	private final MainBasePanel mp = new MainBasePanel();
 	
 	private Class<?> targetClass = null;		//ターゲットのクラスを保管するフィールド
 	
@@ -79,6 +79,7 @@ public class Interpret extends JFrame{
 		}
 		//ウィンドウの可視化
 		this.add(tab);
+		this.setResizable(false);
 		this.setVisible(true);
 	}
 	
@@ -93,7 +94,6 @@ public class Interpret extends JFrame{
 		StepMenuPanel sp = new StepMenuPanel();
 		MainBasePanel mbp = new MainBasePanel();
 		FlowButtonPanel fp = new FlowButtonPanel(sp,mbp);
-		MainBasePanel mp = new MainBasePanel();
 		
 		base.add(sp, BorderLayout.WEST);		//ステップパネル
 		subbase.add(mbp,BorderLayout.NORTH);	//メインパネル

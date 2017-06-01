@@ -4,6 +4,7 @@ import java.awt.Color;
 
 //時計表示に関するフィールド値を持つクラス
 public class Parameter implements Cloneable{
+	
 	public String 	font_name 	= "Arial";			//初期フォント
 	public double 	font_multi 	= 1;				//初期フォントサイズ（倍率）
 	public Color 	font_color 	= Color.black;		//初期フォントカラー

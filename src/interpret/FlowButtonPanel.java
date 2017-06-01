@@ -7,20 +7,24 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+/**
+ * ボタンを表示するクラス
+ * ステップの遷移が可能かどうかを判定し、可能な場合にが適切に処理を行う
+ * @author YoshikazuMurase
+ *
+ */
 public class FlowButtonPanel extends JPanel{
 
 	private final StepMenuPanel smp;
 	private final MainBasePanel mbp;
 	private int step = 0;
 	
-	//ボタンの追加：次へ、戻る、キャンセルボタンを設定する
 	JButton btNext = new JButton("Next");
 	JButton btBack = new JButton("Back");
 	JButton btCancel = new JButton("Cancel");
 	
 	FlowButtonPanel(StepMenuPanel _smp, MainBasePanel _mbp){
 		
-		//
 		smp = _smp;
 		mbp = _mbp;
 				
@@ -40,73 +44,60 @@ public class FlowButtonPanel extends JPanel{
 		setButtonEnable();
 	}
 	
-	//現在のパネルの情報を次のパネルに引き渡すメソッド
-	//前のステップの情報を渡された後に初期化処理を行う
-	public void delivParam(int nextStep){
-		if(nextStep!=0){
-			StepBasePanel now = mbp.getPanel(nextStep-1);
-			StepBasePanel next = mbp.getPanel(nextStep);
-			now.nextHandler();						//
-			next.setBfParameter(now.getMap());
-			invokeInit(next);
-		}
-	}
-	
-	public void clearPanel(int bfStep){
-		StepBasePanel now = mbp.getPanel(bfStep+1);
-		StepBasePanel back = mbp.getPanel(bfStep);
-		now.clear();
-	}
-	
-	public void invokeInit(StepBasePanel panel){
-		panel.init();
-	}
-	
-	//遷移ボタンのリスナー
+	/**
+	 * 遷移ボタンリスナー
+	 * next：現在のパネルのnextHandlerを呼び出した後に、次のパネルの初期化メソッドを呼び出し、次のパネルへ移動
+	 * back：現在のパネルの初期化ボタンを呼び出し、前のパネルへ移動
+	 * @author YoshikazuMurase
+	 *
+	 */
 	class ButtonActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-        	System.out.println(e.getActionCommand());
         	
+        	System.out.println(e.getActionCommand());
         	if(e.getActionCommand()=="Next"){	//次へが押された場合のアクション
-        		
-        		if(mbp.getNowPanel().check()){	//正しい入力がされているかチェック
-        			step++;
-        			delivParam(step);
-        			smp.nextStep();
-        			mbp.nextStep();
-        		}else{	//不正な入力の場合
-        			mbp.getNowPanel().setNotifyText("\n\n  　　　　　　入力が間違っています。");
-        		}
-        		
-        		
+        		nextSetup();
         	}else if(e.getActionCommand()=="Back"){	//前へが押された場合のアクション
-        		
-        		step--;
-        		clearPanel(step);
-        		smp.backStep();
-        		mbp.backStep();
-        		
+        		backSetup();
         	}else if(e.getActionCommand()=="Cancel"){
-        		
         		System.exit(0);
         	}else{
         		
         	}
         	setButtonEnable();
         }
+		
+		//次のボタンへ遷移するための処理
+		public void nextSetup(){
+			if(mbp.getNowPanel().nextHandler()){	//正しい入力がされているかチェック
+    			step++;
+    			mbp.getPanel(step).init();	//次のパネルの初期化処理
+    			smp.nextStep();
+    			mbp.nextStep();
+    		}
+		}
+		//前のボタンへ遷移するための処理
+		public void backSetup() {
+			mbp.getPanel(step).clear();		//現在のパネルのクリア処理
+			step--;
+    		smp.backStep();
+    		mbp.backStep();
+		}
+        
     }
 	
-	public void setButtonEnable(){
-		if(step==0){
+	public void setButtonEnable() {
+		if (step == 0) {
 			btBack.setEnabled(false);
 			btNext.setEnabled(true);
-		}else if(step==4){
+		} else if (step == 4) {
 			btBack.setEnabled(true);
 			btNext.setEnabled(false);
-		}else{
+		} else {
 			btBack.setEnabled(true);
 			btNext.setEnabled(true);
 		}
 	}
+	
 	
 }
