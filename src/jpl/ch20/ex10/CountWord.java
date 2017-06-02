@@ -9,10 +9,9 @@ import java.io.StreamTokenizer;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
+
 public class CountWord {
-	
-//	public final static char QUOTE = '\'';
-//	public final static char DOUBLE_QUOTE = '"';
 	
 	private Map<String, Integer> map = new HashMap<String, Integer>();	//単語カウント用マップ
 	private String[] keys = new String[10000];
@@ -29,8 +28,6 @@ public class CountWord {
 		try {
 			fr = new FileReader(file);
 			st = new StreamTokenizer(fr);
-//			st.quoteChar(QUOTE);
-//			st.quoteChar(DOUBLE_QUOTE);
 
 			int token;
 			while((token = st.nextToken()) != StreamTokenizer.TT_EOF){
@@ -39,10 +36,8 @@ public class CountWord {
 					System.out.println("<EOL/>");
 					break;
 				case StreamTokenizer.TT_NUMBER:
-//					System.out.println("数字は無視");
 					break;
 				case StreamTokenizer.TT_WORD:		//文字を検出した場合の処理
-//					System.out.println("単語を検出しました("+ st.sval +") 現在の単語数：" + wordcount);
 					if(wordcount == 0){						//初めて単語を検出した場合の処置
 						keys[0] = st.sval;
 						map.put(keys[0], 1);
@@ -103,10 +98,11 @@ public class CountWord {
 		CountWord test = new CountWord(file);
 		System.out.println(test.getWordcount() + "個の単語を検出しました。");
 		
-		for(int i=0; i<test.getWordcount(); i++){
-			String key = test.keys[i];
-			System.out.println(key + "::" + test.getMap().get(key));
-		}
+//		for(int i=0; i<test.getWordcount(); i++){
+//			String key = test.keys[i];
+//			System.out.println(key + "::" + test.getMap().get(key));
+//		}
+		Set<Entry<String, Integer>> entry = test.getMap().entrySet();
 		
 	}
 

@@ -31,66 +31,65 @@ import interpret.FieldsPanel.ModifyFieldListener;
 import interpret.FieldsPanel.MyButtonListener;
 
 //既存のインスタンスを入力した際にエラーが発生する
-public class MethodsPanel extends JPanel implements ErrorDialog{
+public class MethodsPanel extends JPanel implements ErrorDialog {
 
-	Object instance 			= null;
-	Field[] fields 			= null;
-	Method[] methods 		= null;
-	Object[] values 			= null;
-	Object[][] methodsarg		= null;		
-	JTextField notifyPanel 	= new JTextField();
-	JTextField resultPanel  = new JTextField();
-	
+	Object instance = null;
+	Field[] fields = null;
+	Method[] methods = null;
+	Object[] values = null;
+	Object[][] methodsarg = null;
+	JTextField notifyPanel = new JTextField();
+	JTextField resultPanel = new JTextField();
 
 	JList<Object> methodlist = null;
-	
+
 	ArrayList<ShareInstance> shareList;
 
 	int nowind = 0;
 
-	public MethodsPanel(Object instance){
-		
+	public MethodsPanel(Object instance) {
+
 		this.setMaximumSize(new Dimension(550, 300));
-		
-		//初期化処理
-		this.instance = instance;	//インスタンス
-		this.methods = instance.getClass().getMethods(); //メソッド一覧
+
+		// 初期化処理
+		this.instance = instance; // インスタンス
+		this.methods = instance.getClass().getMethods(); // メソッド一覧
 		this.methodlist = new JList<Object>(this.methods);
 		this.methodsarg = new Object[this.methods.length][];
-		
-		JPanel base = new JPanel();		//ベースパネル
-		JPanel modify = new JPanel();	//値修正パネル
-		JScrollPane sp = new JScrollPane();	//スクロールパネル
+
+		JPanel base = new JPanel(); // ベースパネル
+		JPanel modify = new JPanel(); // 値修正パネル
+		JScrollPane sp = new JScrollPane(); // スクロールパネル
 		setNotifyPanel();
 		setResultPanel();
-		
-	    sp.getViewport().setView(methodlist);
-	    sp.setPreferredSize(new Dimension(500, 100));
-		
-		//メソッドのパラメータを設定するリスナー
+
+		sp.getViewport().setView(methodlist);
+		sp.setPreferredSize(new Dimension(500, 100));
+
+		// メソッドのパラメータを設定するリスナー
 		JButton edit = new JButton("Edit");
 		edit.addMouseListener(new EditMethodListener());
-		
-		//メソッドを呼び出すリスナー
+
+		// メソッドを呼び出すリスナー
 		JButton invoke = new JButton("Invoke method");
 		invoke.addActionListener(new InvokeMethodListener());
-		
+
 		base.setLayout(new BoxLayout(base, BoxLayout.Y_AXIS));
 		modify.setLayout(new BoxLayout(modify, BoxLayout.X_AXIS));
-		
+
 		modify.add(edit);
 		modify.add(invoke);
 		modify.add(resultPanel);
 		base.add(sp);
 		base.add(modify);
 		base.add(notifyPanel);
-		
+
 		this.add(base);
-		
+
 	}
-	
-	//メソッドのパラメータ設定ボタン
-	class EditMethodListener implements MouseListener{
+
+	// メソッドのパラメータ設定ボタン
+	class EditMethodListener implements MouseListener {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -103,34 +102,37 @@ public class MethodsPanel extends JPanel implements ErrorDialog{
 			dialog.setVisible(true);
 			methodsarg[nowind] = dialog.getParam();
 			System.out.println("メソッドの実行に必要なパラメータの設定が完了しました。");
-			
+
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO 自動生成されたメソッド・スタブ
-			
+
 		}
+
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO 自動生成されたメソッド・スタブ
-			
+
 		}
+
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO 自動生成されたメソッド・スタブ
-			
+
 		}
+
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO 自動生成されたメソッド・スタブ
-			
+
 		}
-		
+
 	}
-	
-	//メソッド実行ボタン
-	class InvokeMethodListener implements ActionListener{
+
+	// メソッド実行ボタン
+	class InvokeMethodListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -138,7 +140,7 @@ public class MethodsPanel extends JPanel implements ErrorDialog{
 			Method nowmethod = methods[nowind];
 			nowmethod.setAccessible(true);
 			Type[] types = nowmethod.getGenericParameterTypes();
-			//メソッドの実行
+			// メソッドの実行
 			Object result = null;
 			try {
 				if (types.length == 0) {
@@ -147,23 +149,23 @@ public class MethodsPanel extends JPanel implements ErrorDialog{
 					result = nowmethod.invoke(instance, methodsarg[nowind]);
 				}
 				System.out.println("メソッドを実行しました！");
-				//結果の表示
-				if(result!=null){
+				// 結果の表示
+				if (result != null) {
 					resultPanel.setText(result.toString());
-				}else{
+				} else {
 					resultPanel.setText("void");
 				}
 			} catch (IllegalAccessException | IllegalArgumentException e1) {
 				System.out.println("メソッドを実行できませんでした。");
 				e1.printStackTrace();
 				showErrorDialog(e1.getClass().getName());
-			} catch (InvocationTargetException e2){
+			} catch (InvocationTargetException e2) {
 				e2.printStackTrace();
 				showErrorDialog(e2.getTargetException().getClass().getName());
 			}
 
 		}
-		
+
 	}
 
 	// クラスからラッパークラスのインスタンスを生成するメソッド
@@ -200,17 +202,17 @@ public class MethodsPanel extends JPanel implements ErrorDialog{
 		notifyPanel.setBackground(this.getBackground());
 		notifyPanel.setBorder(new EmptyBorder(2, 2, 2, 2));
 	}
-	
-	private final void setResultPanel(){
+
+	private final void setResultPanel() {
 		resultPanel.setEditable(false);
 		resultPanel.setMaximumSize(new Dimension(350, 30));
 	}
-	
+
 	@Override
 	public void showErrorDialog(String message) {
 		JLabel label = new JLabel("Error!: " + message);
-	    label.setForeground(Color.RED);
-	    JOptionPane.showMessageDialog(this, label);
+		label.setForeground(Color.RED);
+		JOptionPane.showMessageDialog(this, label);
 	}
-	
+
 }

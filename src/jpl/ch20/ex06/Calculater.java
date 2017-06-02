@@ -73,6 +73,8 @@ public class Calculater {
 			test.calcWithStr("etc = 100");
 			test.calcWithStr("");
 			test.calcWithStr("test + ?");
+			test.calcWithStr("hoge + 3");
+			test.calcWithStr("hoge - 10");
 			test.calcWithStr("\n");
 			
 	}

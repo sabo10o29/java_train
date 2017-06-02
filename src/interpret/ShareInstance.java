@@ -2,16 +2,17 @@ package interpret;
 
 /**
  * 複数のタブで生成したクラスを共有するための共有オブジェクト
+ * 
  * @author YoshikazuMurase
  *
  */
 public class ShareInstance {
-	
-	private Class  clazz;		//
-	private Object instance;	//
-	private String name;		//インスタンス名
-	public  String ID;
-	
+
+	private Class clazz; //
+	private Object instance; //
+	private String name; // インスタンス名
+	public String ID;
+
 	public String getName() {
 		return name;
 	}
@@ -35,18 +36,17 @@ public class ShareInstance {
 	public void setInstance(Object instance) {
 		this.instance = instance;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return this.name;
 	}
-	
-	public ShareInstance(String name, Object instance){
+
+	public ShareInstance(String name, Object instance) {
 		this.name = name;
-		if(instance!=null)this.clazz = instance.getClass();
+		if (instance != null)
+			this.clazz = instance.getClass();
 		this.instance = instance;
-		
+
 	}
-	
-	
-	
+
 }

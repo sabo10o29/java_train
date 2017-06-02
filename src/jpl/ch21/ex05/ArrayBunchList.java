@@ -4,21 +4,21 @@ import java.util.AbstractList;
 
 import javax.swing.AbstractAction;
 
-public class ArrayBunchList<E> extends AbstractList<E>{
+public class ArrayBunchList<E> extends AbstractList<E> {
 
 	private final E[][] arrays;
 	private final int size;
-	
-	public ArrayBunchList(E[][] arrays){
+
+	public ArrayBunchList(E[][] arrays) {
 		this.arrays = arrays.clone();
 		int s = 0;
-		for(E[] array : arrays){
+		for (E[] array : arrays) {
 			s += array.length;
 		}
 		size = s;
-	
+
 	}
-	
+
 	@Override
 	public int size() {
 		return size;
@@ -26,9 +26,9 @@ public class ArrayBunchList<E> extends AbstractList<E>{
 
 	@Override
 	public E get(int index) {
-		int off = 0;	//コレクションの先頭からのオフセット
-		for(int i = 0; i < arrays.length; i++ ){
-			if(index < off + arrays[i].length){
+		int off = 0; // コレクションの先頭からのオフセット
+		for (int i = 0; i < arrays.length; i++) {
+			if (index < off + arrays[i].length) {
 				return arrays[i][index - off];
 			}
 			off += arrays[i].length;
@@ -37,17 +37,16 @@ public class ArrayBunchList<E> extends AbstractList<E>{
 	}
 
 	public E set(int index, E value) {
-		int off = 0;	//コレクションの先頭からのオフセット
-		for(int i = 0; i < arrays.length; i++ ){
-			if(index < off + arrays[i].length){
-				E ret = arrays[i][index-off];
-				arrays[i][index-off] = value;
+		int off = 0; // コレクションの先頭からのオフセット
+		for (int i = 0; i < arrays.length; i++) {
+			if (index < off + arrays[i].length) {
+				E ret = arrays[i][index - off];
+				arrays[i][index - off] = value;
 				return ret;
 			}
 			off += arrays[i].length;
 		}
 		throw new ArrayIndexOutOfBoundsException(index);
 	}
-	
-	
+
 }

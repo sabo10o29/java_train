@@ -9,9 +9,9 @@ import java.util.Enumeration;
 import java.util.List;
 
 public class ListClass {
-	//private static final String PK_NAME = "org.some.classes";
-	private static final String PK_NAME ="jpl.ch04.ex01";
-	
+	// private static final String PK_NAME = "org.some.classes";
+	private static final String PK_NAME = "jpl.ch04.ex01";
+
 	public static void main(String... args) throws Exception {
 		String packageName = PK_NAME;
 		List<Class<?>> classes = getClasses(packageName);

@@ -7,81 +7,81 @@ import java.util.Scanner;
 
 /**
  * ListIteratorはpreviousメソッドも実装しているため、ShortStringにさらにメソッドを実装する必要がある
- * このため、ListIteratorを実装することで、強制的に実装することになり、未実装を防ぐことができる。
- * 拡張する必要はない
+ * このため、ListIteratorを実装することで、強制的に実装することになり、未実装を防ぐことができる。 拡張する必要はない
  * previousメソッドにも対応するようにする
+ * 
  * @author YoshikazuMurase
  *
  */
-public class ShortStringsV2 implements ListIterator<String>{
-	
-	private ListIterator<String> strings; 	//元の文字列
-	private String nextShort;			//次が不明ならばnull
-	private String previousShort;		//前が不明ならばnull
-	private final int maxLen;			//この長さ以下の文字列だけを返す
-	
+public class ShortStringsV2 implements ListIterator<String> {
+
+	private ListIterator<String> strings; // 元の文字列
+	private String nextShort; // 次が不明ならばnull
+	private String previousShort; // 前が不明ならばnull
+	private final int maxLen; // この長さ以下の文字列だけを返す
+
 	public ShortStringsV2(ListIterator<String> strings, int maxLen) {
-		
+
 		this.maxLen = maxLen;
 		this.strings = strings;
 		nextShort = null;
 		previousShort = null;
-		
+
 	}
-	
+
 	@Override
 	public boolean hasNext() {
-		if(nextShort != null){
-			return true; 		//すでに見つけている
+		if (nextShort != null) {
+			return true; // すでに見つけている
 		}
-		while(strings.hasNext()){
-			nextShort = strings.next();		//実装しているIteratorの状態が次へ遷移する	
-			if(nextShort.length() <= maxLen){
-				return true;		//最大サイズ以上の場合にはスキップする
-									//最大サイズ以下の場合にのみtrueを返す
+		while (strings.hasNext()) {
+			nextShort = strings.next(); // 実装しているIteratorの状態が次へ遷移する
+			if (nextShort.length() <= maxLen) {
+				return true; // 最大サイズ以上の場合にはスキップする
+								// 最大サイズ以下の場合にのみtrueを返す
 			}
 		}
-		nextShort = null;	//見つけることができなかった。
+		nextShort = null; // 見つけることができなかった。
 		return false;
 	}
 
 	@Override
 	public String next() {
-		if(nextShort == null && !hasNext()){
+		if (nextShort == null && !hasNext()) {
 			throw new NoSuchElementException();
 		}
-		String n = nextShort;	//nextShortを記憶する
-		nextShort = null;		//nextShortを消費する
-		return n;				//nextShortを返す
+		String n = nextShort; // nextShortを記憶する
+		nextShort = null; // nextShortを消費する
+		return n; // nextShortを返す
 	}
-	
-	public void remove(){
+
+	public void remove() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public boolean hasPrevious() {
-		if(previousShort != null){
-			return true;		//既にみつけている
+		if (previousShort != null) {
+			return true; // 既にみつけている
 		}
-		while(strings.hasPrevious()){
-			previousShort = strings.previous();		
-			if(previousShort.length() <= maxLen){
+		while (strings.hasPrevious()) {
+			previousShort = strings.previous();
+			if (previousShort.length() <= maxLen) {
 				return true;
 			}
 		}
-		previousShort = null;	//見つけることができなかった。
+		previousShort = null; // 見つけることができなかった。
 		return false;
 	}
 
 	@Override
 	public String previous() {
-		if(previousShort == null && !hasPrevious()){
+		if (previousShort == null && !hasPrevious()) {
 			throw new NoSuchElementException();
 		}
-		String n = previousShort;	//previousShortを記憶する
-		previousShort = null;		//previousShortを消費する
-		return n;					//previousShortを返す
+		String n = previousShort; // previousShortを記憶する
+		previousShort = null; // previousShortを消費する
+		return n; // previousShortを返す
 	}
 
 	@Override
@@ -97,19 +97,20 @@ public class ShortStringsV2 implements ListIterator<String>{
 	@Override
 	public void set(String e) {
 		throw new UnsupportedOperationException();
-		
+
 	}
 
 	@Override
 	public void add(String e) {
 		throw new UnsupportedOperationException();
 	}
-	//テスト
-	public static void main (String[] args){
-		
-		//入力のリストを作成
+
+	// テスト
+	public static void main(String[] args) {
+
+		// 入力のリストを作成
 		LinkedList<String> list = new LinkedList<String>();
-		
+
 		list.add("aa");
 		list.add("bb");
 		list.add("cccc");
@@ -120,8 +121,8 @@ public class ShortStringsV2 implements ListIterator<String>{
 		list.add("h");
 		list.add("ii");
 		list.add("jjjjjj");
-		
-		ShortStringsV2 test = new ShortStringsV2(list.listIterator(), 3); 	//Iteratorを実装している
+
+		ShortStringsV2 test = new ShortStringsV2(list.listIterator(), 3); // Iteratorを実装している
 		// hasNextを実行した段階でnextShortに値が保存されている
 		System.out.println("前方から３文字以下を表示");
 		while (test.hasNext()) {
@@ -131,6 +132,6 @@ public class ShortStringsV2 implements ListIterator<String>{
 		while (test.hasPrevious()) {
 			System.out.println(test.previous()); // nextでは次へ遷移せず、値を返すだけ
 		}
-        
+
 	}
 }

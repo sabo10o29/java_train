@@ -46,6 +46,9 @@ public class ReadFile {
 		
 		//ランダムにエントリを表示
 		System.out.println("ランダムにエントリを表示します。");
+		
+		
+		
 		int loopcount = 0;
 		while(loopcount != 10){
 			int rand = (int)(Math.random()*10);
@@ -61,24 +64,6 @@ public class ReadFile {
 			
 			loopcount++;
 		}
-//		
-//		System.out.println("test");
-//		for(long a : points){
-//			try {
-//				file.seek(a);
-//				System.out.println(file.readLine());
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//
-//		}
-		
-		
-		
-		
-		
-		
-		
 		
 	}
 

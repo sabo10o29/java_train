@@ -13,6 +13,8 @@ import java.io.StringReader;
 
 public class Encryption {
 
+	
+	//暗号化・複合化は単体とセットで実施する必要がある
 	public static void main(String[] args) {
 		
 		String current = new File(".").getAbsoluteFile().getParent();

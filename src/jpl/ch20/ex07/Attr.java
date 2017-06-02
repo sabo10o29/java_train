@@ -68,6 +68,7 @@ public class Attr {
 	public static void main(String[] args){
 		String current = new File(".").getAbsoluteFile().getParent();
 		String outdir = current + "/src/jpl/ch20/ex07/out.txt";
+		System.out.println(outdir);
 		
 		System.out.println("・作成したAttrインスタンスのデータを書き込み");
 		Object obj = new String("aiueo");

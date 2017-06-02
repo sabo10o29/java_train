@@ -8,39 +8,39 @@ import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
 
 /**
- * WeakHashMapを使用して返されたデータを保持するプログラムを作成する。
- * WeakHashMapに今までのデータを名前に紐づけて保存する
+ * WeakHashMapを使用して返されたデータを保持するプログラムを作成する。 WeakHashMapに今までのデータを名前に紐づけて保存する
+ * 
  * @author YoshikazuMurase
  *
  */
 public class DataHandler {
 
-	//ファイル名とそのデータを保持するマップを作成
+	// ファイル名とそのデータを保持するマップを作成
 	private WeakHashMap<String, byte[]> Data = new WeakHashMap<String, byte[]>();
-	
-	byte[] readFile(File file){
-		
+
+	byte[] readFile(File file) {
+
 		byte[] data;
 		data = Data.get(file.getName());
-		
-		//既にファイルが存在していた場合の処理
-		if(data != null){
+
+		// 既にファイルが存在していた場合の処理
+		if (data != null) {
 			return data;
 		}
-		
-		//存在しない場合にはファイルの内容を読みこんで、マップに書き込む
+
+		// 存在しない場合にはファイルの内容を読みこんで、マップに書き込む
 		data = readBytesFromFile(file);
 		Data.put(file.getName(), data);
 		return data;
-		
+
 	}
-	
-	//ファイルからバイトデータを読み込む
-	public byte[] readBytesFromFile(File file){
+
+	// ファイルからバイトデータを読み込む
+	public byte[] readBytesFromFile(File file) {
 		try {
-			byte[] b = new byte[(int)file.length()];			//ファイルの長さの配列を作成
-			FileInputStream is = new FileInputStream(file);		//
-			is.read(b);											//ファイルの読み込み
+			byte[] b = new byte[(int) file.length()]; // ファイルの長さの配列を作成
+			FileInputStream is = new FileInputStream(file); //
+			is.read(b); // ファイルの読み込み
 			return b;
 		} catch (FileNotFoundException e) {
 			System.out.println("対象のファイルが見つかりません。");
@@ -49,13 +49,13 @@ public class DataHandler {
 			e.printStackTrace();
 			System.out.println("ファイルを読み込むことができませんでした。");
 		}
-		
+
 		return null;
-		
+
 	}
-	
+
 	public static void main(String[] args) {
 
 	}
-	
+
 }

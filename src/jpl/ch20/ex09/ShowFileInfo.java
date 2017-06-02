@@ -14,9 +14,6 @@ public class ShowFileInfo {
 		String current = new File(".").getAbsoluteFile().getParent();
 		String input = current + "/src/jpl/ch20/ex09/input.txt";
 		
-		//
-//		URL url = new URL("");
-		
 		File f = new File(input);
 		System.out.println("ファイル名:"+f.getName());
 		System.out.println("親ファイル名:"+f.getParentFile());
@@ -28,7 +25,6 @@ public class ShowFileInfo {
 		System.out.println("ファイルの絶対パス："+f.getAbsolutePath());
 		Date test = new Date(f.lastModified());
 		System.out.println("最終更新日時："+test.toLocaleString());
-		
 		
 	}
 
