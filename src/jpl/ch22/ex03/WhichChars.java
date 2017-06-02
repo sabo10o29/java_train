@@ -2,6 +2,8 @@ package jpl.ch22.ex03;
 
 import java.util.BitSet;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class WhichChars {
 
@@ -21,8 +23,21 @@ public class WhichChars {
 		}
 	}
 	
+	public String toString(){
+		String desc = "[";
+		Set<Entry<Byte, BitSet>> set = map.entrySet();
+		for(Entry e : set){
+			byte b1 = (Byte)e.getKey();
+			byte b2 = (Byte)e.getValue();
+			byte b = (byte) ((b1<<8) + b2);
+			desc += (char)b;
+		}
+		return desc + "]";
+	}
+	
 	public static void main(String[] args){
-		WhichChars test = new WhichChars("あかgででddedえd");
+		WhichChars test = new WhichChars("Testing 1 2 3");
+		System.out.println(test);
 	}
 	
 	

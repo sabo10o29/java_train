@@ -33,7 +33,7 @@ public class Concat {
 				filelist.add(new File(arg));
 			}
 			// コレクション内でリードする際に前のインプットストリームをcloseする必要がある
-
+			
 		}
 	}
 

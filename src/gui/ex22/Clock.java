@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import gui.ex11.ClockWindowAdapter;
 
@@ -33,13 +36,14 @@ public class Clock extends JFrame implements Runnable {
 		// 初期パラメータの追加
 		parameter = new Parameter();
 		// メニューの追加
-		MenuBar menuBar = new MenuBar();
-		Menu menuView = new Menu("Property");
-		MenuItem item = new MenuItem("Set parameter");
+		JMenuBar menuBar = new JMenuBar();
+		JMenu menuView = new JMenu("Property");
+		JMenuItem item = new JMenuItem("Set parameter");
 		item.addActionListener(new PropertyActionListener());
 		menuView.add(item);
 		menuBar.add(menuView);
-		setMenuBar(menuBar);
+//		setMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		// 表示する時計のサイズ、削除処理の追加
 		this.setSize((int) parameter.getWidth(), (int) parameter.getHeight());
 		this.addWindowListener(new ClockWindowListener());
