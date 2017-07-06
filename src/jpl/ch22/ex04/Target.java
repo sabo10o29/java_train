@@ -7,15 +7,16 @@ import java.util.Observable;
 
 /**
  * 5章のAttributedインタフェースを実装しつつObservableを継承したクラスを作成する
- * それを監視するObserverクラスのサブクラスを作成してなんかする
+ * それを監視するObserverクラスのサブクラスを作成する
  * ハッシュマップに属性を追加する→追加や削除の際に属性に変更があったことをObserverに通知する
+ * 
  * @author YoshikazuMurase
  *
  */
-public class Target extends Observable implements Attributed{
-	
+public class Target extends Observable implements Attributed {
+
 	protected Map<String, Attr> attrTable = new HashMap<String, Attr>();
-	
+
 	@Override
 	public void add(Attr newAttr) {
 		attrTable.put(newAttr.getName(), newAttr);

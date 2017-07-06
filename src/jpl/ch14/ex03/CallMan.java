@@ -12,8 +12,8 @@ public class CallMan implements Runnable{
 	public void run() {
 		while(true){
 			try {
-				test.addSyncValue();
-				//test.addAsyncValue();	
+				//test.addSyncValue();
+				test.addAsyncValue();	
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				return;

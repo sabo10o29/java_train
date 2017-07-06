@@ -5,18 +5,20 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 /**
  * WeakHashMapを使用して返されたデータを保持するプログラムを作成する。 WeakHashMapに今までのデータを名前に紐づけて保存する
- * 
+ * キーとしてデータを持ち、データの参照が解放された場合にObjectを解放する
  * @author YoshikazuMurase
  *
  */
 public class DataHandler {
 
 	// ファイル名とそのデータを保持するマップを作成
-	private WeakHashMap<String, byte[]> Data = new WeakHashMap<String, byte[]>();
+//	private WeakHashMap<String, byte[]> Data = new WeakHashMap<String, byte[]>();
+	private WeakHashMap<byte[], Object> Data = new WeakHashMap<>();
 
 	byte[] readFile(File file) {
 
@@ -24,7 +26,8 @@ public class DataHandler {
 		data = Data.get(file.getName());
 
 		// 既にファイルが存在していた場合の処理
-		if (data != null) {
+		Set set = Data.keySet();
+		for (byte[] b : set) {
 			return data;
 		}
 

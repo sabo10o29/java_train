@@ -12,22 +12,22 @@ import java.util.regex.Pattern;
 
 //
 public class ScanCSV {
-	
-	public static void splitCSVTable(Readable source){
+
+	public static void splitCSVTable(Readable source) {
 		Scanner in = new Scanner(source);
-		String de = "(,|#.*(\r|\n|\r\n)+)";	//デリミタ
+		String de = "(,|#.*(\r|\n|\r\n)+)"; // デリミタ
 		in.useDelimiter(de);
-		while(in.hasNext()){
+		while (in.hasNext()) {
 			String str = in.next();
-		    System.out.println("トークン：　"+ str); 
+			System.out.println("トークン：　" + str);
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		String current = new File(".").getAbsoluteFile().getParent();
 		String input = current + "/src/jpl/ch22/ex10/input2.csv";
 		File file = new File(input);
-		
+
 		FileReader filereader = null;
 		try {
 			filereader = new FileReader(file);
@@ -36,8 +36,7 @@ public class ScanCSV {
 			e.printStackTrace();
 		}
 		splitCSVTable(filereader);
-		
-		
+
 	}
 
 }

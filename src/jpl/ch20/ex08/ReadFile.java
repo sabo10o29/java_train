@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import jpl.ch01.ex09.SysoutFibonacci;
+import jpl.ch01.ex09.SysFibonacci;
 
 //修正：対象の行の次の行が表示される
 public class ReadFile {

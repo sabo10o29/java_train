@@ -29,11 +29,8 @@ public class SortRow {
 				int ind = 0;
 				for (int i = 0; i < list.size(); i++) {
 					String comp = list.get(i);
-					if (target.compareTo(comp) < 0) {
-
-					} else {
+					if (target.compareTo(comp) > 0)
 						ind++;
-					}
 				}
 				list.add(ind, target);
 			}
@@ -49,7 +46,7 @@ public class SortRow {
 
 		// ファイルの指定
 		String current = new File(".").getAbsoluteFile().getParent();
-		String input = current + "/src/jpl/ch21/ex01/input.txt";
+		String input = current + "/src/jpl/ch21/ex01/alice.txt";
 
 		// ファイルのソート
 		List<String> list = SortRow.SortFile(input);

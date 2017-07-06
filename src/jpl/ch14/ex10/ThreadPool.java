@@ -78,7 +78,6 @@ public class ThreadPool {
 		//空になるまで実行　＊注意！：ストップ処理が開始していてもディスパッチを受け入れる状態になっている
 		while(!list.isEmpty()){
 			synchronized (list) {
-//				System.out.println("すべての処理の完了を待機中");
 				list.notifyAll();
 			}
 		}
@@ -90,9 +89,7 @@ public class ThreadPool {
 					list.notifyAll();
 				}
 			}
-//			System.out.println(t.getName() + "を終了します。");
 		}
-//		System.out.println("スレッドプールを完了します。");
 
 	}
 

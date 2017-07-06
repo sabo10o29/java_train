@@ -40,7 +40,7 @@ public class Executer {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}finally{
-					System.out.println("Std：終了処理の入りました。");
+					System.out.println("Std：終了処理に入りました。");
 					try {
 						in.close();
 						ir.close();

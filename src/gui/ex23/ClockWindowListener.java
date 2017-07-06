@@ -3,6 +3,11 @@ package gui.ex23;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+/**
+ * JWindowに対するアクションに対するリスナー
+ * @author YoshikazuMurase
+ *
+ */
 public class ClockWindowListener implements WindowListener{
 
 	@Override

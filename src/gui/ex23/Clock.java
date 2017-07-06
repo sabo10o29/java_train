@@ -17,6 +17,7 @@ import gui.ex11.ClockWindowAdapter;
 
 /**
  * Swingを使用してデジタル時計を作成する
+ * 
  * @author YoshikazuMurase
  *
  */
@@ -24,8 +25,8 @@ public class Clock extends JFrame implements Runnable, MouseListener, MouseMotio
 	
 	//クロックがもつ機能
 	private ClockPanel cp;				//時計表示パネル
-	private PropertyDialog dialog;		//パラメータ設定ダイアログ
 	private Parameter parameter;		//パラメータ
+	private PopupPropertyPanel property;
 	private double fpoint_x;			//クリック時の座標
 	private double fpoint_y;			//
 	
@@ -38,15 +39,8 @@ public class Clock extends JFrame implements Runnable, MouseListener, MouseMotio
 	public Clock() {
 		//初期パラメータの追加
 		parameter = new Parameter();
-		//メニューの追加
-		MenuBar menuBar = new MenuBar();
-        Menu menuView = new Menu("Property");
-        MenuItem item = new MenuItem("Set parameter");
-        item.addActionListener(new PropertyActionListener());
-        menuView.add(item);
-        menuBar.add(menuView);
-        setMenuBar(menuBar);
-        //表示する時計のサイズ、削除処理の追加
+		property = new PopupPropertyPanel(parameter);
+		
         this.setSize((int)parameter.getWidth(), (int)parameter.getHeight());
 		this.addWindowListener(new ClockWindowListener());
 		this.cp = new ClockPanel(parameter);
@@ -64,7 +58,7 @@ public class Clock extends JFrame implements Runnable, MouseListener, MouseMotio
 		//時計の描画
 		while(true){
 			try {
-				this.setBounds((int)fpoint_x, (int)fpoint_y, (int)parameter.getWidth(), (int)parameter.getHeight());
+				setSize((int)parameter.getWidth(), (int)parameter.getHeight());	//フォントサイズの変更があった場合にウィンドウサイズを変更するための処理
 				cp.repaint();		//描画処理
 				Thread.sleep(500);	//スリープ
 			} catch (InterruptedException e) {
@@ -77,34 +71,12 @@ public class Clock extends JFrame implements Runnable, MouseListener, MouseMotio
 		
 	}
 	
-	//プロパティダイアログを画面中央に配置するリスナー
-	public class PropertyActionListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			int x = (int)(getX() + getWidth()/5);
-			int y = (int)(getY() + getHeight()/5);
-			int width = (int)(2*getWidth()/3);
-			int height = (int)(2*getHeight()/3);
-			PropertyDialog dialog = new PropertyDialog(parameter);
-			dialog.setBounds(x, y, width, height);
-			dialog.setModal(true);
-			dialog.setVisible(true);
-			setSize((int)dialog.getParameter().getWidth(), (int)dialog.getParameter().getHeight());
-			cp.setParameter(dialog.getParameter());
-			
-		}
-		
-	}
-
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// クリック時の座標と現在の座標から、ウィンドウの表示位置を決定
-		// 現在の位置 - クリック時の座標
-		double x = MouseInfo.getPointerInfo().getLocation().getX() - this.fpoint_x;
-		double y = MouseInfo.getPointerInfo().getLocation().getY() - this.fpoint_y;
-		// ウィンドウにマウスの座標をロケーションとして設定
-		this.setLocation((int) x, (int) y);
+		// 移動量の計算
+		double x = e.getX() - this.fpoint_x;
+		double y = e.getY() - this.fpoint_y;
+		this.setLocation((int) x + this.getX(), (int) y + this.getY());
 
 	}
 
@@ -125,7 +97,8 @@ public class Clock extends JFrame implements Runnable, MouseListener, MouseMotio
 			// System.out.println("中ボタンクリック");
 		} else if (btn == MouseEvent.BUTTON3) {
 			// ポップアップを表示
-//			this.popup.show(e.getComponent(), point.x, point.y);
+			System.out.println("右クリック");
+			this.property.show(this, e.getX(), e.getY());
 		}
 	}
 
@@ -134,7 +107,6 @@ public class Clock extends JFrame implements Runnable, MouseListener, MouseMotio
 		// マウスが押されたときの場所を保存
 		this.fpoint_x = e.getX();
 		this.fpoint_y = e.getY();
-
 	}
 
 	@Override

@@ -10,7 +10,7 @@ public class ScanCSV {
 		StringTokenIterator st = new StringTokenIterator(str, " ");
 		double result = Double.parseDouble(st.current());
 		while (st.hasNext()) {
-			
+
 			String s = st.next();
 			result += Double.parseDouble(s);
 
@@ -20,7 +20,7 @@ public class ScanCSV {
 	}
 
 	public static void main(String[] args) {
-		String str = "2.3432 33.43324 0.2344";
+		String str = "2.3432 33.43324 0.2344 -0.01084";
 		System.out.println("合計値：" + ScanCSV.sumVals(str));
 	}
 

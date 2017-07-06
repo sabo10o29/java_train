@@ -4,41 +4,39 @@ import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class WhichChars {
-
 	private HashMap<Byte, BitSet> map = new HashMap<Byte, BitSet>();
-	
-	public WhichChars(String str){
-		for(int i = 0; i < str.length(); i++){
+
+	public WhichChars(String str) {
+		for (int i = 0; i < str.length(); i++) {
 			char c = str.charAt(i);
-			Byte b1 = (byte) ((c >>> 8) & 0xFF);
-			Byte b2 = (byte) ( c & 0xFF);
-			BitSet under = new BitSet();
-			under.set(b2);
-			this.map.put(b1, under);
-			System.out.println(i+"番目の文字");
-			System.out.println("上位：　"+Integer.toBinaryString(b1));
-			System.out.println("下位：　"+Integer.toBinaryString(b2));
+			byte top = (byte) (c >> 8);
+			byte btm = (byte) (c & 0xFF);
+			BitSet bs = map.get(top);
+			if (bs == null)
+				bs = new BitSet();
+			bs.set(btm);
+			this.map.put(top, bs);
 		}
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		String desc = "[";
-		Set<Entry<Byte, BitSet>> set = map.entrySet();
-		for(Entry e : set){
-			byte b1 = (Byte)e.getKey();
-			byte b2 = (Byte)e.getValue();
-			byte b = (byte) ((b1<<8) + b2);
-			desc += (char)b;
+		for (Entry<Byte, BitSet> e : map.entrySet()) {
+			byte top = (Byte) e.getKey();
+			BitSet bs = (BitSet) e.getValue();
+			for (int i = bs.nextSetBit(0); i >= 0; i = bs.nextSetBit(i + 1)) {
+				desc += (char) ((top << 8) | i);
+			}
 		}
 		return desc + "]";
 	}
-	
-	public static void main(String[] args){
-		WhichChars test = new WhichChars("Testing 1 2 3");
+
+	public static void main(String[] args) {
+		WhichChars test = new WhichChars("Testing 1 2 3 い あ う");
 		System.out.println(test);
 	}
-	
-	
+
 }
