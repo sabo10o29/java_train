@@ -1,3 +1,3 @@
 power=120
 hp=90
-speed=50
+speed=40

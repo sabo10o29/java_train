@@ -1,5 +1,6 @@
 package jpl8.ch01.ex06;
 
+
 public class UncheckTest {
 
 	// 例外をキャッチしてキャッチされない例外に変換するメソッド

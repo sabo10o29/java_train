@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
 
-public class GrobalRes_fr extends ResourceBundle{
+public class GrobalRes_fr extends ResourceBundle {
 
 	@Override
 	protected Object handleGetObject(String key) {

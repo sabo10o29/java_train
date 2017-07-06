@@ -2,6 +2,7 @@ package jpl.ch22.ex02;
 
 import java.util.HashSet;
 
+
 public class WhichChars {
 
 	private HashSet<Character> used = new HashSet<Character>();

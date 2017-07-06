@@ -20,12 +20,12 @@ public class Executer {
 					int i = 1;
 					String line;
 					while ((line = br.readLine()) != null) {
-						if(line.indexOf("icmp_seq=5")!=-1){
+						if (line.indexOf("icmp_seq=5") != -1) {
 							process.destroy();
 						}
 						System.out.println(i + "::" + line);
 						i++;
-						
+
 					}
 				} catch (Exception e) {
 				}
@@ -41,7 +41,7 @@ public class Executer {
 					int i = 1;
 					String line;
 					while ((line = ebr.readLine()) != null) {
-						if(line.indexOf("icmp_seq=5")!=-1){
+						if (line.indexOf("icmp_seq=5") != -1) {
 							process.destroy();
 						}
 						System.err.println(i + "::" + line);

@@ -32,10 +32,8 @@ public class ThreadCheck {
 
 			}
 		}, "Sub");
-		
+
 		t.start();
-		
-		
 
 	}
 

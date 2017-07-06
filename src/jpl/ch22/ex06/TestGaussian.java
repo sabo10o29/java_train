@@ -2,6 +2,7 @@ package jpl.ch22.ex06;
 
 import java.util.Random;
 
+
 /**
  * nextGaussianを大量に呼び出してその値の数のヒストグラムを作成する ヒストグラムは＊で表示する（１００で＊カウント）
  * 

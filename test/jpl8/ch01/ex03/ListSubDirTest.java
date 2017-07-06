@@ -19,7 +19,7 @@ public class ListSubDirTest {
 		String ex = "png";
 		File[] list = ListSubDir.listSubDir(file, ex);
 		File[] ans = answer(file, ex);
-		System.out.println(list[0].getPath()+"test"+ans[0].getPath());
+		System.out.println(list[0].getPath() + "test" + ans[0].getPath());
 		assertArrayEquals(list, ans);
 
 	}
@@ -33,7 +33,7 @@ public class ListSubDirTest {
 				return name.endsWith(ex);
 			}
 		};
-		return Stream.of(file.list(filter)).map(i->new File(i)).toArray(i->new File[i]);
+		return Stream.of(file.list(filter)).map(i -> new File(i)).toArray(i -> new File[i]);
 	}
 
 }

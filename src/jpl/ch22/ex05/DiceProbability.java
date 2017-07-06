@@ -1,5 +1,6 @@
 package jpl.ch22.ex05;
 
+
 import java.security.SecureRandom;
 import java.util.Random;
 

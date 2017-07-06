@@ -1,5 +1,6 @@
 package jpl.ch22.ex01;
 
+
 public class DoubleArray {
 
 	private double[] array;

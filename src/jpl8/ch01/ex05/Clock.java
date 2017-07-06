@@ -21,27 +21,27 @@ import gui.ex11.ClockWindowAdapter;
  * @author YoshikazuMurase
  *
  */
-public class Clock extends JFrame implements Runnable, MouseListener, MouseMotionListener{
-	
-	//クロックがもつ機能
-	private ClockPanel cp;				//時計表示パネル
-	private Parameter parameter;		//パラメータ
+public class Clock extends JFrame implements Runnable, MouseListener, MouseMotionListener {
+
+	// クロックがもつ機能
+	private ClockPanel cp; // 時計表示パネル
+	private Parameter parameter; // パラメータ
 	private PopupPropertyPanel property;
-	private double fpoint_x;			//クリック時の座標
-	private double fpoint_y;			//
-	
+	private double fpoint_x; // クリック時の座標
+	private double fpoint_y; //
+
 	public static void main(String[] args) {
 		Clock clock = new Clock();
 		new Thread(clock).start();
 	}
-	
-	//時計の初期化処理
+
+	// 時計の初期化処理
 	public Clock() {
-		//初期パラメータの追加
+		// 初期パラメータの追加
 		parameter = new Parameter();
 		property = new PopupPropertyPanel(parameter);
-		
-        this.setSize((int)parameter.getWidth(), (int)parameter.getHeight());
+
+		this.setSize((int) parameter.getWidth(), (int) parameter.getHeight());
 		this.addWindowListener(new ClockWindowListener());
 		this.cp = new ClockPanel(parameter);
 		this.add(cp);
@@ -52,25 +52,24 @@ public class Clock extends JFrame implements Runnable, MouseListener, MouseMotio
 
 	@Override
 	public void run() {
-		
+
 		this.setVisible(true);
-		
-		//時計の描画
-		while(true){
+
+		// 時計の描画
+		while (true) {
 			try {
-				setSize((int)parameter.getWidth(), (int)parameter.getHeight());	//フォントサイズの変更があった場合にウィンドウサイズを変更するための処理
-				cp.repaint();		//描画処理
-				Thread.sleep(500);	//スリープ
+				setSize((int) parameter.getWidth(), (int) parameter.getHeight()); // フォントサイズの変更があった場合にウィンドウサイズを変更するための処理
+				cp.repaint(); // 描画処理
+				Thread.sleep(500); // スリープ
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}finally{
-				
+			} finally {
+
 			}
 		}
-		
-		
+
 	}
-	
+
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// 移動量の計算
@@ -83,7 +82,7 @@ public class Clock extends JFrame implements Runnable, MouseListener, MouseMotio
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
@@ -112,21 +111,19 @@ public class Clock extends JFrame implements Runnable, MouseListener, MouseMotio
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
-	
-	
 
 }

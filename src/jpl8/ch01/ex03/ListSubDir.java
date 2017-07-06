@@ -1,8 +1,6 @@
 package jpl8.ch01.ex03;
 
 import java.io.File;
-import java.io.FileFilter;
-import java.io.FilenameFilter;
 import java.util.stream.Stream;
 
 /**

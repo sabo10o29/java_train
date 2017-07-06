@@ -1,6 +1,5 @@
 package jpl.ch22.ex04;
 
-
 /**
  * ターゲットに対するアクションを保持するクラス
  * @author YoshikazuMurase

@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 
 /**
  * リストの中で条件にあうものだけを対象にして操作を行いたい場合に使用できる
+ * 
  * @author YoshikazuMurase
  *
  */

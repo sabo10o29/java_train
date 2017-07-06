@@ -5,10 +5,10 @@ import java.util.stream.Stream;
 public class LCG {
 
 	public static void main(String[] args) {
-		
+
 		Stream<Long> st = LCG.getLCG(3141592);
 		st.limit(100).forEach(System.out::println);
-		
+
 	}
 
 	public static Stream<Long> getLCG(long seed) {

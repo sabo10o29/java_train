@@ -25,10 +25,9 @@ public class DateAnalyzer {
 		System.out.println("MEDIUM:\t" + DateFormat.getDateInstance(DateFormat.MEDIUM).format(date));
 		System.out.println("SHORT:\t" + DateFormat.getDateInstance(DateFormat.SHORT).format(date));
 	}
-	
-	
+
 	public static void main(String[] args) {
-		
+
 		DateAnalyzer.parse("8/29/86 5:00 PM");
 
 	}

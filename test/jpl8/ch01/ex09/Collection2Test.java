@@ -1,13 +1,9 @@
 package jpl8.ch01.ex09;
 
-import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import org.junit.Test;
-
-import Hello.HelloWorld;
 import StdCap.StdoutCapture;
 import jpl8.ch01.ex09.CollectionFilter.Collection2;
 

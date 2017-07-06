@@ -1,5 +1,6 @@
 package jpl.ch22.ex12;
 
+
 public class Attr {
 
 	private final String name;					//属性名

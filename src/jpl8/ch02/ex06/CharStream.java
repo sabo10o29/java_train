@@ -12,11 +12,11 @@ public class CharStream {
 		return IntStream.range(0, s.length()).boxed().map(s::charAt);
 
 	}
-	
+
 	public static Stream<Character> characterStream_old(String s) {
 
 		List<Character> result = new ArrayList<>();
-		for(char c : s.toCharArray())
+		for (char c : s.toCharArray())
 			result.add(c);
 		return result.stream();
 

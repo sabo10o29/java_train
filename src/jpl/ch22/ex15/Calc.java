@@ -15,11 +15,11 @@ public class Calc {
 			e.printStackTrace();
 		}
 
-		Stack<Integer> queue= new Stack<Integer>();
+		Stack<Integer> queue = new Stack<Integer>();
 		int a = 0;
 		int b = 0;
 		for (int i = 0; i < stringArray.length; i++) {
-			
+
 			if (stringArray[i].equals("+")) {
 				a = queue.pop();
 				b = queue.pop();

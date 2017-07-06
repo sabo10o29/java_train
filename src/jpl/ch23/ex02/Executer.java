@@ -6,11 +6,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Executer {
-	
+
 	InputStream in = null;
 	InputStreamReader ir = null;
 	BufferedReader br = null;
-	
+
 	InputStream ein = null;
 	InputStreamReader eis = null;
 	BufferedReader ebr = null;
@@ -18,8 +18,8 @@ public class Executer {
 	private void execCmd(String[] cmd) throws IOException, InterruptedException {
 
 		Process process = Runtime.getRuntime().exec(cmd);
-		
-		//標準出力用スレッド
+
+		// 標準出力用スレッド
 		Runnable inputStreamThread = new Runnable() {
 			public void run() {
 				try {
@@ -30,7 +30,7 @@ public class Executer {
 					int i = 1;
 					String line;
 					while ((line = br.readLine()) != null) {
-						if(line.indexOf("icmp_seq=5")!=-1){
+						if (line.indexOf("icmp_seq=5") != -1) {
 							System.out.println("Find specify str");
 							break;
 						}
@@ -39,7 +39,7 @@ public class Executer {
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
-				}finally{
+				} finally {
 					System.out.println("Std：終了処理に入りました。");
 					try {
 						in.close();
@@ -50,11 +50,11 @@ public class Executer {
 						e.printStackTrace();
 					}
 				}
-				
+
 			}
 		};
-		
-		//エラー出力時のスレッド
+
+		// エラー出力時のスレッド
 		Runnable errStreamThread = new Runnable() {
 			public void run() {
 				try {
@@ -65,7 +65,7 @@ public class Executer {
 					int i = 1;
 					String line;
 					while ((line = ebr.readLine()) != null) {
-						if(line.indexOf("icmp_seq=5")!=-1){
+						if (line.indexOf("icmp_seq=5") != -1) {
 							System.out.println("Find specify str");
 							break;
 						}
@@ -74,7 +74,7 @@ public class Executer {
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
-				}finally{
+				} finally {
 					System.out.println("Err：終了処理に入りました。");
 					try {
 						ein.close();
@@ -84,13 +84,12 @@ public class Executer {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					
+
 				}
 			}
 		};
 
-		
-		//ここまで初期設定
+		// ここまで初期設定
 
 		Thread std = new Thread(inputStreamThread);
 		Thread err = new Thread(errStreamThread);

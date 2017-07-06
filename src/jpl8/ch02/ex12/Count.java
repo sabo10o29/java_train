@@ -34,8 +34,7 @@ public class Count {
 			List<String> list = Arrays.asList(contents.split("[\\P{L}]+"));
 			Stream<String> words = list.stream();
 			Count.countShortWords(words);
-			
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

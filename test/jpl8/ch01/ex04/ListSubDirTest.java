@@ -20,8 +20,6 @@ public class ListSubDirTest {
 		File[] list_original = file.listFiles();
 		File[] list_sorted = SortFiles.sortFiles(list_original);
 		File[] ans = answer(path);
-		// Stream.of(ans).forEach(System.out::println);
-		// Stream.of(list_sorted).forEach(System.out::println);
 		assertArrayEquals(list_sorted, ans);
 	}
 

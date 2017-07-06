@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+
 public class WhichChars {
 	private HashMap<Byte, BitSet> map = new HashMap<Byte, BitSet>();
 

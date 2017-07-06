@@ -13,13 +13,14 @@ import jpl.ch14.ex10.ThreadPool;
 
 /**
  * カウンターを更新する為には同期処理が必要となるため
+ * 
  * @author YoshikazuMurase
  *
  */
 public class CountWords implements Runnable {
 
 	public AtomicInteger count;
-	
+
 	private final List<String> words;
 
 	public CountWords(List<String> words, AtomicInteger count) {
@@ -33,7 +34,7 @@ public class CountWords implements Runnable {
 		for (String w : words) {
 			if (w.length() > 12)
 				subcount++;
-				
+
 		}
 		count.getAndAdd(subcount);
 	}
@@ -44,7 +45,7 @@ public class CountWords implements Runnable {
 			String path = new File(".").getAbsoluteFile().getParent();
 			String contents = new String(Files.readAllBytes(Paths.get(path + "/src/jpl8/ch02/ex01/WarAndPeace.txt")),
 					StandardCharsets.UTF_8);
-			
+
 			List<String> words = Arrays.asList(contents.split("[\\P{L}]+"));
 
 			int wordsSize = 40;
@@ -57,7 +58,7 @@ public class CountWords implements Runnable {
 				int start = i * wordsSize;
 				int end = (i + 1) * wordsSize - 1;
 				List<String> subwords = words.subList(start, end);
-				pool.dispatch(new CountWords(subwords,count));
+				pool.dispatch(new CountWords(subwords, count));
 			}
 
 			pool.stop();

@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 
 /**
  * 右クリック時にポップアップウィンドウを表示するクラス
+ * 
  * @author YoshikazuMurase
  *
  */
@@ -49,7 +50,7 @@ public class PopupPropertyPanel extends JPopupMenu {
 				parameter.setFname(e.getActionCommand());
 				repaint();
 			});
-			
+
 			i.setFont(new Font(name, Font.PLAIN, 11));
 			item[0].add(i);
 		}
@@ -60,7 +61,7 @@ public class PopupPropertyPanel extends JPopupMenu {
 				parameter.setFsize(Integer.parseInt(e.getActionCommand()));
 				repaint();
 			});
-			
+
 			item[1].add(i);
 		}
 
@@ -70,14 +71,14 @@ public class PopupPropertyPanel extends JPopupMenu {
 				parameter.setFcolor(getColorObject(e.getActionCommand()));
 				repaint();
 			});
-			
+
 			item[2].add(i);
 			JMenuItem j = new JMenuItem(c);
 			j.addActionListener(e -> {
 				parameter.setColor(getColorObject(e.getActionCommand()));
 				repaint();
 			});
-			
+
 			item[3].add(j);
 		}
 

@@ -10,7 +10,6 @@ import java.util.Scanner;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
-//
 public class ScanCSV {
 
 	public static void splitCSVTable(Readable source) {

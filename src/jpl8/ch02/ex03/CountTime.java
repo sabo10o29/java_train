@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+
 /**
  * parallelStreamとStreamでの計算速度の違いを求める
  * 
@@ -53,17 +54,15 @@ public class CountTime {
 			time = (end - start) / 1000000000d;
 			System.out.println("通常時");
 			System.out.printf("カウント：%d, 処理時間：%.10f秒", count, time);
-			
+
 			System.out.printf("\n\n");
-			
+
 			start = System.nanoTime();
 			count = test.countWords_parallel(words);
 			end = System.nanoTime();
 			time = (end - start) / 1000000000d;
 			System.out.println("並列実行時");
 			System.out.printf("カウント：%d, 処理時間：%.10f秒", count, time);
-			
-			
 
 		} catch (IOException e) {
 			e.printStackTrace();

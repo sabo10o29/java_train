@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
+
 public class ScanCSV {
 
 	public static List<String[]> readCSVTable(Readable source, int numCells) throws IOException {

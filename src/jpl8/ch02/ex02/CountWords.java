@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * マッチする単語のうち、最初の５個だけを求めるメソッド
+ * 
  * @author YoshikazuMurase
  *
  */
@@ -23,10 +24,10 @@ public class CountWords {
 					StandardCharsets.UTF_8);
 
 			List<String> words = Arrays.asList(contents.split("[\\P{L}]+"));
-			
+
 			long count = words.stream().filter(w -> {
-				if(w.length() > 6){
-					System.out.println("検出した単語:"+w);
+				if (w.length() > 6) {
+					System.out.println("検出した単語:" + w);
 					return true;
 				}
 				return false;

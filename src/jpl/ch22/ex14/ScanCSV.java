@@ -2,7 +2,6 @@ package jpl.ch22.ex14;
 
 import sun.util.locale.StringTokenIterator;
 
-//
 public class ScanCSV {
 
 	public static double sumVals(String str) {

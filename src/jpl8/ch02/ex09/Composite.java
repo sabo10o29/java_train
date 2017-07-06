@@ -3,6 +3,7 @@ package jpl8.ch02.ex09;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
+
 public class Composite {
 
 	public static <T> ArrayList<T> composite(Stream<ArrayList<T>> stream) {
