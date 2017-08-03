@@ -17,7 +17,8 @@ public class ScanCSV {
 		Scanner in = new Scanner(source);
 		List<String[]> vals = new ArrayList<String[]>();
 		String p = "([^!\"#$%&'()*+,-./:;<=>?@[]^_`{}+$]*)";
-		String exp = "^" + p + "," + p + "," + p + "," + p + "";
+		String exp = "^" + p + "," + p + "," + p + "," + p;
+		System.out.println(exp);
 		Pattern pat = Pattern.compile(exp, Pattern.MULTILINE);
 		while (in.hasNextLine()) {
 			String line = in.findInLine(pat);

@@ -78,6 +78,7 @@ public class AttributedImpl implements Attributed, Iterable<Attr> {
 			String line = in.findInLine(attrPat);
 			if (line != null) {
 				MatchResult m = in.match();
+				//左辺が空文字野場合のチェック
 				if (m.group(2).contains("=")) {
 					String str = m.group(2).substring(0, m.group(2).indexOf("="));
 					attrs.add(new Attr(m.group(1), str));

@@ -49,15 +49,6 @@ public class PrefsParameter {
         return tmp;
         
     }
-    /*
-    public static void main(String[] args) {
-        Prefs test = new Prefs();
-        if (args.length > 0) {
-            test.save(args[0]);
-        } else {
-            test.load();
-        }
-    }*/
     
     public String getColorName(Color color){
 		if(color.equals(Color.black))		return "BLACK";

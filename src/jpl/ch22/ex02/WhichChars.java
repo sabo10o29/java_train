@@ -1,11 +1,14 @@
 package jpl.ch22.ex02;
 
 import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 public class WhichChars {
-
-	private HashSet<Character> used = new HashSet<Character>();
+	
+	//元の並びを保持するためにはツリーセットを用いる
+	private TreeSet<Character> used = new TreeSet<Character>();
 
 	public WhichChars(String str) {
 		for (int i = 0; i < str.length(); i++) {
