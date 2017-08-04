@@ -1,0 +1,11 @@
+Q.Filterとつく関数型インタフェース
+java.nio.file.DirectoryStream.Filter<T>
+java.util.logging.Filter
+java.io.FileFilter
+java.io.FilenameFilter
+java.io.ObjectInputFilter
+http://download.java.net/java/jdk9/docs/api/java/io/package-summary.html
+
+Predicateよりも付加価値のあるもの
+DirectoryStream.Filter<T>
+IOExceptionを投げることができる。

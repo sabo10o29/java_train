@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 拡張forループを使用した場合には
+ * A.正当なコード
+ * 従来の場合はループ内で宣言するかfinalでなければエラーが出る
  * @author YoshikazuMurase
  *
  */
@@ -17,13 +18,14 @@ public class CaptureForLoop {
 		List<Runnable> runnnersA = new ArrayList<>();
 		List<Runnable> runnnersB = new ArrayList<>();
 		
-		//Runnableのリストに２つのほほうで実装
+		//Runnableのリストに２つの方法で実装
 		for (String name : names)
 			runnnersA.add(() -> System.out.println(name));
 		
 		for (int i = 0; i<names.length; i++){
 			String str = names[i];
 			runnnersB.add(() -> System.out.println(str));
+//			runnnersB.add(() -> System.out.println(names[i]));
 		}
 		
 		//リスト内のRunnable実装を実行

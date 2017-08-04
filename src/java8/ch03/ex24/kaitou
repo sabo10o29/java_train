@@ -1,0 +1,3 @@
+Function<Pair<T>, Stream<Pair<T>>>
+Tが分割できるようなクラスの場合に使用できる？
+Pair<List<>> -> Pair<subList1<>>, Pair<subList2<>>, Pair<subList3<>>...のようなストリーム
