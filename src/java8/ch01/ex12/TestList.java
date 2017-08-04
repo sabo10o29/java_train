@@ -16,7 +16,6 @@ public class TestList<E> extends ArrayList<E>{
 	
 	public void stream() {
         System.out.println("Java1.7");
-		return null;
     }
 	
 	public static void main (String[] args){

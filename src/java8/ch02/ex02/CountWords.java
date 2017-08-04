@@ -20,7 +20,7 @@ public class CountWords {
 
 		try {
 			String path = new File(".").getAbsoluteFile().getParent();
-			String contents = new String(Files.readAllBytes(Paths.get(path + "/src/jpl8/ch02/ex01/alice.txt")),
+			String contents = new String(Files.readAllBytes(Paths.get(path + "/src/java8/ch02/ex01/alice.txt")),
 					StandardCharsets.UTF_8);
 
 			List<String> words = Arrays.asList(contents.split("[\\P{L}]+"));

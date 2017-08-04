@@ -43,7 +43,7 @@ public class CountWords implements Runnable {
 
 		try {
 			String path = new File(".").getAbsoluteFile().getParent();
-			String contents = new String(Files.readAllBytes(Paths.get(path + "/src/jpl8/ch02/ex01/WarAndPeace.txt")),
+			String contents = new String(Files.readAllBytes(Paths.get(path + "/src/java8/ch02/ex01/WarAndPeace.txt")),
 					StandardCharsets.UTF_8);
 
 			List<String> words = Arrays.asList(contents.split("[\\P{L}]+"));

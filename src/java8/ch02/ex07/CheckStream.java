@@ -4,9 +4,9 @@ import java.util.stream.Stream;
 
 /**
  * 
- * 無限ストリームかどうか判断するためには、終端操作が必要
+ * ストリームが有限かどうか判断するためには、終端操作が必要
  * しかし、終端操作を行った場合にはストリームは使用できなくなってしまうため、チェックした時点で使い物にならなくなる。
- * このため、無限ストリームをチェックするメソッドは不必要である。
+ * このため、有限かどうかをチェックするメソッドは不必要である。
  * 
  * @author YoshikazuMurase
  *
@@ -14,9 +14,9 @@ import java.util.stream.Stream;
 public class CheckStream {
 
 	public static <T> boolean isFinite(Stream<T> stream) {
-
+		if(stream.count()!=0)
+			return true;
 		return false;
-
 	}
 
 	public static void main(String[] args) {
