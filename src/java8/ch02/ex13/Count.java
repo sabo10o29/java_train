@@ -36,7 +36,7 @@ public class Count {
 		String path = new File(".").getAbsoluteFile().getParent();
 		String contents;
 		try {
-			contents = new String(Files.readAllBytes(Paths.get(path + "/src/jpl8/ch02/ex03/WarAndPeace.txt")),
+			contents = new String(Files.readAllBytes(Paths.get(path + "/src/java8/ch02/ex03/WarAndPeace.txt")),
 					StandardCharsets.UTF_8);
 			List<String> list = Arrays.asList(contents.split("[\\P{L}]+"));
 			Stream<String> words = list.stream();
